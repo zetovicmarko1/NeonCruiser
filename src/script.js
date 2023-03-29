@@ -439,9 +439,6 @@ audioLoader.load('song.mp3', function(buffer)
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-// controls.enableZoom = false;
-// controls.enableRotate = false;
-// controls.enablePan = false;
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -583,11 +580,12 @@ vehicleFolder.add(parent.scale, 'x').min(0.6).max(1.6).name("Width").step(0.0001
 vehicleFolder.add(parent.scale, 'y').min(1).max(1.2).name("Length").step(0.0001)
 infraFolder.add(buildingsAllCyl.scale, 'x').min(0.5).max(2).step(0.0001).name("Road Width")
 //debug
-// gui.add(buildingsAll,'visible')
-// gui.add(cylBuilding1.rotation, 'y').min(-Math.PI).max(Math.PI)
-// gui.add(cylBuilding1.rotation, 'x').min(-Math.PI).max(Math.PI)
-// gui.add(cylBuilding1.rotation, 'z').min(-Math.PI).max(Math.PI)
-
+controls.enableZoom = false;
+controls.enableRotate = false;
+controls.enablePan = false;
+gui.add(controls,'enableZoom')
+gui.add(controls,'enableRotate')
+gui.add(controls,'enablePan')
 // miscFolder.add(guicontrols, 'songOn').onChange(playing).name("Sound On?")
 
 
