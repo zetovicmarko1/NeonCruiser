@@ -32,6 +32,8 @@ const manager = new THREE.LoadingManager()
 var parent = new THREE.Group();
 scene.add(parent)
 
+//brother
+
 mtlLoader.load('sparrow2.mtl', 
 (materials) => {
   materials.preload()
