@@ -326,18 +326,6 @@ const speedFunction = (time, multiplier) => {
     parent.position.y = (Math.cos(time*(multiplier-5))/(multiplier))*(0.4/15)*8
 }
 
-// var songOn = false
-
-// const playing = (val) => {
-//     if (songOn == val){
-//         music.play()
-//         songOn = true
-//     } else if (songOn == val) {
-//         music.pause()
-//         songOn = false
-//   }
-// }
-
 //parameters for the gui
 var guicontrols = {
     speedMultiplier: 3,
