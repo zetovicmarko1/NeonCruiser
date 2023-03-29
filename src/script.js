@@ -14,6 +14,7 @@ import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 // Textures
 const textureLoader = new THREE.TextureLoader();
 const gridTexture = textureLoader.load('textures/grid.png');
+const buildingTexture = textureLoader.load('textures/building.png');
 const metalnessTexture = textureLoader.load('textures/metalness.png');
 const gui = new GUI()
 const canvas = document.querySelector("canvas.webgl");
@@ -92,6 +93,25 @@ const material = new THREE.MeshStandardMaterial({
     roughness: 0.5,
 });
 
+const buildingMaterial = new THREE.MeshStandardMaterial({
+  map: buildingTexture,
+  /**
+   * Add a metalnessMap to our material that will tell the renderer
+   * where the "rough" parts of our terrains are
+   */ 
+  metalnessMap: metalnessTexture,
+  /**
+   * Make the terrain very very metallic so it will reflect the light
+   * and not diffuse it: it will stay black
+   */ 
+  metalness: 0.96,
+  /**
+   * Make the terrain a bit rough so the rough parts will diffuse the light
+   * well
+   */ 
+  roughness: 0.5,
+});
+
 // const helper = new THREE.AxesHelper(300)
 // scene.add(helper)
 
@@ -121,7 +141,7 @@ const building14= new THREE.Mesh(building_3, material)
 const building15= new THREE.Mesh(building_3, material)
 const building16= new THREE.Mesh(building_3, material)
 
-const cylBuilding1=new THREE.Mesh(cylGeo1, material)
+const cylBuilding1=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding1.rotation.y = Math.PI * 0.25;
 
 cylBuilding1.position.y = -10
@@ -130,7 +150,7 @@ cylBuilding1.position.z = 0
 
 scene.add(cylBuilding1)
 
-const cylBuilding2=new THREE.Mesh(cylGeo2, material)
+const cylBuilding2=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding2.rotation.y = Math.PI * 0.25;
 
 cylBuilding2.position.y = -10
@@ -139,7 +159,7 @@ cylBuilding2.position.z = 0
 
 scene.add(cylBuilding2)
 
-const cylBuilding3=new THREE.Mesh(cylGeo1, material)
+const cylBuilding3=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding3.rotation.y = Math.PI * 0.25;
 
 cylBuilding3.position.y = -10
@@ -148,7 +168,7 @@ cylBuilding3.position.z = 0
 
 scene.add(cylBuilding3)
 
-const cylBuilding4=new THREE.Mesh(cylGeo2, material)
+const cylBuilding4=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding4.rotation.y = Math.PI * 0.25;
 
 cylBuilding4.position.y = -10
@@ -157,7 +177,7 @@ cylBuilding4.position.z = 0
 
 scene.add(cylBuilding4)
 
-const cylBuilding5=new THREE.Mesh(cylGeo1, material)
+const cylBuilding5=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding5.rotation.y = Math.PI * 0.25;
 cylBuilding5.rotation.x = Math.PI * 0.75 + 0.2;
 
@@ -167,7 +187,7 @@ cylBuilding5.position.z = 0
 
 scene.add(cylBuilding5)
 
-const cylBuilding6=new THREE.Mesh(cylGeo3, material)
+const cylBuilding6=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding6.rotation.y = Math.PI * 0.25;
 
 cylBuilding6.position.y = -10
@@ -176,7 +196,7 @@ cylBuilding6.position.z = 0
 
 scene.add(cylBuilding6)
 
-const cylBuilding7=new THREE.Mesh(cylGeo1, material)
+const cylBuilding7=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding7.rotation.y = Math.PI * 0.25;
 
 cylBuilding7.position.y = -10
@@ -185,7 +205,7 @@ cylBuilding7.position.z = 0
 
 scene.add(cylBuilding7)
 
-const cylBuilding8=new THREE.Mesh(cylGeo3, material)
+const cylBuilding8=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding8.rotation.y = Math.PI * 0.25;
 
 cylBuilding8.position.y = -10
@@ -194,7 +214,7 @@ cylBuilding8.position.z = 0
 
 scene.add(cylBuilding8)
 
-const cylBuilding9=new THREE.Mesh(cylGeo1, material)
+const cylBuilding9=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding9.rotation.y = Math.PI * 0.25;
 
 cylBuilding9.position.y = -10
@@ -203,7 +223,7 @@ cylBuilding9.position.z = 0
 
 scene.add(cylBuilding9)
 
-const cylBuilding10=new THREE.Mesh(cylGeo2, material)
+const cylBuilding10=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding10.rotation.y = Math.PI * 0.25;
 
 cylBuilding10.position.y = -10
@@ -212,7 +232,7 @@ cylBuilding10.position.z = 0
 
 scene.add(cylBuilding10)
 
-const cylBuilding11=new THREE.Mesh(cylGeo1, material)
+const cylBuilding11=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding11.rotation.y = Math.PI * 0.25;
 
 cylBuilding11.position.y = -10
@@ -221,7 +241,7 @@ cylBuilding11.position.z = 0
 
 scene.add(cylBuilding11)
 
-const cylBuilding12=new THREE.Mesh(cylGeo2, material)
+const cylBuilding12=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding12.rotation.y = Math.PI * 0.25;
 
 cylBuilding12.position.y = -10
@@ -230,7 +250,7 @@ cylBuilding12.position.z = 0
 
 scene.add(cylBuilding12)
 
-const cylBuilding13=new THREE.Mesh(cylGeo1, material)
+const cylBuilding13=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding13.rotation.y = Math.PI * 0.25;
 cylBuilding13.rotation.x = Math.PI * 0.75 + 0.2;
 
@@ -240,7 +260,7 @@ cylBuilding13.position.z = 0
 
 scene.add(cylBuilding13)
 
-const cylBuilding14=new THREE.Mesh(cylGeo3, material)
+const cylBuilding14=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding14.rotation.y = Math.PI * 0.25;
 
 cylBuilding14.position.y = -10
@@ -249,7 +269,7 @@ cylBuilding14.position.z = 0
 
 scene.add(cylBuilding14)
 
-const cylBuilding15=new THREE.Mesh(cylGeo1, material)
+const cylBuilding15=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding15.rotation.y = Math.PI * 0.25;
 
 cylBuilding15.position.y = -10
@@ -258,7 +278,7 @@ cylBuilding15.position.z = 0
 
 scene.add(cylBuilding15)
 
-const cylBuilding16=new THREE.Mesh(cylGeo3, material)
+const cylBuilding16=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding16.rotation.y = Math.PI * 0.25;
 
 cylBuilding16.position.y = -10
