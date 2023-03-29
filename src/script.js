@@ -579,6 +579,12 @@ const ctrlFolder = gui.addFolder('Cruise Controls')
 const audioFolder = gui.addFolder('Audio Controls')
 const vehicleFolder = gui.addFolder('Vehicle Adjustments')
 
+// function for "disposing" of a geometry
+const updateGroupGeometry = (mesh, geometry) => {
+  mesh.geometry.dispose()
+  mesh.geometry = geometry;
+}
+
 
 gui.add(guicontrols, 'instructions').name('Click for Instructions')
 ctrlFolder.add(guicontrols, 'speedMultiplier').min(0.4).max(15).step(0.01).name('Cruising Speed')
