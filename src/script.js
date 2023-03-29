@@ -29,7 +29,7 @@ const manager = new THREE.LoadingManager()
 
 //this is to interact with the spaceship outside of the loader function
 var parent = new THREE.Group();
-scene.add( parent );
+scene.add(parent)
 
 mtlLoader.load('sparrow2.mtl', 
 (materials) => {
@@ -52,16 +52,24 @@ mtlLoader.load('sparrow2.mtl',
 )
   
 // // Fog
-const fog = new THREE.Fog("#000000", 0.1, 25);
+const fog = new THREE.Fog(0x000000, 0.1, 25);
 scene.fog = fog;
 
 // const building = new THREE.CylinderGeometry(5, 5, 50,4,4)
 // const building_2 = new THREE.CylinderGeometry(5, 5, 45,4,4)
 // const building_3 = new THREE.CylinderGeometry(5, 5, 40,4,4)
 
+const cylGeo1 = new THREE.CylinderGeometry(7, 7, 50, 4)
+const cylGeo2 = new THREE.CylinderGeometry(7, 7, 45, 4)
+const cylGeo3 = new THREE.CylinderGeometry(7, 7, 40, 4)
+
+
+//old building code
 const building = new THREE.BoxGeometry(5, 50, 15)
 const building_2 = new THREE.BoxGeometry(5, 45, 15)
 const building_3 = new THREE.BoxGeometry(5, 40, 15)
+
+
 
 // Objects
 const torus = new THREE.TorusGeometry(10, 5);
@@ -95,6 +103,7 @@ road.rotation.y = Math.PI * 0.5;
 road2.rotation.y = Math.PI * 0.5;
 road3.rotation.y = Math.PI * 0.5;
 
+//old building code 
 const building1= new THREE.Mesh(building, material)
 const building2= new THREE.Mesh(building_2, material)
 const building3= new THREE.Mesh(building_2, material)
@@ -112,6 +121,163 @@ const building14= new THREE.Mesh(building_3, material)
 const building15= new THREE.Mesh(building_3, material)
 const building16= new THREE.Mesh(building_3, material)
 
+const cylBuilding1=new THREE.Mesh(cylGeo1, material)
+cylBuilding1.rotation.y = Math.PI * 0.25;
+
+cylBuilding1.position.y = -10
+cylBuilding1.position.x = 11
+cylBuilding1.position.z = 0
+
+scene.add(cylBuilding1)
+
+const cylBuilding2=new THREE.Mesh(cylGeo2, material)
+cylBuilding2.rotation.y = Math.PI * 0.25;
+
+cylBuilding2.position.y = -10
+cylBuilding2.position.x = -11
+cylBuilding2.position.z = 0
+
+scene.add(cylBuilding2)
+
+const cylBuilding3=new THREE.Mesh(cylGeo1, material)
+cylBuilding3.rotation.y = Math.PI * 0.25;
+
+cylBuilding3.position.y = -10
+cylBuilding3.position.x = -11
+cylBuilding3.position.z = 0
+
+scene.add(cylBuilding3)
+
+const cylBuilding4=new THREE.Mesh(cylGeo2, material)
+cylBuilding4.rotation.y = Math.PI * 0.25;
+
+cylBuilding4.position.y = -10
+cylBuilding4.position.x = 11
+cylBuilding4.position.z = 0
+
+scene.add(cylBuilding4)
+
+const cylBuilding5=new THREE.Mesh(cylGeo1, material)
+cylBuilding5.rotation.y = Math.PI * 0.25;
+cylBuilding5.rotation.x = Math.PI * 0.75 + 0.2;
+
+cylBuilding5.position.y = -10
+cylBuilding5.position.x = 11
+cylBuilding5.position.z = 0
+
+scene.add(cylBuilding5)
+
+const cylBuilding6=new THREE.Mesh(cylGeo3, material)
+cylBuilding6.rotation.y = Math.PI * 0.25;
+
+cylBuilding6.position.y = -10
+cylBuilding6.position.x = -11
+cylBuilding6.position.z = 0
+
+scene.add(cylBuilding6)
+
+const cylBuilding7=new THREE.Mesh(cylGeo1, material)
+cylBuilding7.rotation.y = Math.PI * 0.25;
+
+cylBuilding7.position.y = -10
+cylBuilding7.position.x = -11
+cylBuilding7.position.z = 0
+
+scene.add(cylBuilding7)
+
+const cylBuilding8=new THREE.Mesh(cylGeo3, material)
+cylBuilding8.rotation.y = Math.PI * 0.25;
+
+cylBuilding8.position.y = -10
+cylBuilding8.position.x = 11
+cylBuilding8.position.z = 0
+
+scene.add(cylBuilding8)
+
+const cylBuilding9=new THREE.Mesh(cylGeo1, material)
+cylBuilding9.rotation.y = Math.PI * 0.25;
+
+cylBuilding9.position.y = -10
+cylBuilding9.position.x = 21
+cylBuilding9.position.z = 0
+
+scene.add(cylBuilding9)
+
+const cylBuilding10=new THREE.Mesh(cylGeo2, material)
+cylBuilding10.rotation.y = Math.PI * 0.25;
+
+cylBuilding10.position.y = -10
+cylBuilding10.position.x = -21
+cylBuilding10.position.z = 0
+
+scene.add(cylBuilding10)
+
+const cylBuilding11=new THREE.Mesh(cylGeo1, material)
+cylBuilding11.rotation.y = Math.PI * 0.25;
+
+cylBuilding11.position.y = -10
+cylBuilding11.position.x = -21
+cylBuilding11.position.z = 0
+
+scene.add(cylBuilding11)
+
+const cylBuilding12=new THREE.Mesh(cylGeo2, material)
+cylBuilding12.rotation.y = Math.PI * 0.25;
+
+cylBuilding12.position.y = -10
+cylBuilding12.position.x = 21
+cylBuilding12.position.z = 0
+
+scene.add(cylBuilding12)
+
+const cylBuilding13=new THREE.Mesh(cylGeo1, material)
+cylBuilding13.rotation.y = Math.PI * 0.25;
+cylBuilding13.rotation.x = Math.PI * 0.75 + 0.2;
+
+cylBuilding13.position.y = -10
+cylBuilding13.position.x = 21
+cylBuilding13.position.z = 0
+
+scene.add(cylBuilding13)
+
+const cylBuilding14=new THREE.Mesh(cylGeo3, material)
+cylBuilding14.rotation.y = Math.PI * 0.25;
+
+cylBuilding14.position.y = -10
+cylBuilding14.position.x = -21
+cylBuilding14.position.z = 0
+
+scene.add(cylBuilding14)
+
+const cylBuilding15=new THREE.Mesh(cylGeo1, material)
+cylBuilding15.rotation.y = Math.PI * 0.25;
+
+cylBuilding15.position.y = -10
+cylBuilding15.position.x = -21
+cylBuilding15.position.z = 0
+
+scene.add(cylBuilding15)
+
+const cylBuilding16=new THREE.Mesh(cylGeo3, material)
+cylBuilding16.rotation.y = Math.PI * 0.25;
+
+cylBuilding16.position.y = -10
+cylBuilding16.position.x = 21
+cylBuilding16.position.z = 0
+
+scene.add(cylBuilding16)
+
+//road code
+road.position.y = -10
+road.scale.z  =2
+road2.position.y = -10
+road3.position.y = -10
+road3.position.x = -20
+road3.scale.z  =4
+road2.position.x = 20
+road2.scale.z=4
+
+//old building code 
 building1.rotation.y = Math.PI * 0.5;
 building2.rotation.y = Math.PI * 0.5;
 building2.rotation.z = 0.3;
@@ -143,15 +309,6 @@ building15.rotation.y = Math.PI * 0.5;
 building15.rotation.z = Math.PI * 0.125;
 building16.rotation.y = Math.PI * 0.5;
 building16.rotation.z = (Math.PI * 0.125)+0.3;
-
-road.position.y = -10
-road.scale.z  =2
-road2.position.y = -10
-road3.position.y = -10
-road3.position.x = -20
-road3.scale.z  =4
-road2.position.x = 20
-road2.scale.z=4
 
 building1.position.y = -10
 building1.position.x = 14
@@ -237,6 +394,17 @@ scene.add(building14);
 scene.add(building15);
 scene.add(building16);
 
+
+var buildingsAll = new THREE.Group();
+var buildingsAllCyl = new THREE.Group();
+// var roads = new THREE.Group();
+buildingsAll.add(building1, building2, building3, building4, building5, building6, building7, building8, building9, building10, building11, building12, building13, building14, building15, building16)
+buildingsAllCyl.add(cylBuilding1, cylBuilding2, cylBuilding3, cylBuilding4, cylBuilding5, cylBuilding6, cylBuilding7, cylBuilding8, cylBuilding9, cylBuilding10, cylBuilding11, cylBuilding12, cylBuilding13, cylBuilding14, cylBuilding15, cylBuilding16)
+buildingsAllCyl.add(road, road2, road3)
+scene.add(buildingsAllCyl)
+buildingsAll.visible = false //keep invisible for now
+// scene.add(roads)
+
 // Sizes
 const sizes = {
   width: window.innerWidth,
@@ -268,14 +436,12 @@ audioLoader.load('song.mp3', function(buffer)
   music.play();
 });
 
-
-
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-controls.enableZoom = false;
-controls.enableRotate = false;
-controls.enablePan = false;
+// controls.enableZoom = false;
+// controls.enableRotate = false;
+// controls.enablePan = false;
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -306,6 +472,25 @@ const speedFunction = (time, multiplier) => {
     road.rotation.z = (Math.PI * time)/multiplier
     road2.rotation.z = (Math.PI * time)/multiplier
     road3.rotation.z = (Math.PI * time)/multiplier
+    
+    cylBuilding1.rotation.x = ((Math.PI * time)/multiplier) + 0.2
+    cylBuilding2.rotation.x = (Math.PI * time)/multiplier
+    cylBuilding3.rotation.x = ((Math.PI * time)/multiplier) +  (Math.PI * 0.5)
+    cylBuilding4.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.5+0.2)
+    cylBuilding5.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.75+0.2)
+    cylBuilding6.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.75)
+    cylBuilding7.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25)
+    cylBuilding8.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25 + 0.2)
+
+    cylBuilding9.rotation.x = ((Math.PI * time)/multiplier) + 0.7
+    cylBuilding10.rotation.x = ((Math.PI * time)/multiplier)+ 0.5
+    cylBuilding11.rotation.x = ((Math.PI * time)/multiplier) +  (Math.PI * 0.5) + 0.5
+    cylBuilding12.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.5+0.2)+ 0.7
+    cylBuilding13.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.75+0.2)+ 0.7
+    cylBuilding14.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.75) + 0.5
+    cylBuilding15.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25) + 0.5
+    cylBuilding16.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25 + 0.2)+ 0.7
+
     building1.rotation.x = (Math.PI * time)/multiplier
     building2.rotation.x = (Math.PI * time)/multiplier
     building3.rotation.x = (Math.PI * time)/multiplier
@@ -371,6 +556,7 @@ var changeColor = (val) =>  {
 
 //gui controls
 const cameraFolder = gui.addFolder('Camera Controls')
+const infraFolder = gui.addFolder('Road and Building Controls')
 const fxFolder = gui.addFolder('Atmosphere and Lighting')
 const ctrlFolder = gui.addFolder('Cruise Controls')
 const audioFolder = gui.addFolder('Audio Controls')
@@ -378,26 +564,29 @@ const vehicleFolder = gui.addFolder('Vehicle Adjustments')
 
 
 gui.add(guicontrols, 'instructions').name('Click for Instructions')
-ctrlFolder.add(guicontrols, 'speedMultiplier').min(0.4).max(15).step(0.1).name('Cruising Speed')
+ctrlFolder.add(guicontrols, 'speedMultiplier').min(0.4).max(15).step(0.01).name('Cruising Speed')
 fxFolder.addColor(guicontrols, 'color').onChange(changeColor).name('Neon Colour')
 fxFolder.add(fog, 'far').name('Fog Depth').min(10).max(25)
 fxFolder.add(guicontrols, 'bloomThreshold', 0.0, 1.0).onChange(function (value) {
   bloomPass.threshold = Number(value);
-}).name('Neon Threshold').step(0.1);
+}).name('Neon Threshold').step(0.01);
 fxFolder.add(guicontrols, 'bloomStrength', 0.0, 8.0).onChange(function (value) {
   bloomPass.strength = Number(value);
-}).name('Neon Strength').step(0.1);
+}).name('Neon Strength').step(0.01);
 fxFolder.add(guicontrols, 'bloomRadius', 0.0, 1.0).onChange(function (value) {
   bloomPass.radius = Number(value);
-}).name('Neon Threshold').step(0.1);
+}).name('Neon Threshold').step(0.01);
 cameraFolder.add(guicontrols, 'firstPerson').name('First Person View')
 cameraFolder.add(guicontrols, 'thirdPerson').name('Third Person View')
 cameraFolder.add(guicontrols, 'birdsEye').name("Bird's Eye View")
-vehicleFolder.add(parent.scale, 'x').min(0.6).max(1.6).name("Width")
-vehicleFolder.add(parent.scale, 'y').min(1).max(1.2).name("Length")
-
-
-
+vehicleFolder.add(parent.scale, 'x').min(0.6).max(1.6).name("Width").step(0.0001)
+vehicleFolder.add(parent.scale, 'y').min(1).max(1.2).name("Length").step(0.0001)
+infraFolder.add(buildingsAllCyl.scale, 'x').min(0.5).max(2).step(0.0001).name("Road Width")
+//debug
+// gui.add(buildingsAll,'visible')
+// gui.add(cylBuilding1.rotation, 'y').min(-Math.PI).max(Math.PI)
+// gui.add(cylBuilding1.rotation, 'x').min(-Math.PI).max(Math.PI)
+// gui.add(cylBuilding1.rotation, 'z').min(-Math.PI).max(Math.PI)
 
 // miscFolder.add(guicontrols, 'songOn').onChange(playing).name("Sound On?")
 
@@ -430,7 +619,6 @@ const tick = () => {
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
 
     effectComposer.render();
-
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick);
