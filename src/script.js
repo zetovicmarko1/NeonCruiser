@@ -29,29 +29,11 @@ const manager = new THREE.LoadingManager()
 // }
 
 //this is to interact with the spaceship outside of the loader function
-var parent = new THREE.Group();
-scene.add(parent)
+var rocket = new THREE.Group()
+var arrow = new THREE.Group()
+var tomahawk = new THREE.Group()
+var wideGuy = new THREE.Group()
 
-mtlLoader.load('sparrow2.mtl', 
-(materials) => {
-  materials.preload()
-  loader.setMaterials(materials)
-  loader.load('sparrow2.obj',
-    (object) => {
-      scene.add(object);
-      object.position.y = -2
-      object.position.z = 15
-      object.scale.y = 0.5
-      object.scale.x = 0.5
-      object.scale.z = 0.35
-      object.rotation.y = Math.PI
-      object.rotation.x = Math.PI/8
-      parent.add(object)
-    }
-  )
-}
-)
-  
 // // Fog
 const fog = new THREE.Fog(0x000000, 0.1, 25);
 scene.fog = fog;
@@ -65,10 +47,7 @@ var buildingHeightMed = 45
 var buildingHeightShort = 40
 var buildingY = Math.PI * 0.25
 
-var rightBound = 2.5
-var leftBound = -2.5
-var upBound = 2.5
-var downBound = -2.5
+
 
 const cylGeo1 = new THREE.CylinderGeometry(6, 6, buildingHeightTall, 4)
 const cylGeo2 = new THREE.CylinderGeometry(6, 6, buildingHeightMed, 4)
@@ -378,8 +357,11 @@ const speedFunction = (time, multiplier) => {
     cylBuilding16.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25 + 0.2)+ 0.7
     // parent.position.x = (Math.sin(time*(multiplier-5))/(multiplier))*(0.4/15)*8
     // parent.position.y = 
-    parent.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
-    parent.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+    rocket.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
+    rocket.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+    arrow.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
+    arrow.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+    
 
 }
 
@@ -413,7 +395,8 @@ var guicontrols = {
     },
     stopMusic:() =>{
       gsap.to(music.stop())
-    }
+    },
+    ship: 'Rocket'
   };
 
   var bloomPass = new UnrealBloomPass(
@@ -468,6 +451,20 @@ const shortBuildingData = {
   radialSegments: 4
 }
 
+const roadWidth = {
+  width: 1
+}
+
+var rightBound = 2.5
+var leftBound = -2.5
+var upBound = 5
+var downBound = -1
+
+var scaleRoad = (val) =>  {
+  buildingsAllCyl.scale.x = roadWidth.width
+  rightBound = 2.5*roadWidth.width
+  leftBound = -2.5*roadWidth.width
+} 
 
 const genNewTall = () => {
   updateGroupGeometry(cylBuilding1, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
@@ -497,6 +494,61 @@ const genNewMed= () => {
     //2,4,10,12
 }
 
+mtlLoader.load('Arrow.mtl', 
+  (materials) => {
+    materials.preload()
+    loader.setMaterials(materials)
+    loader.load('Arrow.obj',
+      (object) => {
+        object.position.y = -2
+        object.position.z = 15
+        object.scale.y = 0.5
+        object.scale.x = 0.5
+        object.scale.z = 0.35
+        object.rotation.y = Math.PI
+        object.rotation.x = Math.PI/8
+        arrow.add(object)
+      }
+    )
+  }
+)
+
+mtlLoader.load('sparrow2.mtl', 
+(materials) => {
+  materials.preload()
+  loader.setMaterials(materials)
+  loader.load('sparrow2.obj',
+    (object) => {
+      object.position.y = -2
+      object.position.z = 15
+      object.scale.y = 0.5
+      object.scale.x = 0.5
+      object.scale.z = 0.35
+      object.rotation.y = Math.PI
+      object.rotation.x = Math.PI/8
+      rocket.add(object)
+    }
+  )
+}
+)
+
+const rocketShip = () => {
+  scene.remove(arrow)
+  scene.add(rocket)
+}
+
+const arrowShip = () => {
+  scene.remove(rocket)
+  scene.add(arrow)
+  
+}
+
+if (guicontrols.ship == 'Rocket') {
+  rocketShip()
+} else if (guicontrols.ship == 'Arrow') {
+  arrowShip()
+}
+// const vehiParams = {ship: 'Rocket'}
 
 gui.add(guicontrols, 'instructions').name('Click for Instructions')
 ctrlFolder.add(guicontrols, 'speedMultiplier').min(0.4).max(15).step(0.01).name('Cruising Speed')
@@ -514,9 +566,10 @@ fxFolder.add(guicontrols, 'bloomRadius', 0.0, 1.0).onChange(function (value) {
 cameraFolder.add(guicontrols, 'firstPerson').name('First Person View')
 cameraFolder.add(guicontrols, 'thirdPerson').name('Third Person View')
 cameraFolder.add(guicontrols, 'birdsEye').name("Bird's Eye View")
-vehicleFolder.add(parent.scale, 'x').min(0.6).max(1.6).name("Width").step(0.0001)
-vehicleFolder.add(parent.scale, 'y').min(1).max(1.2).name("Length").step(0.0001)
-infraFolder.add(buildingsAllCyl.scale, 'x').min(0.5).max(2).step(0.0001).name("Road Width")
+gui.add(guicontrols, 'ship', ['Rocket', 'Arrow', 'Wide Guy', 'Tomahawk'])
+// vehicleFolder.add(parent.scale, 'x').min(0.6).max(1.6).name("Width").step(0.0001)
+// vehicleFolder.add(parent.scale, 'y').min(1).max(1.2).name("Length").step(0.0001)
+infraFolder.add(roadWidth, 'width').min(0.5).max(2).step(0.0001).onChange(scaleRoad).name("Road Width")
 infraFolder.add(tallBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewTall).name("Tall Building Segments")
 infraFolder.add(medBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewMed).name("Medium Building Segments")
 infraFolder.add(shortBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewShort).name("Short Building Segments")
@@ -569,7 +622,6 @@ window.addEventListener("resize", () => {
 });
 
 var onKeyDown = (e) => {
-  // console.log(e.code);
   switch (e.keyCode) {
     case 87:
       isUp = true;
@@ -584,11 +636,9 @@ var onKeyDown = (e) => {
       isRight = true;
       break;
   }
-  // effectComposer.render
 }
 
 var onKeyUp = (e) => {
-  // console.log(e.code
   switch (e.keyCode) {
     case 87:
       isUp = false;
@@ -609,40 +659,59 @@ var onKeyUp = (e) => {
 // Animate
 const tick = () => {
     var elapsedTime = clock.getElapsedTime();
-    if(parent.position.x > leftBound && parent.position.x < rightBound && parent.position.y > downBound && parent.position.y < upBound) {
+    if(rocket.position.x > leftBound && rocket.position.x < rightBound && rocket.position.y > downBound && rocket.position.y < upBound) {
       if (isUp == true) {
-        parent.position.y+=0.1
-        parent.position.z-=0.1
+        rocket.position.y+=0.07
+        rocket.position.z-=0.07
 }
-
       if (isDown == true) {
-        parent.position.y-=0.1
-        parent.position.z +=0.1
+        rocket.position.y-=0.07
+        rocket.position.z +=0.07
       }
-
       if (isLeft == true) {
-        // parent.position.y-=elapsedTime*1000
-        parent.position.x -=0.1
+        rocket.position.x -=0.07
       }
-
       if (isRight == true) {
-        // parent.position.y-=elapsedTime*1000
-        parent.position.x +=0.1
-        
+        rocket.position.x +=0.07
       }
-    } else if (parent.position.y >= upBound) {
-      parent.position.y-=0.01
-      parent.position.z+=0.01
-    } else if (parent.position.y <= downBound) {
-      parent.position.y+=0.1
-      parent.position.z-=0.1
-    } else if (parent.position.x <= leftBound) {
-      parent.position.x +=0.1
-    } else if (parent.position.x >= rightBound) {
-      parent.position.x -=0.1
+    } else if (rocket.position.y >= upBound) {
+      rocket.position.y-=0.01
+      rocket.position.z+=0.01
+    } else if (rocket.position.y <= downBound) {
+      rocket.position.y+=0.1
+      rocket.position.z-=0.1
+    } else if (v.position.x <= leftBound) {
+      rocket.position.x +=0.1
+    } else if (rocket.position.x >= rightBound) {
+      rocket.position.x -=0.1
     }
 
-     
+    if(arrow.position.x > leftBound && arrow.position.x < rightBound && arrow.position.y > downBound && arrow.position.y < upBound) {
+      if (isUp == true) {
+        arrow.position.y+=0.07
+        arrow.position.z-=0.07
+}
+      if (isDown == true) {
+        arrow.position.y-=0.07
+        arrow.position.z +=0.07
+      }
+      if (isLeft == true) {
+        arrow.position.x -=0.07
+      }
+      if (isRight == true) {
+        arrow.position.x +=0.07
+      }
+    } else if (arrow.position.y >= upBound) {
+      arrow.position.y-=0.01
+      arrow.position.z+=0.01
+    } else if (arrow.position.y <= downBound) {
+      arrow.position.y+=0.1
+      arrow.position.z-=0.1
+    } else if (arrow.position.x <= leftBound) {
+      arrow.position.x +=0.1
+    } else if (arrow.position.x >= rightBound) {
+      arrow.position.x -=0.1
+    }
 
     // Update controls
     controls.update();
