@@ -459,8 +459,8 @@ audioLoader.load('song.mp3', function(buffer)
 {
   music.setBuffer(buffer);
   music.setLoop(true);
-  music.setVolume(0.7);
-  music.playbackRate(playback * multiplier);
+  music.setVolume(0.7); 
+  music.setPlaybackRate(1);
   music.play();
 });
 
@@ -593,6 +593,35 @@ const updateGroupGeometry = (mesh, geometry) => {
   mesh.geometry = geometry;
 }
 
+var musicSpeed = 1;
+var musicMultiplier = 0;
+var musicPlaying = false;
+var maxMusicSpeed = 1.25;
+var minMusicSpeed = 0.75;
+var updateMusic = (multiplier, playMusic) => {
+  musicSpeed = 3 / (Math.round(multiplier*100.0)/100.0);
+  if(musicSpeed > maxMusicSpeed){
+    musicSpeed = maxMusicSpeed;
+  }
+  else if(musicSpeed < minMusicSpeed){
+    musicSpeed = minMusicSpeed;
+  }
+
+  if(playMusic){
+    if(!musicPlaying)
+    {
+      music.setPlaybackRate(musicSpeed);
+      music.play();
+      musicPlaying = true;
+    }
+  }
+  else{
+    music.pause();
+    musicPlaying = false;
+  }
+  music.setPlaybackRate(musicSpeed);
+}
+
 
 gui.add(guicontrols, 'instructions').name('Click for Instructions')
 ctrlFolder.add(guicontrols, 'speedMultiplier').min(0.4).max(15).step(0.01).name('Cruising Speed')
@@ -620,6 +649,9 @@ controls.enablePan = false;
 gui.add(controls,'enableZoom')
 gui.add(controls,'enableRotate')
 gui.add(controls,'enablePan')
+
+
+audioFolder.add(guicontrols, 'songOn').name('Turn music on')
 // miscFolder.add(guicontrols, 'songOn').onChange(playing).name("Sound On?")
 
 
@@ -649,6 +681,7 @@ const tick = () => {
     controls.update();
 
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
+    updateMusic(guicontrols.speedMultiplier, guicontrols.songOn);
 
     effectComposer.render();
 
