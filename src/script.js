@@ -65,14 +65,10 @@ var buildingHeightMed = 45
 var buildingHeightshort = 40
 var buildingY = Math.PI * 0.25
 
-var rightBound = 2
-var leftBound = -2
-var upBound = 2
-var downBound = -2
-
-
-
-
+var rightBound = 2.5
+var leftBound = -2.5
+var upBound = 2.5
+var downBound = -2.5
 
 const cylGeo1 = new THREE.CylinderGeometry(7, 7, buildingHeightTall, 4)
 const cylGeo2 = new THREE.CylinderGeometry(7, 7, buildingHeightMed, 4)
@@ -381,7 +377,10 @@ const speedFunction = (time, multiplier) => {
     cylBuilding15.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25) + 0.5
     cylBuilding16.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25 + 0.2)+ 0.7
     // parent.position.x = (Math.sin(time*(multiplier-5))/(multiplier))*(0.4/15)*8
-    // parent.position.y = (Math.cos(time*(multiplier-5))/(multiplier))*(0.4/15)*8
+    // parent.position.y = 
+    parent.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
+    parent.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+
 }
 
 //parameters for the gui
@@ -566,13 +565,11 @@ const tick = () => {
       if (isUp == true) {
         parent.position.y+=0.1
         parent.position.z-=0.1
-        
-      }
+}
 
       if (isDown == true) {
         parent.position.y-=0.1
         parent.position.z +=0.1
-        
       }
 
       if (isLeft == true) {
@@ -585,7 +582,19 @@ const tick = () => {
         parent.position.x +=0.1
         
       }
+    } else if (parent.position.y >= upBound) {
+      parent.position.y-=0.01
+      parent.position.z+=0.01
+    } else if (parent.position.y <= downBound) {
+      parent.position.y+=0.1
+      parent.position.z-=0.1
+    } else if (parent.position.x <= leftBound) {
+      parent.position.x +=0.1
+    } else if (parent.position.x >= rightBound) {
+      parent.position.x -=0.1
     }
+
+     
 
     // Update controls
     controls.update();
