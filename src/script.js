@@ -65,17 +65,18 @@ var buildingHeightMed = 45
 var buildingHeightshort = 40
 var buildingY = Math.PI * 0.25
 
+var rightBound = 2
+var leftBound = -2
+var upBound = 2
+var downBound = -2
+
+
+
+
 
 const cylGeo1 = new THREE.CylinderGeometry(7, 7, buildingHeightTall, 4)
 const cylGeo2 = new THREE.CylinderGeometry(7, 7, buildingHeightMed, 4)
 const cylGeo3 = new THREE.CylinderGeometry(7, 7, buildingHeightshort, 4)
-
-
-//old building code
-const building = new THREE.BoxGeometry(5, 50, 15)
-const building_2 = new THREE.BoxGeometry(5, 45, 15)
-const building_3 = new THREE.BoxGeometry(5, 40, 15)
-
 
 
 // Objects
@@ -128,24 +129,6 @@ const road3 = new THREE.Mesh(torus, material);
 road.rotation.y = Math.PI * 0.5;
 road2.rotation.y = Math.PI * 0.5;
 road3.rotation.y = Math.PI * 0.5;
-
-//old building code 
-const building1= new THREE.Mesh(building, material)
-const building2= new THREE.Mesh(building_2, material)
-const building3= new THREE.Mesh(building_2, material)
-const building4= new THREE.Mesh(building, material)
-const building5= new THREE.Mesh(building_2, material)
-const building6= new THREE.Mesh(building_2, material)
-const building7= new THREE.Mesh(building, material)
-const building8= new THREE.Mesh(building, material)
-const building9= new THREE.Mesh(building, material)
-const building10= new THREE.Mesh(building_3, material)
-const building11= new THREE.Mesh(building_3, material)
-const building12= new THREE.Mesh(building_3, material)
-const building13= new THREE.Mesh(building_3, material)
-const building14= new THREE.Mesh(building_3, material)
-const building15= new THREE.Mesh(building_3, material)
-const building16= new THREE.Mesh(building_3, material)
 
 const cylBuilding1=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding1.rotation.y = buildingY
@@ -302,132 +285,17 @@ road3.scale.z  =4
 road2.position.x = 20
 road2.scale.z=4
 
-//old building code 
-building1.rotation.y = Math.PI * 0.5;
-building2.rotation.y = Math.PI * 0.5;
-building2.rotation.z = 0.3;
-building3.rotation.y = Math.PI * 0.5;
-building3.rotation.z = Math.PI * 0.5;
-building4.rotation.y = Math.PI * 0.5;
-building4.rotation.z = (Math.PI * 0.5)+0.3;
-building5.rotation.y = Math.PI * 0.5;
-building5.rotation.z = Math.PI * 0.25;
-building6.rotation.y = Math.PI * 0.5;
-building6.rotation.z = (Math.PI * 0.25)+0.3;
-building7.rotation.y = Math.PI * 0.5;
-building7.rotation.z = Math.PI * 0.75;
-building8.rotation.y = Math.PI * 0.5;
-building8.rotation.z = (Math.PI * 0.75)+0.3;
-building9.rotation.y = Math.PI * 0.5;
-building9.rotation.z = Math.PI * 0.625;
-building10.rotation.y = Math.PI * 0.5;
-building10.rotation.z = (Math.PI * 0.625)+0.3;
-building11.rotation.y = Math.PI * 0.5;
-building11.rotation.z = Math.PI * 0.875;
-building12.rotation.y = Math.PI * 0.5;
-building12.rotation.z = (Math.PI * 0.875)+0.3;
-building13.rotation.y = Math.PI * 0.5;
-building13.rotation.z = Math.PI * 0.375;
-building14.rotation.y = Math.PI * 0.5;
-building14.rotation.z = (Math.PI * 0.375)+0.3;
-building15.rotation.y = Math.PI * 0.5;
-building15.rotation.z = Math.PI * 0.125;
-building16.rotation.y = Math.PI * 0.5;
-building16.rotation.z = (Math.PI * 0.125)+0.3;
-
-building1.position.y = -10
-building1.position.x = 14
-building1.position.z = 0
-
-building2.position.y = -10
-building2.position.x = -14
-building2.position.z = 0
-
-building3.position.y = -10
-building3.position.x = 14
-building3.position.z = 0
-
-building4.position.y = -10
-building4.position.x = -14
-building4.position.z = 0
-
-building5.position.y = -10
-building5.position.x = 14
-building5.position.z = 0
-
-building6.position.y = -10
-building6.position.x = -14
-building6.position.z = 0
-
-building7.position.y = -10
-building7.position.x = 14
-building7.position.z = 0
-
-building8.position.y = -10
-building8.position.x = -14
-building8.position.z = 0
-
-building9.position.y = -10
-building9.position.x = 14
-building9.position.z = 0
-
-building10.position.y = -10
-building10.position.x = -14
-building10.position.z = 0
-
-building11.position.y = -10
-building11.position.x = 14
-building11.position.z = 0
-
-building12.position.y = -10
-building12.position.x = -14
-building12.position.z = 0
-
-building13.position.y = -10
-building13.position.x = 14
-building13.position.z = 0
-
-building14.position.y = -10
-building14.position.x = -14
-building14.position.z = 0
-
-building15.position.y = -10
-building15.position.x = 14
-building15.position.z = 0
-
-building16.position.y = -10
-building16.position.x = -14
-building16.position.z = 0
-
 scene.add(road);
 scene.add(road2);
 scene.add(road3);
-scene.add(building1);
-scene.add(building2);
-scene.add(building3);
-scene.add(building4);
-scene.add(building5);
-scene.add(building6);
-scene.add(building7);
-scene.add(building8);
-scene.add(building9);
-scene.add(building10);
-scene.add(building11);
-scene.add(building12);
-scene.add(building13);
-scene.add(building14);
-scene.add(building15);
-scene.add(building16);
 
 
-var buildingsAll = new THREE.Group();
 var buildingsAllCyl = new THREE.Group();
 // var roads = new THREE.Group();
-buildingsAll.add(building1, building2, building3, building4, building5, building6, building7, building8, building9, building10, building11, building12, building13, building14, building15, building16)
+
 buildingsAllCyl.add(cylBuilding1, cylBuilding2, cylBuilding3, cylBuilding4, cylBuilding5, cylBuilding6, cylBuilding7, cylBuilding8, cylBuilding9, cylBuilding10, cylBuilding11, cylBuilding12, cylBuilding13, cylBuilding14, cylBuilding15, cylBuilding16)
 buildingsAllCyl.add(road, road2, road3)
 scene.add(buildingsAllCyl)
-buildingsAll.visible = false //keep invisible for now
 // scene.add(roads)
 
 // Sizes
@@ -512,25 +380,8 @@ const speedFunction = (time, multiplier) => {
     cylBuilding14.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.75) + 0.5
     cylBuilding15.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25) + 0.5
     cylBuilding16.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25 + 0.2)+ 0.7
-
-    building1.rotation.x = (Math.PI * time)/multiplier
-    building2.rotation.x = (Math.PI * time)/multiplier
-    building3.rotation.x = (Math.PI * time)/multiplier
-    building4.rotation.x = (Math.PI * time)/multiplier
-    building5.rotation.x = (Math.PI * time)/multiplier
-    building6.rotation.x = (Math.PI * time)/multiplier
-    building7.rotation.x = (Math.PI * time)/multiplier
-    building8.rotation.x = (Math.PI * time)/multiplier
-    building9.rotation.x = (Math.PI * time)/multiplier
-    building10.rotation.x = (Math.PI * time)/multiplier
-    building11.rotation.x = (Math.PI * time)/multiplier
-    building12.rotation.x = (Math.PI * time)/multiplier
-    building13.rotation.x = (Math.PI * time)/multiplier
-    building14.rotation.x = (Math.PI * time)/multiplier
-    building15.rotation.x = (Math.PI * time)/multiplier
-    building16.rotation.x = (Math.PI * time)/multiplier
-    parent.position.x = (Math.sin(time*(multiplier-5))/(multiplier))*(0.4/15)*8
-    parent.position.y = (Math.cos(time*(multiplier-5))/(multiplier))*(0.4/15)*8
+    // parent.position.x = (Math.sin(time*(multiplier-5))/(multiplier))*(0.4/15)*8
+    // parent.position.y = (Math.cos(time*(multiplier-5))/(multiplier))*(0.4/15)*8
 }
 
 //parameters for the gui
@@ -557,7 +408,13 @@ var guicontrols = {
     instructions: () => {
       alert('Use WASD to control the vehicle\nSong: Implant by Makeup and Vanity Set\nBy Matty, Joe, Boya and Marko')
     },
-    songOn: false
+    //songOn: false
+    playMusic:() =>{
+      gsap.to(music.play())
+    },
+    stopMusic:() =>{
+      gsap.to(music.stop())
+    }
   };
 
   var bloomPass = new UnrealBloomPass(
@@ -618,6 +475,31 @@ gui.add(controls,'enableZoom')
 gui.add(controls,'enableRotate')
 gui.add(controls,'enablePan')
 // miscFolder.add(guicontrols, 'songOn').onChange(playing).name("Sound On?")
+audioFolder.add(guicontrols,'playMusic').name('paly')
+audioFolder.add(guicontrols,'stopMusic').name('stop')
+
+//moving
+var isUp = false
+var isDown = false
+var isLeft = false
+var isRight = false
+
+
+
+
+
+// var dir = new THREE.Vector3(0,0,1)
+
+  
+  // if (isDown) {
+  //   parent.positionZ(+0.1);
+  // }
+  // if (isLeft) {
+  //   parent.positionY(THREE.MathUtils.degToRad(1));
+  // }
+  // if (isRight) {
+  //   parent.positionY(-THREE.MathUtils.degToRad(1));
+  // }
 
 
 // Event listener to handle screen resize
@@ -639,9 +521,72 @@ window.addEventListener("resize", () => {
     effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
+var onKeyDown = (e) => {
+  // console.log(e.code);
+  switch (e.keyCode) {
+    case 87:
+      isUp = true;
+      break;
+    case 83:
+      isDown = true;
+      break;
+    case 65:
+      isLeft = true;
+      break;
+    case 68:
+      isRight = true;
+      break;
+  }
+  // effectComposer.render
+}
+
+var onKeyUp = (e) => {
+  // console.log(e.code
+  switch (e.keyCode) {
+    case 87:
+      isUp = false;
+      break;
+    case 83:
+      isDown = false;
+      break;
+    case 65:
+      isLeft = false;
+      break;
+    case 68:
+      isRight = false;
+      break;
+  }
+  
+}
+
 // Animate
 const tick = () => {
-    const elapsedTime = clock.getElapsedTime();
+    var elapsedTime = clock.getElapsedTime();
+    if(parent.position.x > leftBound && parent.position.x < rightBound && parent.position.y > downBound && parent.position.y < upBound) {
+      if (isUp == true) {
+        parent.position.y+=0.1
+        parent.position.z-=0.1
+        
+      }
+
+      if (isDown == true) {
+        parent.position.y-=0.1
+        parent.position.z +=0.1
+        
+      }
+
+      if (isLeft == true) {
+        // parent.position.y-=elapsedTime*1000
+        parent.position.x -=0.1
+      }
+
+      if (isRight == true) {
+        // parent.position.y-=elapsedTime*1000
+        parent.position.x +=0.1
+        
+      }
+    }
+
     // Update controls
     controls.update();
 
@@ -654,3 +599,7 @@ const tick = () => {
 };
 
 tick();
+
+document.addEventListener('keydown', onKeyDown, false)
+document.addEventListener('keyup', onKeyUp, false)
+
