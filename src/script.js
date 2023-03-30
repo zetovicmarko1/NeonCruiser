@@ -483,24 +483,6 @@ var isDown = false
 var isLeft = false
 var isRight = false
 
-
-
-
-
-// var dir = new THREE.Vector3(0,0,1)
-
-  
-  // if (isDown) {
-  //   parent.positionZ(+0.1);
-  // }
-  // if (isLeft) {
-  //   parent.positionY(THREE.MathUtils.degToRad(1));
-  // }
-  // if (isRight) {
-  //   parent.positionY(-THREE.MathUtils.degToRad(1));
-  // }
-
-
 // Event listener to handle screen resize
 window.addEventListener("resize", () => {
     // Update sizes
