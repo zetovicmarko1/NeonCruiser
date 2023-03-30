@@ -29,29 +29,11 @@ const manager = new THREE.LoadingManager()
 // }
 
 //this is to interact with the spaceship outside of the loader function
-var parent = new THREE.Group();
-scene.add(parent)
+var rocket = new THREE.Group()
+var arrow = new THREE.Group()
+var tomahawk = new THREE.Group()
+var wideGuy = new THREE.Group()
 
-mtlLoader.load('sparrow2.mtl', 
-(materials) => {
-  materials.preload()
-  loader.setMaterials(materials)
-  loader.load('sparrow2.obj',
-    (object) => {
-      scene.add(object);
-      object.position.y = -2
-      object.position.z = 15
-      object.scale.y = 0.5
-      object.scale.x = 0.5
-      object.scale.z = 0.35
-      object.rotation.y = Math.PI
-      object.rotation.x = Math.PI/8
-      parent.add(object)
-    }
-  )
-}
-)
-  
 // // Fog
 const fog = new THREE.Fog(0x000000, 0.1, 25);
 scene.fog = fog;
@@ -65,10 +47,7 @@ var buildingHeightMed = 45
 var buildingHeightShort = 40
 var buildingY = Math.PI * 0.25
 
-var rightBound = 2.5
-var leftBound = -2.5
-var upBound = 2.5
-var downBound = -2.5
+
 
 const cylGeo1 = new THREE.CylinderGeometry(6, 6, buildingHeightTall, 4)
 const cylGeo2 = new THREE.CylinderGeometry(6, 6, buildingHeightMed, 4)
@@ -378,8 +357,15 @@ const speedFunction = (time, multiplier) => {
     cylBuilding16.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25 + 0.2)+ 0.7
     // parent.position.x = (Math.sin(time*(multiplier-5))/(multiplier))*(0.4/15)*8
     // parent.position.y = 
-    parent.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
-    parent.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+    rocket.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
+    rocket.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+    arrow.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
+    arrow.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+    tomahawk.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
+    tomahawk.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+    wideGuy.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
+    wideGuy.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+    
 
 }
 
@@ -413,6 +399,102 @@ var guicontrols = {
     },
     stopMusic:() =>{
       gsap.to(music.stop())
+    },
+    arrowShip:() => {
+      scene.remove(rocket)
+      scene.remove(tomahawk)
+      scene.remove(wideGuy)
+      scene.add(arrow)
+      mtlLoader.load('models/arrow.mtl', 
+      (materials) => {
+        materials.preload()
+        loader.setMaterials(materials)
+        loader.load('models/arrow.obj',
+          (object) => {
+            object.position.y = -2
+            object.position.z = 15
+            object.scale.y = 0.5
+            object.scale.x = 0.5
+            object.scale.z = 0.35
+            object.rotation.y = Math.PI
+            object.rotation.x = Math.PI/8
+            arrow.add(object)
+            }
+          )
+        }
+      )   
+    }, 
+    rocketShip:() => {
+      scene.remove(arrow)
+      scene.remove(tomahawk)
+      scene.remove(wideGuy)
+      scene.add(rocket)
+      mtlLoader.load('models/rocket.mtl', 
+      (materials) => {
+        materials.preload()
+        loader.setMaterials(materials)
+        loader.load('models/rocket.obj',
+          (object) => {
+            object.position.y = -2
+            object.position.z = 15
+            object.scale.y = 0.5
+            object.scale.x = 0.5
+            object.scale.z = 0.35
+            object.rotation.y = Math.PI
+            object.rotation.x = Math.PI/8
+            rocket.add(object)
+            }
+          )
+        }
+      )   
+    },
+    tomaShip:() => {
+      scene.remove(arrow)
+      scene.remove(rocket)
+      scene.remove(wideGuy)
+      scene.add(tomahawk)
+      mtlLoader.load('models/tomahawk.mtl', 
+      (materials) => {
+        materials.preload()
+        loader.setMaterials(materials)
+        loader.load('models/tomahawk.obj',
+          (object) => {
+            object.position.y = -2
+            object.position.z = 15
+            object.scale.y = 0.5
+            object.scale.x = 0.5
+            object.scale.z = 0.35
+            object.rotation.y = Math.PI
+            object.rotation.x = Math.PI/8
+            tomahawk.add(object)
+            }
+          )
+        }
+      )   
+    },
+    wideShip:() => {
+      scene.remove(arrow)
+      scene.remove(rocket)
+      scene.remove(tomahawk)
+      scene.add(wideGuy)
+      mtlLoader.load('models/wide.mtl', 
+      (materials) => {
+        materials.preload()
+        loader.setMaterials(materials)
+        loader.load('models/wide.obj',
+          (object) => {
+            object.position.y = -2
+            object.position.z = 15
+            object.scale.y = 0.5
+            object.scale.x = 0.5
+            object.scale.z = 0.35
+            object.rotation.y = Math.PI
+            object.rotation.x = Math.PI/8
+            wideGuy.add(object)
+            }
+          )
+        }
+      )   
     }
   };
 
@@ -434,12 +516,14 @@ var changeColor = (val) =>  {
 
 //gui controls
 const cameraFolder = gui.addFolder('Camera Controls')
-const infraFolder = gui.addFolder('Road and Building Controls')
-const radiusFolder = gui.addFolder('Building Radius Controls')
+const roadFolder = gui.addFolder('Road Controls')
+const buildingFolder = gui.addFolder('Building Controls')
+const tradiusFolder = gui.addFolder('Building Top Radius Controls')
+const bradiusFolder = gui.addFolder('Building Bottom Radius Controls')
 const fxFolder = gui.addFolder('Atmosphere and Lighting')
 const ctrlFolder = gui.addFolder('Cruise Controls')
 const audioFolder = gui.addFolder('Audio Controls')
-const vehicleFolder = gui.addFolder('Vehicle Adjustments')
+const vehicleFolder = gui.addFolder('Change Vehicle')
 
 // function for "disposing" of a geometry
 const updateGroupGeometry = (mesh, geometry) => {
@@ -447,6 +531,7 @@ const updateGroupGeometry = (mesh, geometry) => {
   mesh.geometry = geometry;
 }
 
+//building parameters
 const tallBuildingData = {
   radiusTop: 6,
   radiusBottom: 6,
@@ -468,7 +553,24 @@ const shortBuildingData = {
   radialSegments: 4
 }
 
+//road parameters
+const roadWidth = {
+  width: 1
+}
 
+//bounding box for movement
+var rightBound = 2.5
+var leftBound = -2.5
+var upBound = 5
+var downBound = -1
+
+var scaleRoad = (val) =>  {
+  buildingsAllCyl.scale.x = roadWidth.width
+  rightBound = 2.5*roadWidth.width
+  leftBound = -2.5*roadWidth.width
+} 
+
+//building generators
 const genNewTall = () => {
   updateGroupGeometry(cylBuilding1, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
   updateGroupGeometry(cylBuilding3, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
@@ -496,7 +598,26 @@ const genNewMed= () => {
   updateGroupGeometry(cylBuilding12, new THREE.CylinderGeometry(medBuildingData.radiusTop, medBuildingData.radiusBottom, medBuildingData.height, medBuildingData.radialSegments))
     //2,4,10,12
 }
-
+ //default vehicle
+  scene.add(rocket)
+  mtlLoader.load('models/rocket.mtl', 
+  (materials) => {
+    materials.preload()
+    loader.setMaterials(materials)
+    loader.load('models/rocket.obj',
+      (object) => {
+        object.position.y = -2
+        object.position.z = 15
+        object.scale.y = 0.5
+        object.scale.x = 0.5
+        object.scale.z = 0.35
+        object.rotation.y = Math.PI
+        object.rotation.x = Math.PI/8
+        rocket.add(object)
+      }
+    )
+  }
+)
 
 gui.add(guicontrols, 'instructions').name('Click for Instructions')
 ctrlFolder.add(guicontrols, 'speedMultiplier').min(0.4).max(15).step(0.01).name('Cruising Speed')
@@ -514,21 +635,25 @@ fxFolder.add(guicontrols, 'bloomRadius', 0.0, 1.0).onChange(function (value) {
 cameraFolder.add(guicontrols, 'firstPerson').name('First Person View')
 cameraFolder.add(guicontrols, 'thirdPerson').name('Third Person View')
 cameraFolder.add(guicontrols, 'birdsEye').name("Bird's Eye View")
-vehicleFolder.add(parent.scale, 'x').min(0.6).max(1.6).name("Width").step(0.0001)
-vehicleFolder.add(parent.scale, 'y').min(1).max(1.2).name("Length").step(0.0001)
-infraFolder.add(buildingsAllCyl.scale, 'x').min(0.5).max(2).step(0.0001).name("Road Width")
-infraFolder.add(tallBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewTall).name("Tall Building Segments")
-infraFolder.add(medBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewMed).name("Medium Building Segments")
-infraFolder.add(shortBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewShort).name("Short Building Segments")
-infraFolder.add(tallBuildingData, 'height').min(45).max(55).step(0.01).onChange(genNewTall).name("Tall Building Height")
-infraFolder.add(medBuildingData, 'height').min(40).max(50).step(0.01).onChange(genNewMed).name("Medium Building Height")
-infraFolder.add(shortBuildingData, 'height').min(35).max(45).step(0.01).onChange(genNewShort).name("Short Building Height")
-radiusFolder.add(tallBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewTall).name("Tall Building Top Radius")
-radiusFolder.add(medBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building Top Radius")
-radiusFolder.add(shortBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building Top Radius")
-radiusFolder.add(tallBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewTall).name("Tall Building Bottom Radius")
-radiusFolder.add(medBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building Bottom Radius")
-radiusFolder.add(shortBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building Bottom Radius")
+
+vehicleFolder.add(guicontrols,'arrowShip').name('Arrow')
+vehicleFolder.add(guicontrols,'rocketShip').name('Rocket')
+vehicleFolder.add(guicontrols,'tomaShip').name('Tomahawk')
+vehicleFolder.add(guicontrols,'wideShip').name('Wide Guy')
+
+roadFolder.add(roadWidth, 'width').min(0.5).max(2).step(0.0001).onChange(scaleRoad).name("Road Width")
+buildingFolder.add(tallBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewTall).name("Tall Building Segments")
+buildingFolder.add(medBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewMed).name("Medium Building Segments")
+buildingFolder.add(shortBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewShort).name("Short Building Segments")
+buildingFolder.add(tallBuildingData, 'height').min(45).max(55).step(0.01).onChange(genNewTall).name("Tall Building Height")
+buildingFolder.add(medBuildingData, 'height').min(40).max(50).step(0.01).onChange(genNewMed).name("Medium Building Height")
+buildingFolder.add(shortBuildingData, 'height').min(35).max(45).step(0.01).onChange(genNewShort).name("Short Building Height")
+tradiusFolder.add(tallBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewTall).name("Tall Building Top Radius")
+tradiusFolder.add(medBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building Top Radius")
+tradiusFolder.add(shortBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building Top Radius")
+bradiusFolder.add(tallBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewTall).name("Tall Building Bottom Radius")
+bradiusFolder.add(medBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building Bottom Radius")
+bradiusFolder.add(shortBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building Bottom Radius")
 
 
 
@@ -539,9 +664,6 @@ controls.enablePan = false;
 gui.add(controls,'enableZoom')
 gui.add(controls,'enableRotate')
 gui.add(controls,'enablePan')
-// miscFolder.add(guicontrols, 'songOn').onChange(playing).name("Sound On?")
-audioFolder.add(guicontrols,'playMusic').name('paly')
-audioFolder.add(guicontrols,'stopMusic').name('stop')
 
 //moving
 var isUp = false
@@ -568,8 +690,8 @@ window.addEventListener("resize", () => {
     effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
+//movement switch cases
 var onKeyDown = (e) => {
-  // console.log(e.code);
   switch (e.keyCode) {
     case 87:
       isUp = true;
@@ -584,11 +706,9 @@ var onKeyDown = (e) => {
       isRight = true;
       break;
   }
-  // effectComposer.render
 }
 
 var onKeyUp = (e) => {
-  // console.log(e.code
   switch (e.keyCode) {
     case 87:
       isUp = false;
@@ -609,40 +729,115 @@ var onKeyUp = (e) => {
 // Animate
 const tick = () => {
     var elapsedTime = clock.getElapsedTime();
-    if(parent.position.x > leftBound && parent.position.x < rightBound && parent.position.y > downBound && parent.position.y < upBound) {
+    //all movements for all ships, starting with rocket
+    if(rocket.position.x > leftBound && rocket.position.x < rightBound && rocket.position.y > downBound && rocket.position.y < upBound) {
       if (isUp == true) {
-        parent.position.y+=0.1
-        parent.position.z-=0.1
-}
-
+        rocket.position.y+=0.07
+        rocket.position.z-=0.07
+      }
       if (isDown == true) {
-        parent.position.y-=0.1
-        parent.position.z +=0.1
+        rocket.position.y-=0.07
+        rocket.position.z +=0.07
       }
-
       if (isLeft == true) {
-        // parent.position.y-=elapsedTime*1000
-        parent.position.x -=0.1
+        rocket.position.x -=0.07
       }
-
       if (isRight == true) {
-        // parent.position.y-=elapsedTime*1000
-        parent.position.x +=0.1
-        
+        rocket.position.x +=0.07
       }
-    } else if (parent.position.y >= upBound) {
-      parent.position.y-=0.01
-      parent.position.z+=0.01
-    } else if (parent.position.y <= downBound) {
-      parent.position.y+=0.1
-      parent.position.z-=0.1
-    } else if (parent.position.x <= leftBound) {
-      parent.position.x +=0.1
-    } else if (parent.position.x >= rightBound) {
-      parent.position.x -=0.1
+    } else if (rocket.position.y >= upBound) {
+      rocket.position.y-=0.01
+      rocket.position.z+=0.01
+    } else if (rocket.position.y <= downBound) {
+      rocket.position.y+=0.1
+      rocket.position.z-=0.1
+    } else if (rocket.position.x <= leftBound) {
+      rocket.position.x +=0.1
+    } else if (rocket.position.x >= rightBound) {
+      rocket.position.x -=0.1
+    }
+    //arrow movement
+    if(arrow.position.x > leftBound && arrow.position.x < rightBound && arrow.position.y > downBound && arrow.position.y < upBound) {
+      if (isUp == true) {
+        arrow.position.y+=0.07
+        arrow.position.z-=0.07
+      }
+      if (isDown == true) {
+        arrow.position.y-=0.07
+        arrow.position.z +=0.07
+      }
+      if (isLeft == true) {
+        arrow.position.x -=0.07
+      }
+      if (isRight == true) {
+        arrow.position.x +=0.07
+      }
+    } else if (arrow.position.y >= upBound) {
+      arrow.position.y-=0.01
+      arrow.position.z+=0.01
+    } else if (arrow.position.y <= downBound) {
+      arrow.position.y+=0.1
+      arrow.position.z-=0.1
+    } else if (arrow.position.x <= leftBound) {
+      arrow.position.x +=0.1
+    } else if (arrow.position.x >= rightBound) {
+      arrow.position.x -=0.1
+    }
+    //tomahawk movement
+    if(tomahawk.position.x > leftBound && tomahawk.position.x < rightBound && tomahawk.position.y > downBound && tomahawk.position.y < upBound) {
+      if (isUp == true) {
+        tomahawk.position.y+=0.07
+        tomahawk.position.z-=0.07
+      }
+      if (isDown == true) {
+        tomahawk.position.y-=0.07
+        tomahawk.position.z +=0.07
+      }
+      if (isLeft == true) {
+        tomahawk.position.x -=0.07
+      }
+      if (isRight == true) {
+        tomahawk.position.x +=0.07
+      }
+    } else if (tomahawk.position.y >= upBound) {
+      tomahawk.position.y-=0.01
+      tomahawk.position.z+=0.01
+    } else if (tomahawk.position.y <= downBound) {
+      tomahawk.position.y+=0.1
+      tomahawk.position.z-=0.1
+    } else if (tomahawk.position.x <= leftBound) {
+      tomahawk.position.x +=0.1
+    } else if (tomahawk.position.x >= rightBound) {
+      tomahawk.position.x -=0.1
     }
 
-     
+    //wideguy movement
+    if(wideGuy.position.x > leftBound && wideGuy.position.x < rightBound && wideGuy.position.y > downBound && wideGuy.position.y < upBound) {
+      if (isUp == true) {
+        wideGuy.position.y+=0.07
+        wideGuy.position.z-=0.07
+      }
+      if (isDown == true) {
+        wideGuy.position.y-=0.07
+        wideGuy.position.z +=0.07
+      }
+      if (isLeft == true) {
+        wideGuy.position.x -=0.07
+      }
+      if (isRight == true) {
+        wideGuy.position.x +=0.07
+      }
+    } else if (wideGuy.position.y >= upBound) {
+      wideGuy.position.y-=0.01
+      wideGuy.position.z+=0.01
+    } else if (wideGuy.position.y <= downBound) {
+      wideGuy.position.y+=0.1
+      wideGuy.position.z-=0.1
+    } else if (wideGuy.position.x <= leftBound) {
+      wideGuy.position.x +=0.1
+    } else if (wideGuy.position.x >= rightBound) {
+      wideGuy.position.x -=0.1
+    }
 
     // Update controls
     controls.update();
