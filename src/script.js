@@ -70,10 +70,6 @@ var leftBound = -2
 var upBound = 2
 var downBound = -2
 
-
-
-
-
 const cylGeo1 = new THREE.CylinderGeometry(7, 7, buildingHeightTall, 4)
 const cylGeo2 = new THREE.CylinderGeometry(7, 7, buildingHeightMed, 4)
 const cylGeo3 = new THREE.CylinderGeometry(7, 7, buildingHeightshort, 4)
