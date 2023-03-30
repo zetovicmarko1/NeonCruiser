@@ -557,7 +557,13 @@ var guicontrols = {
     instructions: () => {
       alert('Use WASD to control the vehicle\nSong: Implant by Makeup and Vanity Set\nBy Matty, Joe, Boya and Marko')
     },
-    songOn: false
+    //songOn: false
+    playMusic:() =>{
+      gsap.to(music.play())
+    },
+    stopMusic:() =>{
+      gsap.to(music.stop())
+    }
   };
 
   var bloomPass = new UnrealBloomPass(
@@ -618,7 +624,68 @@ gui.add(controls,'enableZoom')
 gui.add(controls,'enableRotate')
 gui.add(controls,'enablePan')
 // miscFolder.add(guicontrols, 'songOn').onChange(playing).name("Sound On?")
+audioFolder.add(guicontrols,'playMusic').name('paly')
+audioFolder.add(guicontrols,'stopMusic').name('stop')
 
+//moving
+let isUp = false,
+  isDown = false,
+  isLeft = false,
+  isRight = false
+
+window.addEventListener("keydown", (e) => {
+  console.log(e.code);
+  switch (e.code) {
+    case "87":
+      isUp = true;
+      break;
+    case "83":
+      isDown = true;
+      break;
+    case "65":
+      isLeft = true;
+      break;
+    case "68":
+      isRight = true;
+      break;
+  }
+});
+
+window.addEventListener("keyup", (e) => {
+  console.log(e.code);
+  switch (e.code) {
+    case "87":
+      isUp = false;
+      break;
+    case "83":
+      isDown = false;
+      break;
+    case "65":
+      isLeft = false;
+      break;
+    case "68":
+      isRight = false;
+
+      parent.position.set(0, 0.5, 0);
+      parent.quaternion.set(0, 0, 0, 0);
+      break;
+  }
+});
+
+const objMove = () => {
+  if (isUp) {
+    parent.positionZ(-0.1);
+  }
+  if (isDown) {
+    parent.positionZ(+0.1);
+  }
+  if (isLeft) {
+    parent.positionY(THREE.MathUtils.degToRad(1));
+  }
+  if (isRight) {
+    parent.positionY(-THREE.MathUtils.degToRad(1));
+  }
+};
 
 // Event listener to handle screen resize
 window.addEventListener("resize", () => {
@@ -644,6 +711,8 @@ const tick = () => {
     const elapsedTime = clock.getElapsedTime();
     // Update controls
     controls.update();
+
+    objMove()
 
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
 
