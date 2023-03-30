@@ -448,11 +448,14 @@ camera.add(listener);
 const audioLoader = new THREE.AudioLoader();
 const music = new THREE.Audio(listener);
 
+var playback = 1/3
+
 audioLoader.load('song.mp3', function(buffer)
 {
   music.setBuffer(buffer);
   music.setLoop(true);
   music.setVolume(0.7);
+  music.playbackRate(playback * multiplier);
   music.play();
 });
 
