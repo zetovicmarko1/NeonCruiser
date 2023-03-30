@@ -606,7 +606,7 @@ fxFolder.add(guicontrols, 'bloomStrength', 0.0, 8.0).onChange(function (value) {
 }).name('Neon Strength').step(0.01);
 fxFolder.add(guicontrols, 'bloomRadius', 0.0, 1.0).onChange(function (value) {
   bloomPass.radius = Number(value);
-}).name('Neon Threshold').step(0.01);
+}).name('Neon Radius').step(0.01);
 cameraFolder.add(guicontrols, 'firstPerson').name('First Person View')
 cameraFolder.add(guicontrols, 'thirdPerson').name('Third Person View')
 cameraFolder.add(guicontrols, 'birdsEye').name("Bird's Eye View")
