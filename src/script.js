@@ -62,7 +62,7 @@ scene.fog = fog;
 
 var buildingHeightTall = 50
 var buildingHeightMed = 45
-var buildingHeightshort = 40
+var buildingHeightShort = 40
 var buildingY = Math.PI * 0.25
 
 var rightBound = 2.5
@@ -70,9 +70,9 @@ var leftBound = -2.5
 var upBound = 2.5
 var downBound = -2.5
 
-const cylGeo1 = new THREE.CylinderGeometry(7, 7, buildingHeightTall, 4)
-const cylGeo2 = new THREE.CylinderGeometry(7, 7, buildingHeightMed, 4)
-const cylGeo3 = new THREE.CylinderGeometry(7, 7, buildingHeightshort, 4)
+const cylGeo1 = new THREE.CylinderGeometry(6, 6, buildingHeightTall, 4)
+const cylGeo2 = new THREE.CylinderGeometry(6, 6, buildingHeightMed, 4)
+const cylGeo3 = new THREE.CylinderGeometry(6, 6, buildingHeightShort, 4)
 
 
 // Objects
@@ -130,7 +130,7 @@ const cylBuilding1=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding1.rotation.y = buildingY
 
 cylBuilding1.position.y = -10
-cylBuilding1.position.x = 11
+cylBuilding1.position.x = 11.5
 cylBuilding1.position.z = 0
 
 scene.add(cylBuilding1)
@@ -139,7 +139,7 @@ const cylBuilding2=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding2.rotation.y = buildingY
 
 cylBuilding2.position.y = -10
-cylBuilding2.position.x = -11
+cylBuilding2.position.x = -11.5
 cylBuilding2.position.z = 0
 
 scene.add(cylBuilding2)
@@ -148,7 +148,7 @@ const cylBuilding3=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding3.rotation.y = buildingY
 
 cylBuilding3.position.y = -10
-cylBuilding3.position.x = -11
+cylBuilding3.position.x = -11.5
 cylBuilding3.position.z = 0
 
 scene.add(cylBuilding3)
@@ -157,7 +157,7 @@ const cylBuilding4=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding4.rotation.y = buildingY
 
 cylBuilding4.position.y = -10
-cylBuilding4.position.x = 11
+cylBuilding4.position.x = 11.5
 cylBuilding4.position.z = 0
 
 scene.add(cylBuilding4)
@@ -166,7 +166,7 @@ const cylBuilding5=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding5.rotation.y = buildingY
 
 cylBuilding5.position.y = -10
-cylBuilding5.position.x = 11
+cylBuilding5.position.x = 11.5
 cylBuilding5.position.z = 0
 
 scene.add(cylBuilding5)
@@ -175,7 +175,7 @@ const cylBuilding6=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding6.rotation.y = buildingY
 
 cylBuilding6.position.y = -10
-cylBuilding6.position.x = -11
+cylBuilding6.position.x = -11.5
 cylBuilding6.position.z = 0
 
 scene.add(cylBuilding6)
@@ -184,7 +184,7 @@ const cylBuilding7=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding7.rotation.y = buildingY
 
 cylBuilding7.position.y = -10
-cylBuilding7.position.x = -11
+cylBuilding7.position.x = -11.5
 cylBuilding7.position.z = 0
 
 scene.add(cylBuilding7)
@@ -193,7 +193,7 @@ const cylBuilding8=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding8.rotation.y = buildingY
 
 cylBuilding8.position.y = -10
-cylBuilding8.position.x = 11
+cylBuilding8.position.x = 11.5
 cylBuilding8.position.z = 0
 
 scene.add(cylBuilding8)
@@ -202,7 +202,7 @@ const cylBuilding9=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding9.rotation.y = buildingY
 
 cylBuilding9.position.y = -10
-cylBuilding9.position.x = 21
+cylBuilding9.position.x = 21.5
 cylBuilding9.position.z = 0
 
 scene.add(cylBuilding9)
@@ -211,7 +211,7 @@ const cylBuilding10=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding10.rotation.y = buildingY
 
 cylBuilding10.position.y = -10
-cylBuilding10.position.x = -21
+cylBuilding10.position.x = -21.5
 cylBuilding10.position.z = 0
 
 scene.add(cylBuilding10)
@@ -220,7 +220,7 @@ const cylBuilding11=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding11.rotation.y = buildingY
 
 cylBuilding11.position.y = -10
-cylBuilding11.position.x = -21
+cylBuilding11.position.x = -21.5
 cylBuilding11.position.z = 0
 
 scene.add(cylBuilding11)
@@ -229,7 +229,7 @@ const cylBuilding12=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding12.rotation.y = buildingY
 
 cylBuilding12.position.y = -10
-cylBuilding12.position.x = 21
+cylBuilding12.position.x = 21.5
 cylBuilding12.position.z = 0
 
 scene.add(cylBuilding12)
@@ -239,7 +239,7 @@ cylBuilding13.rotation.y = buildingY
 
 
 cylBuilding13.position.y = -10
-cylBuilding13.position.x = 21
+cylBuilding13.position.x = 21.5
 cylBuilding13.position.z = 0
 
 scene.add(cylBuilding13)
@@ -248,7 +248,7 @@ const cylBuilding14=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding14.rotation.y = buildingY
 
 cylBuilding14.position.y = -10
-cylBuilding14.position.x = -21
+cylBuilding14.position.x = -21.5
 cylBuilding14.position.z = 0
 
 scene.add(cylBuilding14)
@@ -257,7 +257,7 @@ const cylBuilding15=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding15.rotation.y = buildingY
 
 cylBuilding15.position.y = -10
-cylBuilding15.position.x = -21
+cylBuilding15.position.x = -21.5
 cylBuilding15.position.z = 0
 
 scene.add(cylBuilding15)
@@ -266,7 +266,7 @@ const cylBuilding16=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding16.rotation.y = buildingY
 
 cylBuilding16.position.y = -10
-cylBuilding16.position.x = 21
+cylBuilding16.position.x = 21.5
 cylBuilding16.position.z = 0
 
 scene.add(cylBuilding16)
@@ -435,6 +435,7 @@ var changeColor = (val) =>  {
 //gui controls
 const cameraFolder = gui.addFolder('Camera Controls')
 const infraFolder = gui.addFolder('Road and Building Controls')
+const radiusFolder = gui.addFolder('Building Radius Controls')
 const fxFolder = gui.addFolder('Atmosphere and Lighting')
 const ctrlFolder = gui.addFolder('Cruise Controls')
 const audioFolder = gui.addFolder('Audio Controls')
@@ -444,6 +445,56 @@ const vehicleFolder = gui.addFolder('Vehicle Adjustments')
 const updateGroupGeometry = (mesh, geometry) => {
   mesh.geometry.dispose()
   mesh.geometry = geometry;
+}
+
+const tallBuildingData = {
+  radiusTop: 6,
+  radiusBottom: 6,
+  height: buildingHeightTall,
+  radialSegments: 4
+}
+
+const medBuildingData = {
+  radiusTop: 6,
+  radiusBottom: 6,
+  height: buildingHeightMed,
+  radialSegments: 4
+}
+
+const shortBuildingData = {
+  radiusTop: 6,
+  radiusBottom: 6,
+  height: buildingHeightShort,
+  radialSegments: 4
+}
+
+
+const genNewTall = () => {
+  updateGroupGeometry(cylBuilding1, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding3, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding5, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding7, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding9, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding11, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding13, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding15, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+    //1,3,5,7,9,11,13,15
+}
+
+const genNewShort = () => {
+  updateGroupGeometry(cylBuilding6, new THREE.CylinderGeometry(shortBuildingData.radiusTop, shortBuildingData.radiusBottom, shortBuildingData.height, shortBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding8, new THREE.CylinderGeometry(shortBuildingData.radiusTop, shortBuildingData.radiusBottom, shortBuildingData.height, shortBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding14, new THREE.CylinderGeometry(shortBuildingData.radiusTop, shortBuildingData.radiusBottom, shortBuildingData.height, shortBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding16, new THREE.CylinderGeometry(shortBuildingData.radiusTop, shortBuildingData.radiusBottom, shortBuildingData.height, shortBuildingData.radialSegments))
+    //6,8,14,16
+}
+
+const genNewMed= () => {
+  updateGroupGeometry(cylBuilding2, new THREE.CylinderGeometry(medBuildingData.radiusTop, medBuildingData.radiusBottom, medBuildingData.height, medBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding4, new THREE.CylinderGeometry(medBuildingData.radiusTop, medBuildingData.radiusBottom, medBuildingData.height, medBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding10, new THREE.CylinderGeometry(medBuildingData.radiusTop, medBuildingData.radiusBottom, medBuildingData.height, medBuildingData.radialSegments))
+  updateGroupGeometry(cylBuilding12, new THREE.CylinderGeometry(medBuildingData.radiusTop, medBuildingData.radiusBottom, medBuildingData.height, medBuildingData.radialSegments))
+    //2,4,10,12
 }
 
 
@@ -466,6 +517,21 @@ cameraFolder.add(guicontrols, 'birdsEye').name("Bird's Eye View")
 vehicleFolder.add(parent.scale, 'x').min(0.6).max(1.6).name("Width").step(0.0001)
 vehicleFolder.add(parent.scale, 'y').min(1).max(1.2).name("Length").step(0.0001)
 infraFolder.add(buildingsAllCyl.scale, 'x').min(0.5).max(2).step(0.0001).name("Road Width")
+infraFolder.add(tallBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewTall).name("Tall Building Segments")
+infraFolder.add(medBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewMed).name("Medium Building Segments")
+infraFolder.add(shortBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewShort).name("Short Building Segments")
+infraFolder.add(tallBuildingData, 'height').min(45).max(55).step(0.01).onChange(genNewTall).name("Tall Building Height")
+infraFolder.add(medBuildingData, 'height').min(40).max(50).step(0.01).onChange(genNewMed).name("Medium Building Height")
+infraFolder.add(shortBuildingData, 'height').min(35).max(45).step(0.01).onChange(genNewShort).name("Short Building Height")
+radiusFolder.add(tallBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewTall).name("Tall Building Top Radius")
+radiusFolder.add(medBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building Top Radius")
+radiusFolder.add(shortBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building Top Radius")
+radiusFolder.add(tallBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewTall).name("Tall Building Bottom Radius")
+radiusFolder.add(medBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building Bottom Radius")
+radiusFolder.add(shortBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building Bottom Radius")
+
+
+
 //debug
 controls.enableZoom = false;
 controls.enableRotate = false;
@@ -482,24 +548,6 @@ var isUp = false
 var isDown = false
 var isLeft = false
 var isRight = false
-
-
-
-
-
-// var dir = new THREE.Vector3(0,0,1)
-
-  
-  // if (isDown) {
-  //   parent.positionZ(+0.1);
-  // }
-  // if (isLeft) {
-  //   parent.positionY(THREE.MathUtils.degToRad(1));
-  // }
-  // if (isRight) {
-  //   parent.positionY(-THREE.MathUtils.degToRad(1));
-  // }
-
 
 // Event listener to handle screen resize
 window.addEventListener("resize", () => {
