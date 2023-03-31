@@ -398,7 +398,7 @@ var guicontrols = {
       gsap.to(camera.position, {duration: 1, y: 1})
     },
     instructions: () => {
-      alert('Use WASD to control the vehicle\nSong: Implant by Makeup and Vanity Set\nBy Matty, Joe, Boya and Marko')
+      alert('Use WASD to control the vehicle\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
     },
     //songOn: false
     playMusic:() =>{
@@ -627,7 +627,7 @@ const genNewMed= () => {
   }
 )
 
-gui.add(guicontrols, 'instructions').name('Click for Instructions')
+gui.add(guicontrols, 'instructions').name('Instructions')
 ctrlFolder.add(guicontrols, 'speedMultiplier').min(0.4).max(15).step(0.01).name('Cruising Speed')
 fxFolder.addColor(guicontrols, 'color').onChange(changeColor).name('Neon Colour')
 fxFolder.add(fog, 'far').name('Fog Depth').min(10).max(25)
