@@ -10,6 +10,7 @@ import GUI from 'lil-gui'
 import gsap from 'gsap'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
+import nipplejs from 'nipplejs';
 
 // Textures
 const textureLoader = new THREE.TextureLoader();
@@ -23,6 +24,12 @@ const mtlLoader = new MTLLoader()
 const scene = new THREE.Scene();
 const clock = new THREE.Clock();
 const manager = new THREE.LoadingManager()
+const joystick = new nipplejs.create({mode: 'static', position: {top:'85%', left: '20%'}})
+
+// This checks if mobile, used for the joystick controller
+if (!/Android|iPhone/i.test(navigator.userAgent)) {
+    joystick.destroy()
+}
 
 // manager.onStart = (url, item, total) => {
 //     console.log('Started loading: ${url}')
@@ -355,17 +362,17 @@ const speedFunction = (time, multiplier) => {
     cylBuilding14.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.75) + 0.5
     cylBuilding15.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25) + 0.5
     cylBuilding16.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25 + 0.2)+ 0.7
-    // parent.position.x = (Math.sin(time*(multiplier-5))/(multiplier))*(0.4/15)*8
-    // parent.position.y = 
-    rocket.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
-    rocket.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
-    arrow.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
-    arrow.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
-    tomahawk.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
-    tomahawk.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
-    wideGuy.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
-    wideGuy.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
-    
+
+    //function for ship wobble effect
+    const rotatingFunc = (model) => { 
+      model.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
+      model.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+    }
+
+    rotatingFunc(rocket)
+    rotatingFunc(arrow)
+    rotatingFunc(tomahawk)
+    rotatingFunc(wideGuy)
 
 }
 
@@ -656,7 +663,7 @@ bradiusFolder.add(tallBuildingData, 'radiusBottom').min(1).max(8).step(0.001).on
 bradiusFolder.add(medBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building Bottom Radius")
 bradiusFolder.add(shortBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building Bottom Radius")
 
-
+gui.close() //this will close the gui on launch (good for mobiles)s
 
 //debug
 controls.enableZoom = false;
@@ -691,7 +698,7 @@ window.addEventListener("resize", () => {
     effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-//movement switch cases
+// wasd movement switch cases
 var onKeyDown = (e) => {
   switch (e.keyCode) {
     case 87:
@@ -727,118 +734,72 @@ var onKeyUp = (e) => {
   
 }
 
+//wasd control function
+const webMovement = (model) => {
+  if(model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound) {
+    if (isUp == true ) {
+      model.position.y+=0.07
+      model.position.z-=0.07
+    }
+    if (isDown == true) {
+      model.position.y-=0.07
+      model.position.z +=0.07
+    }
+    if (isLeft == true) {
+      model.position.x -=0.07
+    }
+    if (isRight == true) {
+      model.position.x +=0.07
+    }
+  } else if (model.position.y >= upBound) {
+    model.position.y-=0.01
+    model.position.z+=0.01
+  } else if (model.position.y <= downBound) {
+    model.position.y+=0.1
+    model.position.z-=0.1
+  } else if (model.position.x <= leftBound) {
+    model.position.x +=0.1
+  } else if (rocket.position.x >= rightBound) {
+    model.position.x -=0.1
+  }
+}
+
+//mobile control function
+const mobileMovement = (model) => {
+joystick.on('move', function (event, data) {
+    if(model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound) {
+      model.position.y=data.vector.y*6
+      model.position.z=-data.vector.y*4
+      model.position.x=data.vector.x*4
+
+      } if (model.position.y >= upBound) {
+        model.position.y-=0.01
+        model.position.z+=0.01
+      } if (model.position.y <= downBound) {
+        model.position.y+=0.01
+        model.position.z-=0.01
+      } if (model.position.x <= leftBound) {
+        model.position.x +=0.01
+      } if (model.position.x >= rightBound) {
+        model.position.x -=0.01
+      } 
+  })
+}
+
 // Animate
 const tick = () => {
     var elapsedTime = clock.getElapsedTime();
-    //all movements for all ships, starting with rocket
-    if(rocket.position.x > leftBound && rocket.position.x < rightBound && rocket.position.y > downBound && rocket.position.y < upBound) {
-      if (isUp == true) {
-        rocket.position.y+=0.07
-        rocket.position.z-=0.07
-      }
-      if (isDown == true) {
-        rocket.position.y-=0.07
-        rocket.position.z +=0.07
-      }
-      if (isLeft == true) {
-        rocket.position.x -=0.07
-      }
-      if (isRight == true) {
-        rocket.position.x +=0.07
-      }
-    } else if (rocket.position.y >= upBound) {
-      rocket.position.y-=0.01
-      rocket.position.z+=0.01
-    } else if (rocket.position.y <= downBound) {
-      rocket.position.y+=0.1
-      rocket.position.z-=0.1
-    } else if (rocket.position.x <= leftBound) {
-      rocket.position.x +=0.1
-    } else if (rocket.position.x >= rightBound) {
-      rocket.position.x -=0.1
-    }
-    //arrow movement
-    if(arrow.position.x > leftBound && arrow.position.x < rightBound && arrow.position.y > downBound && arrow.position.y < upBound) {
-      if (isUp == true) {
-        arrow.position.y+=0.07
-        arrow.position.z-=0.07
-      }
-      if (isDown == true) {
-        arrow.position.y-=0.07
-        arrow.position.z +=0.07
-      }
-      if (isLeft == true) {
-        arrow.position.x -=0.07
-      }
-      if (isRight == true) {
-        arrow.position.x +=0.07
-      }
-    } else if (arrow.position.y >= upBound) {
-      arrow.position.y-=0.01
-      arrow.position.z+=0.01
-    } else if (arrow.position.y <= downBound) {
-      arrow.position.y+=0.1
-      arrow.position.z-=0.1
-    } else if (arrow.position.x <= leftBound) {
-      arrow.position.x +=0.1
-    } else if (arrow.position.x >= rightBound) {
-      arrow.position.x -=0.1
-    }
-    //tomahawk movement
-    if(tomahawk.position.x > leftBound && tomahawk.position.x < rightBound && tomahawk.position.y > downBound && tomahawk.position.y < upBound) {
-      if (isUp == true) {
-        tomahawk.position.y+=0.07
-        tomahawk.position.z-=0.07
-      }
-      if (isDown == true) {
-        tomahawk.position.y-=0.07
-        tomahawk.position.z +=0.07
-      }
-      if (isLeft == true) {
-        tomahawk.position.x -=0.07
-      }
-      if (isRight == true) {
-        tomahawk.position.x +=0.07
-      }
-    } else if (tomahawk.position.y >= upBound) {
-      tomahawk.position.y-=0.01
-      tomahawk.position.z+=0.01
-    } else if (tomahawk.position.y <= downBound) {
-      tomahawk.position.y+=0.1
-      tomahawk.position.z-=0.1
-    } else if (tomahawk.position.x <= leftBound) {
-      tomahawk.position.x +=0.1
-    } else if (tomahawk.position.x >= rightBound) {
-      tomahawk.position.x -=0.1
-    }
 
-    //wideguy movement
-    if(wideGuy.position.x > leftBound && wideGuy.position.x < rightBound && wideGuy.position.y > downBound && wideGuy.position.y < upBound) {
-      if (isUp == true) {
-        wideGuy.position.y+=0.07
-        wideGuy.position.z-=0.07
-      }
-      if (isDown == true) {
-        wideGuy.position.y-=0.07
-        wideGuy.position.z +=0.07
-      }
-      if (isLeft == true) {
-        wideGuy.position.x -=0.07
-      }
-      if (isRight == true) {
-        wideGuy.position.x +=0.07
-      }
-    } else if (wideGuy.position.y >= upBound) {
-      wideGuy.position.y-=0.01
-      wideGuy.position.z+=0.01
-    } else if (wideGuy.position.y <= downBound) {
-      wideGuy.position.y+=0.1
-      wideGuy.position.z-=0.1
-    } else if (wideGuy.position.x <= leftBound) {
-      wideGuy.position.x +=0.1
-    } else if (wideGuy.position.x >= rightBound) {
-      wideGuy.position.x -=0.1
-    }
+    //all movements for all ships, starting with rocket
+    webMovement(rocket)
+    webMovement(arrow)
+    webMovement(tomahawk)
+    webMovement(wideGuy)
+
+    mobileMovement(rocket)
+    mobileMovement(arrow)
+    mobileMovement(tomahawk)
+    mobileMovement(wideGuy)
 
     // Update controls
     controls.update();
