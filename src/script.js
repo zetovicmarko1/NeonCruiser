@@ -502,6 +502,25 @@ var guicontrols = {
           )
         }
       )   
+    },
+    rainbowSpeed: 5,
+    rainbowMode: () => {
+      scene.remove(ambientLight)
+      scene.add(ambientLightRed)
+      scene.add(ambientLightYel)
+      scene.add(ambientLightOrng)
+      scene.add(ambientLightGrn)
+      scene.add(ambientLightBlu)
+      scene.add(ambientLightPrp)
+    },
+    normalMode: () => {
+      scene.remove(ambientLightRed)
+      scene.remove(ambientLightYel)
+      scene.remove(ambientLightOrng)
+      scene.remove(ambientLightGrn)
+      scene.remove(ambientLightBlu)
+      scene.remove(ambientLightPrp)
+      scene.add(ambientLight)
     }
   };
 
@@ -514,12 +533,97 @@ var guicontrols = {
 
 effectComposer.addPass(bloomPass);
 const ambientLight = new THREE.AmbientLight(0x00FFFB, 100);
-scene.add(ambientLight); //this is the main colour, it uses an ambient light for it
+ //this is the main colour, it uses an ambient light for it
 
 //function to change the lighting colour
+
+// const pointLightDark = new THREE.PointLight(0xff0000, 50, 20)
+
+scene.add(ambientLight)
+
+var intensityRed = 100
+var intensityOrng = 0
+var intensityYel = 0
+var intensityGrn = 0
+var intensityBlu = 0
+var intensityPrp = 0
+
+var currColor = 'red'
+
+const ambientLightRed = new THREE.AmbientLight(0xff0000, intensityRed);
+const ambientLightOrng = new THREE.AmbientLight(0xff8c00, intensityOrng);
+const ambientLightYel = new THREE.AmbientLight(0xffff00, intensityYel);
+const ambientLightGrn = new THREE.AmbientLight(0x00ff00, intensityGrn);
+const ambientLightBlu = new THREE.AmbientLight(0x0000ff, intensityBlu);
+const ambientLightPrp = new THREE.AmbientLight(0xff00ff, intensityPrp);
+
 var changeColor = (val) =>  {
   ambientLight.color.set(guicontrols.color)
 } 
+
+//rainbow mode functions
+
+const dimmerRed= () => {
+  currColor='red'
+  if (intensityPrp <= 0 && intensityRed >0 && intensityOrng <= 100 && currColor=='red') {
+    intensityRed-=guicontrols.rainbowSpeed
+    intensityOrng+=guicontrols.rainbowSpeed
+    ambientLightRed.intensity = intensityRed
+    ambientLightOrng.intensity = intensityOrng
+  }
+
+}
+
+const dimmerOrng= () => {
+  currColor='orange'
+  if (intensityRed <= 0 && intensityOrng>0 && intensityYel <= 100 && currColor == 'orange') {
+    intensityOrng-=guicontrols.rainbowSpeed
+    intensityYel+=guicontrols.rainbowSpeed
+    ambientLightYel.intensity = intensityYel
+    ambientLightOrng.intensity = intensityOrng
+  } 
+}
+
+const dimmerYel= () => { 
+  currColor='yellow'
+  if (intensityOrng <= 0 && intensityYel>0  && intensityGrn <= 100 && currColor == 'yellow') {
+    intensityYel-=guicontrols.rainbowSpeed
+    intensityGrn+=guicontrols.rainbowSpeed
+    ambientLightGrn.intensity = intensityGrn
+    ambientLightYel.intensity = intensityYel
+  } 
+}
+
+const dimmerGrn= () => { 
+  currColor='green'
+  if (intensityYel <= 0 && intensityGrn>0  && intensityBlu <= 100 && currColor=='green') {
+    intensityGrn-=guicontrols.rainbowSpeed
+    intensityBlu+=guicontrols.rainbowSpeed
+    ambientLightBlu.intensity = intensityBlu
+    ambientLightGrn.intensity = intensityGrn
+
+  } 
+}
+
+const dimmerBlu= () => { 
+  currColor='blue'
+  if (intensityGrn <= 0 && intensityBlu>0 && intensityPrp <= 100 && currColor=='blue') {
+    intensityBlu-=guicontrols.rainbowSpeed
+    intensityPrp+=guicontrols.rainbowSpeed
+    ambientLightBlu.intensity = intensityBlu
+    ambientLightPrp.intensity = intensityPrp
+  }
+} 
+
+const dimmerPrp= () => { 
+  currColor='purple'
+  if (intensityBlu <= 0 && intensityPrp>0 && intensityRed <= 100 && currColor=='purple') {
+    intensityPrp-=guicontrols.rainbowSpeed
+    intensityRed+=guicontrols.rainbowSpeed
+    ambientLightRed.intensity = intensityRed
+    ambientLightPrp.intensity = intensityPrp
+  } 
+}
 
 //gui controls
 const cameraFolder = gui.addFolder('Camera Controls')
@@ -630,6 +734,11 @@ const genNewMed= () => {
 gui.add(guicontrols, 'instructions').name('Instructions')
 ctrlFolder.add(guicontrols, 'speedMultiplier').min(0.4).max(15).step(0.01).name('Cruising Speed')
 fxFolder.addColor(guicontrols, 'color').onChange(changeColor).name('Neon Colour')
+fxFolder.add(guicontrols, 'rainbowMode').name('Rainbow Mode')
+fxFolder.add(guicontrols, 'normalMode').name('Normal Mode')
+
+// console.log(guicontrols.rainbowMode)
+// fxFolder.add(guicontrols, 'rainbowSpeed').name('Rainbow Speed').min(1).max(10)
 fxFolder.add(fog, 'far').name('Fog Depth').min(10).max(25)
 fxFolder.add(guicontrols, 'bloomThreshold', 0.0, 1.0).onChange(function (value) {
   bloomPass.threshold = Number(value);
@@ -807,6 +916,14 @@ const tick = () => {
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
 
     effectComposer.render();
+
+    //rainbow mode loop
+    dimmerRed()
+    dimmerOrng()
+    dimmerYel()
+    dimmerGrn()
+    dimmerBlu()
+    dimmerPrp()
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick);
