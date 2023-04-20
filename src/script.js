@@ -374,6 +374,11 @@ const speedFunction = (time, multiplier) => {
 
 }
 
+var rightBound = (buildingX-5.75)
+var leftBound = -(buildingX-5.75)
+var upBound = 5
+var downBound = -1
+
 //parameters for the gui
 var guicontrols = {
     speedMultiplier: 3,
@@ -424,6 +429,8 @@ var guicontrols = {
             object.rotation.y = Math.PI
             object.rotation.x = Math.PI/8
             arrow.add(object)
+            rightBound = (buildingX-8)
+            leftBound = -(buildingX-8)
             }
           )
         }
@@ -448,6 +455,8 @@ var guicontrols = {
             object.rotation.y = Math.PI
             object.rotation.x = Math.PI/8
             rocket.add(object)
+            rightBound = (buildingX-5.75)
+            leftBound = -(buildingX-5.75)
             }
           )
         }
@@ -472,6 +481,8 @@ var guicontrols = {
             object.rotation.y = Math.PI
             object.rotation.x = Math.PI/8
             tomahawk.add(object)
+            rightBound = (buildingX-8)
+            leftBound = -(buildingX-8)
             }
           )
         }
@@ -496,6 +507,8 @@ var guicontrols = {
             object.rotation.y = Math.PI
             object.rotation.x = Math.PI/8
             wideGuy.add(object)
+            rightBound = (buildingX-8)
+            leftBound = -(buildingX-8)
             }
           )
         }
@@ -672,10 +685,6 @@ const roadWidth = {
 //bounding box for movement
 // var rightBound = (buildingX-5.75)
 // var leftBound = -(buildingX+5.75)
-var rightBound = (buildingX-5.75)
-var leftBound = -(buildingX-5.75)
-var upBound = 5
-var downBound = -1
 
 var scaleRoad = (val) =>  {
   buildingsAllCyl.scale.x = roadWidth.width
