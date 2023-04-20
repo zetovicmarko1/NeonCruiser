@@ -31,10 +31,6 @@ if (!/Android|iPhone/i.test(navigator.userAgent)) {
     joystick.destroy()
 }
 
-// manager.onStart = (url, item, total) => {
-//     console.log('Started loading: ${url}')
-// }
-
 //this is to interact with the spaceship outside of the loader function
 var rocket = new THREE.Group()
 var arrow = new THREE.Group()
@@ -508,7 +504,7 @@ var guicontrols = {
       scene.remove(ambientLight)
       scene.add(ambientLightRed)
       scene.add(ambientLightYel)
-      scene.add(ambientLightOrng)
+      // scene.add(ambientLightOrng)
       scene.add(ambientLightGrn)
       scene.add(ambientLightBlu)
       scene.add(ambientLightPrp)
@@ -516,7 +512,7 @@ var guicontrols = {
     normalMode: () => {
       scene.remove(ambientLightRed)
       scene.remove(ambientLightYel)
-      scene.remove(ambientLightOrng)
+      // scene.remove(ambientLightOrng)
       scene.remove(ambientLightGrn)
       scene.remove(ambientLightBlu)
       scene.remove(ambientLightPrp)
@@ -532,6 +528,7 @@ var guicontrols = {
   );
 
 effectComposer.addPass(bloomPass);
+
 const ambientLight = new THREE.AmbientLight(0x00FFFB, 100);
  //this is the main colour, it uses an ambient light for it
 
@@ -542,7 +539,7 @@ const ambientLight = new THREE.AmbientLight(0x00FFFB, 100);
 scene.add(ambientLight)
 
 var intensityRed = 100
-var intensityOrng = 0
+// var intensityOrng = 0
 var intensityYel = 0
 var intensityGrn = 0
 var intensityBlu = 0
@@ -551,7 +548,7 @@ var intensityPrp = 0
 var currColor = 'red'
 
 const ambientLightRed = new THREE.AmbientLight(0xff0000, intensityRed);
-const ambientLightOrng = new THREE.AmbientLight(0xff8c00, intensityOrng);
+// const ambientLightOrng = new THREE.AmbientLight(0xff8c00, intensityOrng);
 const ambientLightYel = new THREE.AmbientLight(0xffff00, intensityYel);
 const ambientLightGrn = new THREE.AmbientLight(0x00ff00, intensityGrn);
 const ambientLightBlu = new THREE.AmbientLight(0x0000ff, intensityBlu);
@@ -565,28 +562,28 @@ var changeColor = (val) =>  {
 
 const dimmerRed= () => {
   currColor='red'
-  if (intensityPrp <= 0 && intensityRed >0 && intensityOrng <= 100 && currColor=='red') {
+  if (intensityPrp <= 0 && intensityRed >0 && intensityYel <= 100 && currColor=='red') {
     intensityRed-=guicontrols.rainbowSpeed
-    intensityOrng+=guicontrols.rainbowSpeed
+    intensityYel+=guicontrols.rainbowSpeed
     ambientLightRed.intensity = intensityRed
-    ambientLightOrng.intensity = intensityOrng
+    ambientLightYel.intensity = intensityYel
   }
 
 }
 
-const dimmerOrng= () => {
-  currColor='orange'
-  if (intensityRed <= 0 && intensityOrng>0 && intensityYel <= 100 && currColor == 'orange') {
-    intensityOrng-=guicontrols.rainbowSpeed
-    intensityYel+=guicontrols.rainbowSpeed
-    ambientLightYel.intensity = intensityYel
-    ambientLightOrng.intensity = intensityOrng
-  } 
-}
+// const dimmerOrng= () => {
+//   currColor='orange'
+//   if (intensityRed <= 0 && intensityOrng>0 && intensityYel <= 100 && currColor == 'orange') {
+//     intensityOrng-=guicontrols.rainbowSpeed
+//     intensityYel+=guicontrols.rainbowSpeed
+//     ambientLightYel.intensity = intensityYel
+//     ambientLightOrng.intensity = intensityOrng
+//   } 
+// }
 
 const dimmerYel= () => { 
   currColor='yellow'
-  if (intensityOrng <= 0 && intensityYel>0  && intensityGrn <= 100 && currColor == 'yellow') {
+  if (intensityRed <= 0 && intensityYel>0  && intensityGrn <= 100 && currColor == 'yellow') {
     intensityYel-=guicontrols.rainbowSpeed
     intensityGrn+=guicontrols.rainbowSpeed
     ambientLightGrn.intensity = intensityGrn
@@ -919,7 +916,7 @@ const tick = () => {
 
     //rainbow mode loop
     dimmerRed()
-    dimmerOrng()
+    // dimmerOrng()
     dimmerYel()
     dimmerGrn()
     dimmerBlu()
