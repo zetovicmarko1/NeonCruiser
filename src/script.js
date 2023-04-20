@@ -31,6 +31,16 @@ if (!/Android|iPhone/i.test(navigator.userAgent)) {
     joystick.destroy()
 }
 
+// THREE.Sphere.__closest = new THREE.Vector3();
+// THREE.Sphere.prototype.intersectsBox = function(box) {
+//     // get box closest point to sphere center by clamping
+//     THREE.Sphere.__closest.set(this.center.x, this.center.y, this.center.z);
+//     THREE.Sphere.__closest.clamp(box.min, box.max);
+
+//     var distance = this.center.distanceToSquared(THREE.Sphere.__closest);
+//     return distance < (this.radius * this.radius);
+// };
+
 //this is to interact with the spaceship outside of the loader function
 var rocket = new THREE.Group()
 var arrow = new THREE.Group()
@@ -50,12 +60,9 @@ var buildingHeightMed = 45
 var buildingHeightShort = 40
 var buildingY = Math.PI * 0.25
 
-
-
 const cylGeo1 = new THREE.CylinderGeometry(6, 6, buildingHeightTall, 4)
 const cylGeo2 = new THREE.CylinderGeometry(6, 6, buildingHeightMed, 4)
 const cylGeo3 = new THREE.CylinderGeometry(6, 6, buildingHeightShort, 4)
-
 
 // Objects
 const torus = new THREE.TorusGeometry(10, 5);
@@ -379,10 +386,12 @@ const roadWidth = {
   width: 1
 }
 
-var rightBound = (buildingX-5.75)
-var leftBound = -(buildingX-5.75)
+var rightBound = (buildingX-5.8)
+var leftBound = -(buildingX-5.8)
 var upBound = 5
 var downBound = -1
+var frontBound = -5
+var backBound = 1
 
 
 //parameters for the gui
@@ -461,8 +470,8 @@ var guicontrols = {
             object.rotation.y = Math.PI
             object.rotation.x = Math.PI/8
             rocket.add(object)
-            rightBound = (buildingX-5.75)*roadWidth.width
-            leftBound = -(buildingX-5.75)*roadWidth.width
+            rightBound = (buildingX-5.8)*roadWidth.width
+            leftBound = -(buildingX-5.8)*roadWidth.width
             }
           )
         }
@@ -683,14 +692,10 @@ const shortBuildingData = {
   radialSegments: 4
 }
 
-//bounding box for movement
-// var rightBound = (buildingX-5.75)
-// var leftBound = -(buildingX+5.75)
-
 var scaleRoad = (val) =>  {
   buildingsAllCyl.scale.x = roadWidth.width
-  rightBound = (buildingX-5.75) * roadWidth.width
-  leftBound = -(buildingX-5.75) * roadWidth.width
+  rightBound = (buildingX-5.8) * roadWidth.width
+  leftBound = -(buildingX-5.8) * roadWidth.width
 
 } 
 
@@ -795,10 +800,12 @@ gui.add(controls,'enableRotate')
 gui.add(controls,'enablePan')
 
 //moving
-var isUp = false
-var isDown = false
+var isFor = false
+var isBack = false
 var isLeft = false
 var isRight = false
+var isUp = false
+var isDown = false
 
 // Event listener to handle screen resize
 window.addEventListener("resize", () => {
@@ -823,10 +830,10 @@ window.addEventListener("resize", () => {
 var onKeyDown = (e) => {
   switch (e.keyCode) {
     case 87:
-      isUp = true;
+      isFor = true;
       break;
     case 83:
-      isDown = true;
+      isBack = true;
       break;
     case 65:
       isLeft = true;
@@ -834,16 +841,22 @@ var onKeyDown = (e) => {
     case 68:
       isRight = true;
       break;
+    case 38:
+      isUp = true;
+      break;
+    case 40:
+      isDown = true;
+      break;
   }
 }
 
 var onKeyUp = (e) => {
   switch (e.keyCode) {
     case 87:
-      isUp = false;
+      isFor = false;
       break;
     case 83:
-      isDown = false;
+      isBack = false;
       break;
     case 65:
       isLeft = false;
@@ -851,18 +864,44 @@ var onKeyUp = (e) => {
     case 68:
       isRight = false;
       break;
+    case 38:
+      isUp = false;
+      break;
+    case 40:
+      isDown = false;
+      break;
   }
   
 }
 
+
+// const roadSphere = new THREE.SphereGeometry(15.1)
+// const roadMat = new THREE.MeshStandardMaterial
+// const roadMesh = new THREE.Mesh(roadSphere, roadMat)
+// // scene.add(roadMesh)
+// roadMesh.position.y = -10
+
+
+// const roadBB = new THREE.Sphere(road.position, 20)
+// // const roadBB = new THREE.Box3(-10, 5)
+
+
+
 //wasd control function
 const webMovement = (model) => {
-  if(model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound) {
-    if (isUp == true ) {
+
+  // const raycaster = new THREE.Raycaster(model.position,road.position)
+  // const intersection = raycaster.intersectObject(road, false)
+  // console.log(intersection)
+  // var onObject = intersection.length>0
+
+  if(model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
+    
+    if (isFor == true ) {
       model.position.y+=0.07
       model.position.z-=0.07
     }
-    if (isDown == true) {
+    if (isBack == true) {
       model.position.y-=0.07
       model.position.z +=0.07
     }
@@ -872,6 +911,13 @@ const webMovement = (model) => {
     if (isRight == true) {
       model.position.x +=0.07
     }
+    // if (isUp == true) {
+    //   model.position.y+=0.07
+    // }
+    // if (isDown == true) {
+    //   model.position.y-=0.07
+    // }
+    
   } else if (model.position.y >= upBound) {
     model.position.y-=0.01
     model.position.z+=0.01
@@ -880,9 +926,18 @@ const webMovement = (model) => {
     model.position.z-=0.1
   } else if (model.position.x <= leftBound) {
     model.position.x +=0.1
-  } else if (rocket.position.x >= rightBound) {
+  } else if (model.position.x >= rightBound) {
     model.position.x -=0.1
-  }
+  } else if (model.position.z <= backBound) {
+    model.position.z +=0.1
+  } else if (model.position.z >= frontBound) {
+    model.position.z -=0.1
+  } 
+  // else if (onObject) {
+  //   // model.position.y +=0.1
+  //   console.log("hit")
+  // }
+
 }
 
 //mobile control function
@@ -928,20 +983,6 @@ const tick = () => {
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
 
     effectComposer.render();
-
-    // for (var vertexIndex = 0; vertexIndex < Player.geometry.attributes.position.array.length; vertexIndex++)
-    // {       
-    //     var localVertex = new THREE.Vector3().fromBufferAttribute(Player.geometry.attributes.position, vertexIndex).clone();
-    //     var globalVertex = localVertex.applyMatrix4(Player.matrix);
-    //     var directionVector = globalVertex.sub( Player.position );
-    
-    //     var ray = new THREE.Raycaster( Player.position, directionVector.clone().normalize() );
-    //     var collisionResults = ray.intersectObjects( collidableMeshList );
-    //     if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
-    //     {
-    //         // a collision occurred... do something...
-    //     }
-    // }
 
     //rainbow mode loop
     dimmerRed()
