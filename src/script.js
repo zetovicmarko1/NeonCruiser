@@ -108,11 +108,13 @@ road.rotation.y = Math.PI * 0.5;
 road2.rotation.y = Math.PI * 0.5;
 road3.rotation.y = Math.PI * 0.5;
 
+const buildingX = 11.5
+
 const cylBuilding1=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding1.rotation.y = buildingY
 
 cylBuilding1.position.y = -10
-cylBuilding1.position.x = 11.5
+cylBuilding1.position.x = buildingX
 cylBuilding1.position.z = 0
 
 scene.add(cylBuilding1)
@@ -121,7 +123,7 @@ const cylBuilding2=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding2.rotation.y = buildingY
 
 cylBuilding2.position.y = -10
-cylBuilding2.position.x = -11.5
+cylBuilding2.position.x = -buildingX
 cylBuilding2.position.z = 0
 
 scene.add(cylBuilding2)
@@ -130,7 +132,7 @@ const cylBuilding3=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding3.rotation.y = buildingY
 
 cylBuilding3.position.y = -10
-cylBuilding3.position.x = -11.5
+cylBuilding3.position.x = -buildingX
 cylBuilding3.position.z = 0
 
 scene.add(cylBuilding3)
@@ -139,7 +141,7 @@ const cylBuilding4=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding4.rotation.y = buildingY
 
 cylBuilding4.position.y = -10
-cylBuilding4.position.x = 11.5
+cylBuilding4.position.x = buildingX
 cylBuilding4.position.z = 0
 
 scene.add(cylBuilding4)
@@ -148,7 +150,7 @@ const cylBuilding5=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding5.rotation.y = buildingY
 
 cylBuilding5.position.y = -10
-cylBuilding5.position.x = 11.5
+cylBuilding5.position.x = buildingX
 cylBuilding5.position.z = 0
 
 scene.add(cylBuilding5)
@@ -157,7 +159,7 @@ const cylBuilding6=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding6.rotation.y = buildingY
 
 cylBuilding6.position.y = -10
-cylBuilding6.position.x = -11.5
+cylBuilding6.position.x = -buildingX
 cylBuilding6.position.z = 0
 
 scene.add(cylBuilding6)
@@ -166,7 +168,7 @@ const cylBuilding7=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding7.rotation.y = buildingY
 
 cylBuilding7.position.y = -10
-cylBuilding7.position.x = -11.5
+cylBuilding7.position.x = -buildingX
 cylBuilding7.position.z = 0
 
 scene.add(cylBuilding7)
@@ -175,7 +177,7 @@ const cylBuilding8=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding8.rotation.y = buildingY
 
 cylBuilding8.position.y = -10
-cylBuilding8.position.x = 11.5
+cylBuilding8.position.x = buildingX
 cylBuilding8.position.z = 0
 
 scene.add(cylBuilding8)
@@ -184,7 +186,7 @@ const cylBuilding9=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding9.rotation.y = buildingY
 
 cylBuilding9.position.y = -10
-cylBuilding9.position.x = 21.5
+cylBuilding9.position.x = buildingX +10
 cylBuilding9.position.z = 0
 
 scene.add(cylBuilding9)
@@ -193,7 +195,7 @@ const cylBuilding10=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding10.rotation.y = buildingY
 
 cylBuilding10.position.y = -10
-cylBuilding10.position.x = -21.5
+cylBuilding10.position.x = -(buildingX +10)
 cylBuilding10.position.z = 0
 
 scene.add(cylBuilding10)
@@ -202,7 +204,7 @@ const cylBuilding11=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding11.rotation.y = buildingY
 
 cylBuilding11.position.y = -10
-cylBuilding11.position.x = -21.5
+cylBuilding11.position.x = -(buildingX +10)
 cylBuilding11.position.z = 0
 
 scene.add(cylBuilding11)
@@ -211,7 +213,7 @@ const cylBuilding12=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding12.rotation.y = buildingY
 
 cylBuilding12.position.y = -10
-cylBuilding12.position.x = 21.5
+cylBuilding12.position.x = buildingX +10
 cylBuilding12.position.z = 0
 
 scene.add(cylBuilding12)
@@ -221,7 +223,7 @@ cylBuilding13.rotation.y = buildingY
 
 
 cylBuilding13.position.y = -10
-cylBuilding13.position.x = 21.5
+cylBuilding13.position.x = buildingX +10
 cylBuilding13.position.z = 0
 
 scene.add(cylBuilding13)
@@ -230,7 +232,7 @@ const cylBuilding14=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding14.rotation.y = buildingY
 
 cylBuilding14.position.y = -10
-cylBuilding14.position.x = -21.5
+cylBuilding14.position.x = -(buildingX +10)
 cylBuilding14.position.z = 0
 
 scene.add(cylBuilding14)
@@ -239,7 +241,7 @@ const cylBuilding15=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding15.rotation.y = buildingY
 
 cylBuilding15.position.y = -10
-cylBuilding15.position.x = -21.5
+cylBuilding15.position.x = -(buildingX +10)
 cylBuilding15.position.z = 0
 
 scene.add(cylBuilding15)
@@ -248,7 +250,7 @@ const cylBuilding16=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding16.rotation.y = buildingY
 
 cylBuilding16.position.y = -10
-cylBuilding16.position.x = 21.5
+cylBuilding16.position.x = (buildingX +10)
 cylBuilding16.position.z = 0
 
 scene.add(cylBuilding16)
@@ -668,8 +670,10 @@ const roadWidth = {
 }
 
 //bounding box for movement
-var rightBound = 2.5
-var leftBound = -2.5
+// var rightBound = (buildingX-5.75)
+// var leftBound = -(buildingX+5.75)
+var rightBound = (buildingX-5.75)
+var leftBound = -(buildingX-5.75)
 var upBound = 5
 var downBound = -1
 
@@ -913,6 +917,20 @@ const tick = () => {
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
 
     effectComposer.render();
+
+    // for (var vertexIndex = 0; vertexIndex < Player.geometry.attributes.position.array.length; vertexIndex++)
+    // {       
+    //     var localVertex = new THREE.Vector3().fromBufferAttribute(Player.geometry.attributes.position, vertexIndex).clone();
+    //     var globalVertex = localVertex.applyMatrix4(Player.matrix);
+    //     var directionVector = globalVertex.sub( Player.position );
+    
+    //     var ray = new THREE.Raycaster( Player.position, directionVector.clone().normalize() );
+    //     var collisionResults = ray.intersectObjects( collidableMeshList );
+    //     if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
+    //     {
+    //         // a collision occurred... do something...
+    //     }
+    // }
 
     //rainbow mode loop
     dimmerRed()
