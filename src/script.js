@@ -374,10 +374,16 @@ const speedFunction = (time, multiplier) => {
 
 }
 
+//road parameters
+const roadWidth = {
+  width: 1
+}
+
 var rightBound = (buildingX-5.75)
 var leftBound = -(buildingX-5.75)
 var upBound = 5
 var downBound = -1
+
 
 //parameters for the gui
 var guicontrols = {
@@ -429,8 +435,8 @@ var guicontrols = {
             object.rotation.y = Math.PI
             object.rotation.x = Math.PI/8
             arrow.add(object)
-            rightBound = (buildingX-8)
-            leftBound = -(buildingX-8)
+            rightBound = (buildingX-8)*roadWidth.width
+            leftBound = -(buildingX-8)*roadWidth.width
             }
           )
         }
@@ -455,8 +461,8 @@ var guicontrols = {
             object.rotation.y = Math.PI
             object.rotation.x = Math.PI/8
             rocket.add(object)
-            rightBound = (buildingX-5.75)
-            leftBound = -(buildingX-5.75)
+            rightBound = (buildingX-5.75)*roadWidth.width
+            leftBound = -(buildingX-5.75)*roadWidth.width
             }
           )
         }
@@ -481,8 +487,8 @@ var guicontrols = {
             object.rotation.y = Math.PI
             object.rotation.x = Math.PI/8
             tomahawk.add(object)
-            rightBound = (buildingX-8)
-            leftBound = -(buildingX-8)
+            rightBound = (buildingX-8)*roadWidth.width
+            leftBound = -(buildingX-8)*roadWidth.width
             }
           )
         }
@@ -507,8 +513,8 @@ var guicontrols = {
             object.rotation.y = Math.PI
             object.rotation.x = Math.PI/8
             wideGuy.add(object)
-            rightBound = (buildingX-8)
-            leftBound = -(buildingX-8)
+            rightBound = (buildingX-8)*roadWidth.width
+            leftBound = -(buildingX-8)*roadWidth.width
             }
           )
         }
@@ -677,19 +683,14 @@ const shortBuildingData = {
   radialSegments: 4
 }
 
-//road parameters
-const roadWidth = {
-  width: 1
-}
-
 //bounding box for movement
 // var rightBound = (buildingX-5.75)
 // var leftBound = -(buildingX+5.75)
 
 var scaleRoad = (val) =>  {
   buildingsAllCyl.scale.x = roadWidth.width
-  rightBound = 2.5*roadWidth.width
-  leftBound = -2.5*roadWidth.width
+  rightBound * roadWidth.width
+  leftBound * roadWidth.width
 } 
 
 //building generators
@@ -768,7 +769,7 @@ vehicleFolder.add(guicontrols,'rocketShip').name('Rocket')
 vehicleFolder.add(guicontrols,'tomaShip').name('Tomahawk')
 vehicleFolder.add(guicontrols,'wideShip').name('Wide Guy')
 
-roadFolder.add(roadWidth, 'width').min(0.5).max(2).step(0.0001).onChange(scaleRoad).name("Road Width")
+roadFolder.add(roadWidth, 'width').min(1).max(2).step(0.0001).onChange(scaleRoad).name("Road Width")
 buildingsFolder.add(tallBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewTall).name("Tall Building Segments")
 buildingsFolder.add(medBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewMed).name("Medium Building Segments")
 buildingsFolder.add(shortBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewShort).name("Short Building Segments")
