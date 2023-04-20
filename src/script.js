@@ -31,15 +31,15 @@ if (!/Android|iPhone/i.test(navigator.userAgent)) {
     joystick.destroy()
 }
 
-// THREE.Sphere.__closest = new THREE.Vector3();
-// THREE.Sphere.prototype.intersectsBox = function(box) {
-//     // get box closest point to sphere center by clamping
-//     THREE.Sphere.__closest.set(this.center.x, this.center.y, this.center.z);
-//     THREE.Sphere.__closest.clamp(box.min, box.max);
+THREE.Sphere.__closest = new THREE.Vector3();
+THREE.Sphere.prototype.intersectsBox = function(box) {
+    // get box closest point to sphere center by clamping
+    THREE.Sphere.__closest.set(this.center.x, this.center.y, this.center.z);
+    THREE.Sphere.__closest.clamp(box.min, box.max);
 
-//     var distance = this.center.distanceToSquared(THREE.Sphere.__closest);
-//     return distance < (this.radius * this.radius);
-// };
+    var distance = this.center.distanceToSquared(THREE.Sphere.__closest);
+    return distance < (this.radius * this.radius);
+};
 
 //this is to interact with the spaceship outside of the loader function
 var rocket = new THREE.Group()
@@ -692,6 +692,10 @@ const shortBuildingData = {
   radialSegments: 4
 }
 
+//bounding box for movement
+// var rightBound = (buildingX-5.75)
+// var leftBound = -(buildingX+5.75)
+
 var scaleRoad = (val) =>  {
   buildingsAllCyl.scale.x = roadWidth.width
   rightBound = (buildingX-5.8) * roadWidth.width
@@ -882,18 +886,15 @@ var onKeyUp = (e) => {
 // roadMesh.position.y = -10
 
 
-// const roadBB = new THREE.Sphere(road.position, 20)
-// // const roadBB = new THREE.Box3(-10, 5)
-
-
+const roadBB = new THREE.Sphere(road.position, 20)
+// const roadBB = new THREE.Box3(-10, 5)
 
 //wasd control function
 const webMovement = (model) => {
+  
+  const modelBox = new THREE.Box3()
+  modelBox.setFromObject(model)
 
-  // const raycaster = new THREE.Raycaster(model.position,road.position)
-  // const intersection = raycaster.intersectObject(road, false)
-  // console.log(intersection)
-  // var onObject = intersection.length>0
 
   if(model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
     
@@ -911,12 +912,17 @@ const webMovement = (model) => {
     if (isRight == true) {
       model.position.x +=0.07
     }
-    // if (isUp == true) {
-    //   model.position.y+=0.07
-    // }
-    // if (isDown == true) {
-    //   model.position.y-=0.07
-    // }
+    if (isUp == true) {
+      // upBound +=0.07
+      // downBound +=0.07
+      model.position.y+=0.07
+    }
+    if (isDown == true) {
+      // downBound -=0.07
+      // upBound -=0.07
+      model.position.y-=0.07
+
+    }
     
   } else if (model.position.y >= upBound) {
     model.position.y-=0.01
@@ -928,15 +934,16 @@ const webMovement = (model) => {
     model.position.x +=0.1
   } else if (model.position.x >= rightBound) {
     model.position.x -=0.1
-  } else if (model.position.z <= backBound) {
-    model.position.z +=0.1
-  } else if (model.position.z >= frontBound) {
-    model.position.z -=0.1
   } 
-  // else if (onObject) {
-  //   // model.position.y +=0.1
-  //   console.log("hit")
-  // }
+  // else if (model.position.z >= frontBound) {
+  //   model.position.z -=0.1
+  // } else if (model.position.z <= backBound) {
+  //   model.position.z +=0.1
+  // } 
+  else if (roadBB.intersectsBox(modelBox)) {
+    model.position.y +=0.1
+    console.log("hit")
+  }
 
 }
 
