@@ -689,8 +689,9 @@ const shortBuildingData = {
 
 var scaleRoad = (val) =>  {
   buildingsAllCyl.scale.x = roadWidth.width
-  rightBound * roadWidth.width
-  leftBound * roadWidth.width
+  rightBound = (buildingX-5.75) * roadWidth.width
+  leftBound = -(buildingX-5.75) * roadWidth.width
+
 } 
 
 //building generators
