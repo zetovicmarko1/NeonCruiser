@@ -886,7 +886,7 @@ var onKeyUp = (e) => {
 // roadMesh.position.y = -10
 
 
-const roadBB = new THREE.Sphere(road.position, 20)
+const roadBB = new THREE.Sphere(new THREE.Vector3(0,0,0), 20)
 // const roadBB = new THREE.Box3(-10, 5)
 
 //wasd control function
@@ -915,12 +915,12 @@ const webMovement = (model) => {
     if (isUp == true) {
       // upBound +=0.07
       // downBound +=0.07
-      model.position.y+=0.07
+      // model.position.y+=0.07
     }
     if (isDown == true) {
       // downBound -=0.07
       // upBound -=0.07
-      model.position.y-=0.07
+      // model.position.y-=0.07d
 
     }
     
@@ -941,7 +941,10 @@ const webMovement = (model) => {
   //   model.position.z +=0.1
   // } 
   else if (roadBB.intersectsBox(modelBox)) {
-    model.position.y +=0.1
+    model.position.y=0
+    model.position.z=0
+    model.position.x=0
+
     console.log("hit")
   }
 
