@@ -886,8 +886,38 @@ var onKeyUp = (e) => {
 // roadMesh.position.y = -10
 
 
-const roadBB = new THREE.Sphere(new THREE.Vector3(0,0,0), 20)
-// const roadBB = new THREE.Box3(-10, 5)
+// const roadBB = new THREE.Sphere(new THREE.Vector3(0,0,0), 20)
+// // const roadBB = new THREE.Box3(-10, 5)
+
+// const ramp  = new THREE.PlaneGeometry(30,20)
+// const rampMesh = new THREE.Mesh(ramp, new THREE.MeshStandardMaterial())
+// scene.add(rampMesh)
+// rampMesh.visible = false
+
+// rampMesh.position.y = 0.7
+// rampMesh.position.z = 10
+// rampMesh.rotation.x = -Math.PI*0.25
+
+// var plane = new THREE.Plane();
+// var normal = new THREE.Vector3();
+// var point = new THREE.Vector3();
+
+// normal.set( 0, 0, 1 ).applyQuaternion( rampMesh.quaternion );
+
+// point.copy( rampMesh.position );
+
+// plane.setFromNormalAndCoplanarPoint( normal, point );
+
+// const helper = new THREE.PlaneHelper(plane, 30)
+// scene.add(helper)
+
+
+
+// gui.add(rampMesh.rotation, 'y').min(-Math.PI).max(Math.PI)
+// gui.add(rampMesh.position, 'y').min(-10).max(10)
+
+// gui.add(rampMesh.rotation, 'z').min(-Math.PI).max(Math.PI)
+// gui.add(rampMesh.rotation, 'x').min(-Math.PI).max(Math.PI)
 
 //wasd control function
 const webMovement = (model) => {
@@ -901,10 +931,15 @@ const webMovement = (model) => {
     if (isFor == true ) {
       model.position.y+=0.07
       model.position.z-=0.07
+      // downBound+=0.07
+      // upBound+=0.07
+
     }
     if (isBack == true) {
       model.position.y-=0.07
       model.position.z +=0.07
+      // downBound-=0.07
+      // upBound-=0.07
     }
     if (isLeft == true) {
       model.position.x -=0.07
@@ -912,16 +947,15 @@ const webMovement = (model) => {
     if (isRight == true) {
       model.position.x +=0.07
     }
-    if (isUp == true) {
-      // upBound +=0.07
-      // downBound +=0.07
+    if (isUp == true && downBound >= -1) {
+      // upBound = model.position.y+5
+      // downBound = model.position.y-1
       // model.position.y+=0.07
     }
-    if (isDown == true) {
-      // downBound -=0.07
-      // upBound -=0.07
-      // model.position.y-=0.07d
-
+    if (isDown == true && downBound >= -1) {
+      // upBound = model.position.y+5
+      // downBound = model.position.y-1
+      // model.position.y-=0.07
     }
     
   } else if (model.position.y >= upBound) {
@@ -939,14 +973,14 @@ const webMovement = (model) => {
   //   model.position.z -=0.1
   // } else if (model.position.z <= backBound) {
   //   model.position.z +=0.1
-  // } 
-  else if (roadBB.intersectsBox(modelBox)) {
-    model.position.y=0
-    model.position.z=0
-    model.position.x=0
+  // // } 
+  // else if (modelBox.intersectsPlane(plane)) {
+  //   model.position.y=0
+  //   model.position.z=0
+  //   model.position.x=0
 
-    console.log("hit")
-  }
+  //   console.log("hit")
+  // }
 
 }
 
