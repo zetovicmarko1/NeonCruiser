@@ -26,18 +26,23 @@ const mtlLoader = new MTLLoader()
 const scene = new THREE.Scene();
 const clock = new THREE.Clock();
 const manager = new THREE.LoadingManager()
-const joystick = new nipplejs.create({mode: 'static', position: {top:'85%', left: '20%'}})
-const webStick = new nipplejs.create({mode: 'dynamic'})
+const webStick = new nipplejs.create({mode: 'dynamic', dataOnly: true, 
+zone: document.getElementById('zone_joystick')
+})
+const joystick = new nipplejs.create({mode: 'static', position: {top:'85%', left: '20%', zone: document.getElementById('zone_joystick')
+ }})
 
 
 // This checks if mobile, used for the joystick controller
 if (!/Android|iPhone/i.test(navigator.userAgent)) {
-    joystick.destroy()
+  joystick.destroy()
 }
 
 if (/Android|iPhone/i.test(navigator.userAgent)) {
   webStick.destroy()
-}
+} 
+
+
 
 //this is to interact with the spaceship outside of the loader function
 var rocket = new THREE.Group()
@@ -266,6 +271,10 @@ cylBuilding16.position.z = 0
 
 scene.add(cylBuilding16)
 
+scene.remove(cylBuilding1, cylBuilding2, cylBuilding3, cylBuilding4, cylBuilding5, cylBuilding6, cylBuilding7, cylBuilding8, cylBuilding9, cylBuilding10, cylBuilding11, cylBuilding12, cylBuilding13, cylBuilding14, cylBuilding15, cylBuilding16)
+
+
+
 //road code
 road.position.y = -10
 road.scale.z  =2
@@ -280,14 +289,68 @@ scene.add(road);
 scene.add(road2);
 scene.add(road3);
 
+const randomBuildings = new THREE.Group()
+
+for (let i = 0; i <= 4; i++) {
+
+  const leftBuildingTall = new THREE.Mesh(cylGeo1, buildingMaterial)
+  const leftBuildingMedium = new THREE.Mesh(cylGeo2, buildingMaterial)
+  const leftBuildingShort = new THREE.Mesh(cylGeo3, buildingMaterial)
+  const rightBuildingTall = new THREE.Mesh(cylGeo1, buildingMaterial)
+  const rightBuildingMedium = new THREE.Mesh(cylGeo2, buildingMaterial)
+  const rightBuildingShort = new THREE.Mesh(cylGeo3, buildingMaterial)
+
+  leftBuildingTall.rotation.y = buildingY
+  leftBuildingMedium.rotation.y = buildingY
+  leftBuildingShort.rotation.y = buildingY
+
+  rightBuildingTall.rotation.y = buildingY
+  rightBuildingMedium.rotation.y = buildingY
+  rightBuildingShort.rotation.y = buildingY
+
+  leftBuildingTall.position.y = -10
+  leftBuildingMedium.position.y = -10
+  leftBuildingShort.position.y = -10
+
+  rightBuildingTall.position.y = -10
+  rightBuildingMedium.position.y = -10
+  rightBuildingShort.position.y = -10
+
+  leftBuildingTall.position.x = -buildingX - Math.random()*buildingX
+  leftBuildingMedium.position.x = -buildingX - Math.random()*buildingX
+  leftBuildingShort.position.x = -buildingX - Math.random()*buildingX
+
+  rightBuildingTall.position.x = buildingX + Math.random()*buildingX
+  rightBuildingMedium.position.x = buildingX + Math.random()*buildingX
+  rightBuildingShort.position.x = buildingX + Math.random()*buildingX
+
+  leftBuildingTall.rotation.x = Math.PI*Math.random()
+  leftBuildingMedium.rotation.x = Math.PI*Math.random()
+  leftBuildingShort.rotation.x = Math.PI*Math.random()
+
+  rightBuildingTall.rotation.x = Math.PI*Math.random()
+  rightBuildingMedium.rotation.x = Math.PI*Math.random()
+  rightBuildingShort.rotation.x = Math.PI*Math.random()
+
+  randomBuildings.add(leftBuildingShort)
+  randomBuildings.add(leftBuildingMedium)
+  randomBuildings.add(leftBuildingTall)
+
+  randomBuildings.add(rightBuildingShort)
+  randomBuildings.add(rightBuildingMedium)
+  randomBuildings.add(rightBuildingTall)
+
+}
+
+// scene.add(randomBuildings)
 
 var buildingsAllCyl = new THREE.Group();
-// var roads = new THREE.Group();
+var roads = new THREE.Group();
 
 buildingsAllCyl.add(cylBuilding1, cylBuilding2, cylBuilding3, cylBuilding4, cylBuilding5, cylBuilding6, cylBuilding7, cylBuilding8, cylBuilding9, cylBuilding10, cylBuilding11, cylBuilding12, cylBuilding13, cylBuilding14, cylBuilding15, cylBuilding16)
-buildingsAllCyl.add(road, road2, road3)
+roads.add(road, road2, road3)
 scene.add(buildingsAllCyl)
-// scene.add(roads)
+scene.add(roads)
 
 // Sizes
 const sizes = {
@@ -702,6 +765,7 @@ const shortBuildingData = {
 
 var scaleRoad = (val) =>  {
   buildingsAllCyl.scale.x = roadWidth.width
+  roads.scale.x = roadWidth.width
   rightBound = (buildingX-5.8) * roadWidth.width
   leftBound = -(buildingX-5.8) * roadWidth.width
 
@@ -800,6 +864,16 @@ bradiusFolder.add(shortBuildingData, 'radiusBottom').min(1).max(8).step(0.001).o
 
 gui.close() //this will close the gui on launch (good for mobiles)s
 
+console.log(joystick.ids)
+
+// if (gui._closed == false){
+//   // webStick.destroy()
+//   // joystick
+// } 
+// if (gui._closed == true){
+  
+// }
+
 //debug
 controls.enableZoom = false;
 controls.enableRotate = false;
@@ -883,49 +957,6 @@ var onKeyUp = (e) => {
   
 }
 
-const roadSphere = new THREE.SphereGeometry(15)
-const roadMesh = new THREE.Mesh(roadSphere, new THREE.MeshStandardMaterial)
-
-roadMesh.position.y = -10
-
-var roadBox = new THREE.Sphere(new THREE.Vector3(0,-10,0), 15.5)
-
-const helper = new THREE.Box3Helper(arrowBox)
-// scene.add(helper)
-
-const ramp  = new THREE.PlaneGeometry(30,20)
-const rampMesh = new THREE.Mesh(ramp, new THREE.MeshStandardMaterial({color: 0xff0000}))
-// scene.add(rampMesh)
-rampMesh.visible = true
-// rampMesh.wireframe = true
-
-rampMesh.position.y = 1
-rampMesh.position.z = 10
-rampMesh.rotation.x = -Math.PI*0.25
-
-var plane = new THREE.Plane();
-var normal = new THREE.Vector3();
-var point = new THREE.Vector3();
-
-normal.set( 0, 0, 1 ).applyQuaternion(rampMesh.quaternion);
-
-point.copy(rampMesh.position);
-
-plane.setFromNormalAndCoplanarPoint(normal, point);
-
-// const helperPlane = new THREE.PlaneHelper(plane, 30)
-// scene.add(helperPlane)
-
-THREE.Sphere.__closest = new THREE.Vector3();
-THREE.Sphere.prototype.intersectsBox = function (box) {
-    // get box closest point to sphere center by clamping
-    THREE.Sphere.__closest.set(this.center.x, this.center.y, this.center.z);
-    THREE.Sphere.__closest.clamp(box.min, box.max);
-
-    var distance =  this.center.distanceToSquared(THREE.Sphere.__closest);
-    return distance < (this.radius * this.radius);
-};
-
 //wasd control function
 const webMovement = (model) => {
   
@@ -950,16 +981,11 @@ const webMovement = (model) => {
     }
     if (isLeft == true) {
       model.position.x -=0.07
-
     }
     if (isRight == true) {
       model.position.x +=0.07
-
-
     }
 
-    
-    
   } else if (model.position.y >= upBound) {
     model.position.y-=0.01
     model.position.z+=0.01
