@@ -29,9 +29,9 @@ const manager = new THREE.LoadingManager()
 const webStick = new nipplejs.create({mode: 'dynamic', dataOnly: true, 
 zone: document.getElementById('zone_joystick')
 })
-const joystick = new nipplejs.create({mode: 'static', position: {top:'85%', left: '20%', zone: document.getElementById('zone_joystick')
- }})
-
+const joystick = new nipplejs.create({mode: 'static', position: {top:'85%', left: '20%', 
+zone: document.getElementById('zone_joystick')
+}})
 
 // This checks if mobile, used for the joystick controller
 if (!/Android|iPhone/i.test(navigator.userAgent)) {
@@ -127,114 +127,120 @@ road3.rotation.y = Math.PI * 0.5;
 const buildingX = 11.5
 
 const cylBuilding1=new THREE.Mesh(cylGeo1, buildingMaterial)
+const cylBuilding2=new THREE.Mesh(cylGeo2, buildingMaterial)
+const cylBuilding3 = new THREE.Mesh(cylGeo1, buildingMaterial)
+const cylBuilding4=new THREE.Mesh(cylGeo2, buildingMaterial)
+const cylBuilding5=new THREE.Mesh(cylGeo1, buildingMaterial)
+const cylBuilding6=new THREE.Mesh(cylGeo3, buildingMaterial)
+const cylBuilding7=new THREE.Mesh(cylGeo1, buildingMaterial)
+const cylBuilding8=new THREE.Mesh(cylGeo3, buildingMaterial)
+const cylBuilding9=new THREE.Mesh(cylGeo1, buildingMaterial)
+const cylBuilding10=new THREE.Mesh(cylGeo2, buildingMaterial)
+const cylBuilding11=new THREE.Mesh(cylGeo1, buildingMaterial)
+const cylBuilding12=new THREE.Mesh(cylGeo2, buildingMaterial)
+const cylBuilding13=new THREE.Mesh(cylGeo1, buildingMaterial)
+const cylBuilding14=new THREE.Mesh(cylGeo3, buildingMaterial)
+const cylBuilding15=new THREE.Mesh(cylGeo1, buildingMaterial)
+const cylBuilding16=new THREE.Mesh(cylGeo3, buildingMaterial)
+
+var buildingsAllCyl = new THREE.Group();
+
 cylBuilding1.rotation.y = buildingY
 
 cylBuilding1.position.y = -10
 cylBuilding1.position.x = buildingX
 cylBuilding1.position.z = 0
 
-scene.add(cylBuilding1)
+// scene.add(cylBuilding1)
 
-const cylBuilding2=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding2.rotation.y = buildingY
 
 cylBuilding2.position.y = -10
 cylBuilding2.position.x = -buildingX
 cylBuilding2.position.z = 0
 
-scene.add(cylBuilding2)
+// scene.add(cylBuilding2)
 
-const cylBuilding3=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding3.rotation.y = buildingY
 
 cylBuilding3.position.y = -10
 cylBuilding3.position.x = -buildingX
 cylBuilding3.position.z = 0
 
-scene.add(cylBuilding3)
+// scene.add(cylBuilding3)
 
-const cylBuilding4=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding4.rotation.y = buildingY
 
 cylBuilding4.position.y = -10
 cylBuilding4.position.x = buildingX
 cylBuilding4.position.z = 0
 
-scene.add(cylBuilding4)
+// scene.add(cylBuilding4)
 
-const cylBuilding5=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding5.rotation.y = buildingY
 
 cylBuilding5.position.y = -10
 cylBuilding5.position.x = buildingX
 cylBuilding5.position.z = 0
 
-scene.add(cylBuilding5)
+// scene.add(cylBuilding5)
 
-const cylBuilding6=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding6.rotation.y = buildingY
 
 cylBuilding6.position.y = -10
 cylBuilding6.position.x = -buildingX
 cylBuilding6.position.z = 0
 
-scene.add(cylBuilding6)
+// scene.add(cylBuilding6)
 
-const cylBuilding7=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding7.rotation.y = buildingY
 
 cylBuilding7.position.y = -10
 cylBuilding7.position.x = -buildingX
 cylBuilding7.position.z = 0
 
-scene.add(cylBuilding7)
+// scene.add(cylBuilding7)
 
-const cylBuilding8=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding8.rotation.y = buildingY
 
 cylBuilding8.position.y = -10
 cylBuilding8.position.x = buildingX
 cylBuilding8.position.z = 0
 
-scene.add(cylBuilding8)
+// scene.add(cylBuilding8)
 
-const cylBuilding9=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding9.rotation.y = buildingY
 
 cylBuilding9.position.y = -10
 cylBuilding9.position.x = buildingX +10
 cylBuilding9.position.z = 0
 
-scene.add(cylBuilding9)
+// scene.add(cylBuilding9)
 
-const cylBuilding10=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding10.rotation.y = buildingY
 
 cylBuilding10.position.y = -10
 cylBuilding10.position.x = -(buildingX +10)
 cylBuilding10.position.z = 0
 
-scene.add(cylBuilding10)
+// scene.add(cylBuilding10)
 
-const cylBuilding11=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding11.rotation.y = buildingY
 
 cylBuilding11.position.y = -10
 cylBuilding11.position.x = -(buildingX +10)
 cylBuilding11.position.z = 0
 
-scene.add(cylBuilding11)
+// scene.add(cylBuilding11)
 
-const cylBuilding12=new THREE.Mesh(cylGeo2, buildingMaterial)
 cylBuilding12.rotation.y = buildingY
 
 cylBuilding12.position.y = -10
 cylBuilding12.position.x = buildingX +10
 cylBuilding12.position.z = 0
 
-scene.add(cylBuilding12)
+// scene.add(cylBuilding12)
 
-const cylBuilding13=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding13.rotation.y = buildingY
 
 
@@ -242,38 +248,34 @@ cylBuilding13.position.y = -10
 cylBuilding13.position.x = buildingX +10
 cylBuilding13.position.z = 0
 
-scene.add(cylBuilding13)
+// scene.add(cylBuilding13)
 
-const cylBuilding14=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding14.rotation.y = buildingY
 
 cylBuilding14.position.y = -10
 cylBuilding14.position.x = -(buildingX +10)
 cylBuilding14.position.z = 0
 
-scene.add(cylBuilding14)
+// scene.add(cylBuilding14)
 
-const cylBuilding15=new THREE.Mesh(cylGeo1, buildingMaterial)
 cylBuilding15.rotation.y = buildingY
 
 cylBuilding15.position.y = -10
 cylBuilding15.position.x = -(buildingX +10)
 cylBuilding15.position.z = 0
 
-scene.add(cylBuilding15)
+// scene.add(cylBuilding15)
 
-const cylBuilding16=new THREE.Mesh(cylGeo3, buildingMaterial)
 cylBuilding16.rotation.y = buildingY
 
 cylBuilding16.position.y = -10
 cylBuilding16.position.x = (buildingX +10)
 cylBuilding16.position.z = 0
 
-scene.add(cylBuilding16)
+// scene.add(cylBuilding16)
 
-scene.remove(cylBuilding1, cylBuilding2, cylBuilding3, cylBuilding4, cylBuilding5, cylBuilding6, cylBuilding7, cylBuilding8, cylBuilding9, cylBuilding10, cylBuilding11, cylBuilding12, cylBuilding13, cylBuilding14, cylBuilding15, cylBuilding16)
-
-
+// scene.remove(cylBuilding1, cylBuilding2, cylBuilding3, cylBuilding4, cylBuilding5, cylBuilding6, cylBuilding7, cylBuilding8, cylBuilding9, cylBuilding10, cylBuilding11, cylBuilding12, cylBuilding13, cylBuilding14, cylBuilding15, cylBuilding16)
+buildingsAllCyl.add(cylBuilding1, cylBuilding2, cylBuilding3, cylBuilding4, cylBuilding5, cylBuilding6, cylBuilding7, cylBuilding8, cylBuilding9, cylBuilding10, cylBuilding11, cylBuilding12, cylBuilding13, cylBuilding14, cylBuilding15, cylBuilding16)
 
 //road code
 road.position.y = -10
@@ -291,63 +293,68 @@ scene.add(road3);
 
 const randomBuildings = new THREE.Group()
 
-for (let i = 0; i <= 4; i++) {
+var leftBuildingTall = new THREE.Mesh(cylGeo1, buildingMaterial)
+var leftBuildingMedium = new THREE.Mesh(cylGeo2, buildingMaterial)
+var leftBuildingShort = new THREE.Mesh(cylGeo3, buildingMaterial)
+var rightBuildingTall = new THREE.Mesh(cylGeo1, buildingMaterial)
+var rightBuildingMedium = new THREE.Mesh(cylGeo2, buildingMaterial)
+var rightBuildingShort = new THREE.Mesh(cylGeo3, buildingMaterial)
 
-  const leftBuildingTall = new THREE.Mesh(cylGeo1, buildingMaterial)
-  const leftBuildingMedium = new THREE.Mesh(cylGeo2, buildingMaterial)
-  const leftBuildingShort = new THREE.Mesh(cylGeo3, buildingMaterial)
-  const rightBuildingTall = new THREE.Mesh(cylGeo1, buildingMaterial)
-  const rightBuildingMedium = new THREE.Mesh(cylGeo2, buildingMaterial)
-  const rightBuildingShort = new THREE.Mesh(cylGeo3, buildingMaterial)
+var leftBuildingTall2 = new THREE.Mesh(cylGeo1, buildingMaterial)
+var leftBuildingMedium2 = new THREE.Mesh(cylGeo2, buildingMaterial)
+var leftBuildingShort2 = new THREE.Mesh(cylGeo3, buildingMaterial)
+var rightBuildingTall2 = new THREE.Mesh(cylGeo1, buildingMaterial)
+var rightBuildingMedium2 = new THREE.Mesh(cylGeo2, buildingMaterial)
+var rightBuildingShort2 = new THREE.Mesh(cylGeo3, buildingMaterial)
 
-  leftBuildingTall.rotation.y = buildingY
-  leftBuildingMedium.rotation.y = buildingY
-  leftBuildingShort.rotation.y = buildingY
+var leftBuildingTall3 = new THREE.Mesh(cylGeo1, buildingMaterial)
+var leftBuildingMedium3 = new THREE.Mesh(cylGeo2, buildingMaterial)
+var leftBuildingShort3 = new THREE.Mesh(cylGeo3, buildingMaterial)
+var rightBuildingTall3 = new THREE.Mesh(cylGeo1, buildingMaterial)
+var rightBuildingMedium3 = new THREE.Mesh(cylGeo2, buildingMaterial)
+var rightBuildingShort3 = new THREE.Mesh(cylGeo3, buildingMaterial)
 
-  rightBuildingTall.rotation.y = buildingY
-  rightBuildingMedium.rotation.y = buildingY
-  rightBuildingShort.rotation.y = buildingY
+var leftBuildingTall4 = new THREE.Mesh(cylGeo1, buildingMaterial)
+var leftBuildingMedium4 = new THREE.Mesh(cylGeo2, buildingMaterial)
+var leftBuildingShort4 = new THREE.Mesh(cylGeo3, buildingMaterial)
+var rightBuildingTall4 = new THREE.Mesh(cylGeo1, buildingMaterial)
+var rightBuildingMedium4 = new THREE.Mesh(cylGeo2, buildingMaterial)
+var rightBuildingShort4 = new THREE.Mesh(cylGeo3, buildingMaterial)
 
-  leftBuildingTall.position.y = -10
-  leftBuildingMedium.position.y = -10
-  leftBuildingShort.position.y = -10
+randomBuildings.add(leftBuildingShort)
+randomBuildings.add(leftBuildingMedium)
+randomBuildings.add(leftBuildingTall)
 
-  rightBuildingTall.position.y = -10
-  rightBuildingMedium.position.y = -10
-  rightBuildingShort.position.y = -10
+randomBuildings.add(rightBuildingShort)
+randomBuildings.add(rightBuildingMedium)
+randomBuildings.add(rightBuildingTall)
 
-  leftBuildingTall.position.x = -buildingX - Math.random()*buildingX
-  leftBuildingMedium.position.x = -buildingX - Math.random()*buildingX
-  leftBuildingShort.position.x = -buildingX - Math.random()*buildingX
+randomBuildings.add(leftBuildingShort2)
+randomBuildings.add(leftBuildingMedium2)
+randomBuildings.add(leftBuildingTall2)
 
-  rightBuildingTall.position.x = buildingX + Math.random()*buildingX
-  rightBuildingMedium.position.x = buildingX + Math.random()*buildingX
-  rightBuildingShort.position.x = buildingX + Math.random()*buildingX
+randomBuildings.add(rightBuildingShort2)
+randomBuildings.add(rightBuildingMedium2)
+randomBuildings.add(rightBuildingTall2)
 
-  leftBuildingTall.rotation.x = Math.PI*Math.random()
-  leftBuildingMedium.rotation.x = Math.PI*Math.random()
-  leftBuildingShort.rotation.x = Math.PI*Math.random()
+randomBuildings.add(leftBuildingShort3)
+randomBuildings.add(leftBuildingMedium3)
+randomBuildings.add(leftBuildingTall3)
 
-  rightBuildingTall.rotation.x = Math.PI*Math.random()
-  rightBuildingMedium.rotation.x = Math.PI*Math.random()
-  rightBuildingShort.rotation.x = Math.PI*Math.random()
+randomBuildings.add(rightBuildingShort3)
+randomBuildings.add(rightBuildingMedium3)
+randomBuildings.add(rightBuildingTall3)
 
-  randomBuildings.add(leftBuildingShort)
-  randomBuildings.add(leftBuildingMedium)
-  randomBuildings.add(leftBuildingTall)
+randomBuildings.add(leftBuildingShort4)
+randomBuildings.add(leftBuildingMedium4)
+randomBuildings.add(leftBuildingTall4)
 
-  randomBuildings.add(rightBuildingShort)
-  randomBuildings.add(rightBuildingMedium)
-  randomBuildings.add(rightBuildingTall)
+randomBuildings.add(rightBuildingShort4)
+randomBuildings.add(rightBuildingMedium4)
+randomBuildings.add(rightBuildingTall4)
 
-}
-
-// scene.add(randomBuildings)
-
-var buildingsAllCyl = new THREE.Group();
 var roads = new THREE.Group();
 
-buildingsAllCyl.add(cylBuilding1, cylBuilding2, cylBuilding3, cylBuilding4, cylBuilding5, cylBuilding6, cylBuilding7, cylBuilding8, cylBuilding9, cylBuilding10, cylBuilding11, cylBuilding12, cylBuilding13, cylBuilding14, cylBuilding15, cylBuilding16)
 roads.add(road, road2, road3)
 scene.add(buildingsAllCyl)
 scene.add(roads)
@@ -435,6 +442,34 @@ const speedFunction = (time, multiplier) => {
     cylBuilding15.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25) + 0.5
     cylBuilding16.rotation.x = ((Math.PI * time)/multiplier) + (Math.PI * 0.25 + 0.2)+ 0.7
 
+    leftBuildingTall.rotation.x = ((Math.PI * time)/multiplier)+ 0.2
+    leftBuildingMedium.rotation.x = ((Math.PI * time)/multiplier)+ 0.5
+    leftBuildingShort.rotation.x = ((Math.PI * time)/multiplier) + 0.7
+    rightBuildingTall.rotation.x = ((Math.PI * time)/multiplier) + 0.9
+    rightBuildingMedium.rotation.x = ((Math.PI * time)/multiplier) + 0.8
+    rightBuildingShort.rotation.x = ((Math.PI * time)/multiplier)+ 0.3
+
+    leftBuildingTall2.rotation.x = ((Math.PI * time)/multiplier)+ 0.2 + (Math.PI * 0.25)
+    leftBuildingMedium2.rotation.x = ((Math.PI * time)/multiplier)+ 0.5+ (Math.PI * 0.25)
+    leftBuildingShort2.rotation.x = ((Math.PI * time)/multiplier) + 0.7+ (Math.PI * 0.25)
+    rightBuildingTall2.rotation.x = ((Math.PI * time)/multiplier) + 0.9+ (Math.PI * 0.25)
+    rightBuildingMedium2.rotation.x = ((Math.PI * time)/multiplier) + 0.8+ (Math.PI * 0.25)
+    rightBuildingShort2.rotation.x = ((Math.PI * time)/multiplier)+ 0.3+ (Math.PI * 0.25)
+
+    leftBuildingTall3.rotation.x = ((Math.PI * time)/multiplier)+ 0.2 + (Math.PI * 0.5)
+    leftBuildingMedium3.rotation.x = ((Math.PI * time)/multiplier)+ 0.5+ (Math.PI * 0.5)
+    leftBuildingShort3.rotation.x = ((Math.PI * time)/multiplier) + 0.7+ (Math.PI * 0.5)
+    rightBuildingTall3.rotation.x = ((Math.PI * time)/multiplier) + 0.9+ (Math.PI * 0.5)
+    rightBuildingMedium3.rotation.x = ((Math.PI * time)/multiplier) + 0.8+ (Math.PI * 0.5)
+    rightBuildingShort3.rotation.x = ((Math.PI * time)/multiplier)+ 0.3+ (Math.PI * 0.5)
+
+    leftBuildingTall4.rotation.x = ((Math.PI * time)/multiplier)+ 0.2 + (Math.PI * 0.75)
+    leftBuildingMedium4.rotation.x = ((Math.PI * time)/multiplier)+ 0.5+ (Math.PI * 0.75)
+    leftBuildingShort4.rotation.x = ((Math.PI * time)/multiplier) + 0.7+ (Math.PI * 0.75)
+    rightBuildingTall4.rotation.x = ((Math.PI * time)/multiplier) + 0.9+ (Math.PI * 0.75)
+    rightBuildingMedium4.rotation.x = ((Math.PI * time)/multiplier) + 0.8+ (Math.PI * 0.75)
+    rightBuildingShort4.rotation.x = ((Math.PI * time)/multiplier)+ 0.3+ (Math.PI * 0.75)
+    
     //function for ship wobble effect
     const rotatingFunc = (model) => { 
       model.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
@@ -483,7 +518,7 @@ var guicontrols = {
       gsap.to(camera.position, {duration: 1, y: 1})
     },
     instructions: () => {
-      alert('Use WASD to control the vehicle\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
+      alert('Use WASD to control the vehicle on Web\nClick and drag to move up and down\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
     },
     //songOn: false
     playMusic:() =>{
@@ -618,6 +653,145 @@ var guicontrols = {
       scene.remove(ambientLightBlu)
       scene.remove(ambientLightPrp)
       scene.add(ambientLight)
+    },
+    setBuildings: () => {
+      scene.remove(randomBuildings)
+      scene.add(buildingsAllCyl)
+    },
+    setRandomBuildings: () => {
+      scene.remove(buildingsAllCyl)
+      // will randomly generate buildings
+    
+      leftBuildingTall.rotation.y = buildingY
+      leftBuildingMedium.rotation.y = buildingY
+      leftBuildingShort.rotation.y = buildingY
+    
+      rightBuildingTall.rotation.y = buildingY
+      rightBuildingMedium.rotation.y = buildingY
+      rightBuildingShort.rotation.y = buildingY
+    
+      leftBuildingTall.position.y = -10
+      leftBuildingMedium.position.y = -10
+      leftBuildingShort.position.y = -10
+    
+      rightBuildingTall.position.y = -10
+      rightBuildingMedium.position.y = -10
+      rightBuildingShort.position.y = -10
+    
+      leftBuildingTall.position.x = -buildingX - Math.random()*buildingX
+      leftBuildingMedium.position.x = -buildingX - Math.random()*buildingX
+      leftBuildingShort.position.x = -buildingX - Math.random()*buildingX
+    
+      rightBuildingTall.position.x = buildingX + Math.random()*buildingX
+      rightBuildingMedium.position.x = buildingX + Math.random()*buildingX
+      rightBuildingShort.position.x = buildingX + Math.random()*buildingX
+    
+      leftBuildingTall.rotation.x = Math.PI*Math.random()
+      leftBuildingMedium.rotation.x = Math.PI*Math.random()
+      leftBuildingShort.rotation.x = Math.PI*Math.random()
+    
+      rightBuildingTall.rotation.x = Math.PI*Math.random()
+      rightBuildingMedium.rotation.x = Math.PI*Math.random()
+      rightBuildingShort.rotation.x = Math.PI*Math.random()
+    
+      leftBuildingTall2.rotation.y = buildingY
+      leftBuildingMedium2.rotation.y = buildingY
+      leftBuildingShort2.rotation.y = buildingY
+    
+      rightBuildingTall2.rotation.y = buildingY
+      rightBuildingMedium2.rotation.y = buildingY
+      rightBuildingShort2.rotation.y = buildingY
+    
+      leftBuildingTall2.position.y = -10
+      leftBuildingMedium2.position.y = -10
+      leftBuildingShort2.position.y = -10
+    
+      rightBuildingTall2.position.y = -10
+      rightBuildingMedium2.position.y = -10
+      rightBuildingShort2.position.y = -10
+    
+      leftBuildingTall2.position.x = -buildingX - Math.random()*buildingX
+      leftBuildingMedium2.position.x = -buildingX - Math.random()*buildingX
+      leftBuildingShort2.position.x = -buildingX - Math.random()*buildingX
+    
+      rightBuildingTall2.position.x = buildingX + Math.random()*buildingX
+      rightBuildingMedium2.position.x = buildingX + Math.random()*buildingX
+      rightBuildingShort2.position.x = buildingX + Math.random()*buildingX
+    
+      leftBuildingTall2.rotation.x = Math.PI*Math.random()
+      leftBuildingMedium2.rotation.x = Math.PI*Math.random()
+      leftBuildingShort2.rotation.x = Math.PI*Math.random()
+    
+      rightBuildingTall2.rotation.x = Math.PI*Math.random()
+      rightBuildingMedium2.rotation.x = Math.PI*Math.random()
+      rightBuildingShort2.rotation.x = Math.PI*Math.random()
+    
+      leftBuildingTall3.rotation.y = buildingY
+      leftBuildingMedium3.rotation.y = buildingY
+      leftBuildingShort3.rotation.y = buildingY
+    
+      rightBuildingTall3.rotation.y = buildingY
+      rightBuildingMedium3.rotation.y = buildingY
+      rightBuildingShort3.rotation.y = buildingY
+    
+      leftBuildingTall3.position.y = -10
+      leftBuildingMedium3.position.y = -10
+      leftBuildingShort3.position.y = -10
+    
+      rightBuildingTall3.position.y = -10
+      rightBuildingMedium3.position.y = -10
+      rightBuildingShort3.position.y = -10
+    
+      leftBuildingTall3.position.x = -buildingX - Math.random()*buildingX
+      leftBuildingMedium3.position.x = -buildingX - Math.random()*buildingX
+      leftBuildingShort3.position.x = -buildingX - Math.random()*buildingX
+    
+      rightBuildingTall3.position.x = buildingX + Math.random()*buildingX
+      rightBuildingMedium3.position.x = buildingX + Math.random()*buildingX
+      rightBuildingShort3.position.x = buildingX + Math.random()*buildingX
+    
+      leftBuildingTall3.rotation.x = Math.PI*Math.random()
+      leftBuildingMedium3.rotation.x = Math.PI*Math.random()
+      leftBuildingShort3.rotation.x = Math.PI*Math.random()
+    
+      rightBuildingTall3.rotation.x = Math.PI*Math.random()
+      rightBuildingMedium3.rotation.x = Math.PI*Math.random()
+      rightBuildingShort3.rotation.x = Math.PI*Math.random()
+    
+      leftBuildingTall4.rotation.y = buildingY
+      leftBuildingMedium4.rotation.y = buildingY
+      leftBuildingShort4.rotation.y = buildingY
+    
+      rightBuildingTall4.rotation.y = buildingY
+      rightBuildingMedium4.rotation.y = buildingY
+      rightBuildingShort4.rotation.y = buildingY
+    
+      leftBuildingTall4.position.y = -10
+      leftBuildingMedium4.position.y = -10
+      leftBuildingShort4.position.y = -10
+    
+      rightBuildingTall4.position.y = -10
+      rightBuildingMedium4.position.y = -10
+      rightBuildingShort4.position.y = -10
+    
+      leftBuildingTall4.position.x = -buildingX - Math.random()*buildingX
+      leftBuildingMedium4.position.x = -buildingX - Math.random()*buildingX
+      leftBuildingShort4.position.x = -buildingX - Math.random()*buildingX
+    
+      rightBuildingTall4.position.x = buildingX + Math.random()*buildingX
+      rightBuildingMedium4.position.x = buildingX + Math.random()*buildingX
+      rightBuildingShort4.position.x = buildingX + Math.random()*buildingX
+    
+      leftBuildingTall4.rotation.x = Math.PI*Math.random()
+      leftBuildingMedium4.rotation.x = Math.PI*Math.random()
+      leftBuildingShort4.rotation.x = Math.PI*Math.random()
+    
+      rightBuildingTall4.rotation.x = Math.PI*Math.random()
+      rightBuildingMedium4.rotation.x = Math.PI*Math.random()
+      rightBuildingShort4.rotation.x = Math.PI*Math.random()
+    
+    
+      scene.add(randomBuildings)
     }
   };
 
@@ -726,6 +900,7 @@ const dimmerPrp= () => {
 //gui controls
 const cameraFolder = gui.addFolder('Camera Controls')
 const roadFolder = gui.addFolder('Road Controls')
+const brandomFolder = gui.addFolder('Building Mode')
 const buildinghFolder = gui.addFolder('Building Height Controls')
 const buildingsFolder = gui.addFolder('Building Shape Controls')
 const tradiusFolder = gui.addFolder('Building Top Radius Controls')
@@ -765,6 +940,7 @@ const shortBuildingData = {
 
 var scaleRoad = (val) =>  {
   buildingsAllCyl.scale.x = roadWidth.width
+  randomBuildings.scale.x = roadWidth.width
   roads.scale.x = roadWidth.width
   rightBound = (buildingX-5.8) * roadWidth.width
   leftBound = -(buildingX-5.8) * roadWidth.width
@@ -781,6 +957,14 @@ const genNewTall = () => {
   updateGroupGeometry(cylBuilding11, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
   updateGroupGeometry(cylBuilding13, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
   updateGroupGeometry(cylBuilding15, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingTall, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingTall, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingTall2, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingTall2, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingTall3, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingTall3, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingTall4, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingTall4, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
     //1,3,5,7,9,11,13,15
 }
 
@@ -789,6 +973,14 @@ const genNewShort = () => {
   updateGroupGeometry(cylBuilding8, new THREE.CylinderGeometry(shortBuildingData.radiusTop, shortBuildingData.radiusBottom, shortBuildingData.height, shortBuildingData.radialSegments))
   updateGroupGeometry(cylBuilding14, new THREE.CylinderGeometry(shortBuildingData.radiusTop, shortBuildingData.radiusBottom, shortBuildingData.height, shortBuildingData.radialSegments))
   updateGroupGeometry(cylBuilding16, new THREE.CylinderGeometry(shortBuildingData.radiusTop, shortBuildingData.radiusBottom, shortBuildingData.height, shortBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingShort, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingShort, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingShort2, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingShort2, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingShort3, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingShort3, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingShort4, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingShort4, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
     //6,8,14,16
 }
 
@@ -797,6 +989,14 @@ const genNewMed= () => {
   updateGroupGeometry(cylBuilding4, new THREE.CylinderGeometry(medBuildingData.radiusTop, medBuildingData.radiusBottom, medBuildingData.height, medBuildingData.radialSegments))
   updateGroupGeometry(cylBuilding10, new THREE.CylinderGeometry(medBuildingData.radiusTop, medBuildingData.radiusBottom, medBuildingData.height, medBuildingData.radialSegments))
   updateGroupGeometry(cylBuilding12, new THREE.CylinderGeometry(medBuildingData.radiusTop, medBuildingData.radiusBottom, medBuildingData.height, medBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingMedium, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingMedium, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingMedium2, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingMedium2, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingMedium3, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingMedium3, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(leftBuildingMedium4, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
+  updateGroupGeometry(rightBuildingMedium4, new THREE.CylinderGeometry(tallBuildingData.radiusTop, tallBuildingData.radiusBottom, tallBuildingData.height, tallBuildingData.radialSegments))
     //2,4,10,12
 }
  //default vehicle
@@ -849,6 +1049,8 @@ vehicleFolder.add(guicontrols,'tomaShip').name('Tomahawk')
 vehicleFolder.add(guicontrols,'wideShip').name('Wide Guy')
 
 roadFolder.add(roadWidth, 'width').min(1).max(2).step(0.0001).onChange(scaleRoad).name("Road Width")
+brandomFolder.add(guicontrols, 'setBuildings').name("Uniform Buildings")
+brandomFolder.add(guicontrols, 'setRandomBuildings').name("Randomise Buildings")
 buildingsFolder.add(tallBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewTall).name("Tall Building Segments")
 buildingsFolder.add(medBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewMed).name("Medium Building Segments")
 buildingsFolder.add(shortBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewShort).name("Short Building Segments")
@@ -887,8 +1089,6 @@ var isFor = false
 var isBack = false
 var isLeft = false
 var isRight = false
-var isUp = false
-var isDown = false
 
 // Event listener to handle screen resize
 window.addEventListener("resize", () => {
