@@ -12,6 +12,8 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import nipplejs from 'nipplejs';
 
+
+
 // Textures
 const textureLoader = new THREE.TextureLoader();
 const gridTexture = textureLoader.load('textures/grid.png');
@@ -25,27 +27,29 @@ const scene = new THREE.Scene();
 const clock = new THREE.Clock();
 const manager = new THREE.LoadingManager()
 const joystick = new nipplejs.create({mode: 'static', position: {top:'85%', left: '20%'}})
+const webStick = new nipplejs.create({mode: 'dynamic'})
+
 
 // This checks if mobile, used for the joystick controller
 if (!/Android|iPhone/i.test(navigator.userAgent)) {
     joystick.destroy()
 }
 
-THREE.Sphere.__closest = new THREE.Vector3();
-THREE.Sphere.prototype.intersectsBox = function(box) {
-    // get box closest point to sphere center by clamping
-    THREE.Sphere.__closest.set(this.center.x, this.center.y, this.center.z);
-    THREE.Sphere.__closest.clamp(box.min, box.max);
-
-    var distance = this.center.distanceToSquared(THREE.Sphere.__closest);
-    return distance < (this.radius * this.radius);
-};
+if (/Android|iPhone/i.test(navigator.userAgent)) {
+  webStick.destroy()
+}
 
 //this is to interact with the spaceship outside of the loader function
 var rocket = new THREE.Group()
 var arrow = new THREE.Group()
 var tomahawk = new THREE.Group()
 var wideGuy = new THREE.Group()
+
+const rocketBox = new THREE.Box3()
+const arrowBox = new THREE.Box3()
+const tomaBox = new THREE.Box3()
+const wideBox = new THREE.Box3()
+
 
 // // Fog
 const fog = new THREE.Fog(0x000000, 0.1, 25);
@@ -388,7 +392,7 @@ const roadWidth = {
 
 var rightBound = (buildingX-5.8)
 var leftBound = -(buildingX-5.8)
-var upBound = 5
+var upBound = 8
 var downBound = -1
 var frontBound = -5
 var backBound = 1
@@ -446,6 +450,7 @@ var guicontrols = {
             arrow.add(object)
             rightBound = (buildingX-8)*roadWidth.width
             leftBound = -(buildingX-8)*roadWidth.width
+            arrowBox.setFromObject(arrow)
             }
           )
         }
@@ -472,6 +477,7 @@ var guicontrols = {
             rocket.add(object)
             rightBound = (buildingX-5.8)*roadWidth.width
             leftBound = -(buildingX-5.8)*roadWidth.width
+            rocketBox.setFromObject(rocket)
             }
           )
         }
@@ -498,6 +504,7 @@ var guicontrols = {
             tomahawk.add(object)
             rightBound = (buildingX-8)*roadWidth.width
             leftBound = -(buildingX-8)*roadWidth.width
+            tomaBox.setFromObject(tomahawk)
             }
           )
         }
@@ -524,6 +531,7 @@ var guicontrols = {
             wideGuy.add(object)
             rightBound = (buildingX-8)*roadWidth.width
             leftBound = -(buildingX-8)*roadWidth.width
+            wideBox.setFromObject(wideGuy)
             }
           )
         }
@@ -692,10 +700,6 @@ const shortBuildingData = {
   radialSegments: 4
 }
 
-//bounding box for movement
-// var rightBound = (buildingX-5.75)
-// var leftBound = -(buildingX+5.75)
-
 var scaleRoad = (val) =>  {
   buildingsAllCyl.scale.x = roadWidth.width
   rightBound = (buildingX-5.8) * roadWidth.width
@@ -747,6 +751,7 @@ const genNewMed= () => {
         object.rotation.y = Math.PI
         object.rotation.x = Math.PI/8
         rocket.add(object)
+        rocketBox.setFromObject(rocket)
       }
     )
   }
@@ -878,85 +883,82 @@ var onKeyUp = (e) => {
   
 }
 
+const roadSphere = new THREE.SphereGeometry(15)
+const roadMesh = new THREE.Mesh(roadSphere, new THREE.MeshStandardMaterial)
 
-// const roadSphere = new THREE.SphereGeometry(15.1)
-// const roadMat = new THREE.MeshStandardMaterial
-// const roadMesh = new THREE.Mesh(roadSphere, roadMat)
-// // scene.add(roadMesh)
-// roadMesh.position.y = -10
+roadMesh.position.y = -10
 
+var roadBox = new THREE.Sphere(new THREE.Vector3(0,-10,0), 15.5)
 
-// const roadBB = new THREE.Sphere(new THREE.Vector3(0,0,0), 20)
-// // const roadBB = new THREE.Box3(-10, 5)
-
-// const ramp  = new THREE.PlaneGeometry(30,20)
-// const rampMesh = new THREE.Mesh(ramp, new THREE.MeshStandardMaterial())
-// scene.add(rampMesh)
-// rampMesh.visible = false
-
-// rampMesh.position.y = 0.7
-// rampMesh.position.z = 10
-// rampMesh.rotation.x = -Math.PI*0.25
-
-// var plane = new THREE.Plane();
-// var normal = new THREE.Vector3();
-// var point = new THREE.Vector3();
-
-// normal.set( 0, 0, 1 ).applyQuaternion( rampMesh.quaternion );
-
-// point.copy( rampMesh.position );
-
-// plane.setFromNormalAndCoplanarPoint( normal, point );
-
-// const helper = new THREE.PlaneHelper(plane, 30)
+const helper = new THREE.Box3Helper(arrowBox)
 // scene.add(helper)
 
+const ramp  = new THREE.PlaneGeometry(30,20)
+const rampMesh = new THREE.Mesh(ramp, new THREE.MeshStandardMaterial({color: 0xff0000}))
+// scene.add(rampMesh)
+rampMesh.visible = true
+// rampMesh.wireframe = true
 
+rampMesh.position.y = 1
+rampMesh.position.z = 10
+rampMesh.rotation.x = -Math.PI*0.25
 
-// gui.add(rampMesh.rotation, 'y').min(-Math.PI).max(Math.PI)
-// gui.add(rampMesh.position, 'y').min(-10).max(10)
+var plane = new THREE.Plane();
+var normal = new THREE.Vector3();
+var point = new THREE.Vector3();
 
-// gui.add(rampMesh.rotation, 'z').min(-Math.PI).max(Math.PI)
-// gui.add(rampMesh.rotation, 'x').min(-Math.PI).max(Math.PI)
+normal.set( 0, 0, 1 ).applyQuaternion(rampMesh.quaternion);
+
+point.copy(rampMesh.position);
+
+plane.setFromNormalAndCoplanarPoint(normal, point);
+
+// const helperPlane = new THREE.PlaneHelper(plane, 30)
+// scene.add(helperPlane)
+
+THREE.Sphere.__closest = new THREE.Vector3();
+THREE.Sphere.prototype.intersectsBox = function (box) {
+    // get box closest point to sphere center by clamping
+    THREE.Sphere.__closest.set(this.center.x, this.center.y, this.center.z);
+    THREE.Sphere.__closest.clamp(box.min, box.max);
+
+    var distance =  this.center.distanceToSquared(THREE.Sphere.__closest);
+    return distance < (this.radius * this.radius);
+};
 
 //wasd control function
 const webMovement = (model) => {
   
-  const modelBox = new THREE.Box3()
-  modelBox.setFromObject(model)
-
-
-  if(model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
+  webStick.on('move', function (event, data) {
+    if(model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
     
+      model.position.y=data.vector.y*6
+      model.position.z=-data.vector.y*4
+      model.position.x=data.vector.x*4
+    }
+  })
+
+  if (model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
+
     if (isFor == true ) {
       model.position.y+=0.07
       model.position.z-=0.07
-      // downBound+=0.07
-      // upBound+=0.07
-
     }
     if (isBack == true) {
       model.position.y-=0.07
       model.position.z +=0.07
-      // downBound-=0.07
-      // upBound-=0.07
     }
     if (isLeft == true) {
       model.position.x -=0.07
+
     }
     if (isRight == true) {
       model.position.x +=0.07
+
+
     }
-    if (isUp == true && downBound >= -1) {
-      // upBound = model.position.y+5
-      // downBound = model.position.y-1
-      // model.position.y+=0.07
-    }
-    if (isDown == true && downBound >= -1) {
-      // upBound = model.position.y+5
-      // downBound = model.position.y-1
-      // model.position.y-=0.07
-    }
+
+    
     
   } else if (model.position.y >= upBound) {
     model.position.y-=0.01
@@ -968,21 +970,14 @@ const webMovement = (model) => {
     model.position.x +=0.1
   } else if (model.position.x >= rightBound) {
     model.position.x -=0.1
+  } else if (model.position.z >= frontBound) {
+    model.position.z -=0.1
+  } else if (model.position.z <= backBound) {
+    model.position.z +=0.1
   } 
-  // else if (model.position.z >= frontBound) {
-  //   model.position.z -=0.1
-  // } else if (model.position.z <= backBound) {
-  //   model.position.z +=0.1
-  // // } 
-  // else if (modelBox.intersectsPlane(plane)) {
-  //   model.position.y=0
-  //   model.position.z=0
-  //   model.position.x=0
-
-  //   console.log("hit")
-  // }
 
 }
+
 
 //mobile control function
 const mobileMovement = (model) => {
@@ -1005,6 +1000,9 @@ joystick.on('move', function (event, data) {
       } 
   })
 }
+
+// console.log(roadBody.position)
+
 
 // Animate
 const tick = () => {
