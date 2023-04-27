@@ -1,0 +1,9 @@
+# Blender 3.4.1 MTL File: 'StarSparrow.blend'
+# www.blender.org
+
+newmtl StarSparrowBlue(Unified)
+Ka 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd tomahawkNeon.png
