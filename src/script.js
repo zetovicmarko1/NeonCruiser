@@ -770,6 +770,8 @@ vehicleFolder.add(guicontrols,'rocketShip').name('Rocket')
 vehicleFolder.add(guicontrols,'tomaShip').name('Tomahawk')
 vehicleFolder.add(guicontrols,'wideShip').name('Wide Guy')
 
+audioFolder.add(guicontrols, 'audioPlay').name('Play music')
+
 roadFolder.add(roadWidth, 'width').min(1).max(2).step(0.0001).onChange(scaleRoad).name("Road Width")
 buildingsFolder.add(tallBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewTall).name("Tall Building Segments")
 buildingsFolder.add(medBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewMed).name("Medium Building Segments")
@@ -907,6 +909,35 @@ joystick.on('move', function (event, data) {
   })
 }
 
+var musicSpeed = 1;
+var musicMultiplier = 0;
+var musicPlaying = false;
+var maxMusicSpeed = 1.25;
+var minMusicSpeed = 0.75;
+var updateMusic = (multiplier, playMusic) => {
+  musicSpeed = 3 / (Math.round(multiplier*100.0)/100.0);
+  if(musicSpeed > maxMusicSpeed){
+    musicSpeed = maxMusicSpeed;
+  }
+  else if(musicSpeed < minMusicSpeed){
+    musicSpeed = minMusicSpeed;
+  }
+
+  if(playMusic){
+    if(!musicPlaying)
+    {
+      music.setPlaybackRate(musicSpeed);
+      music.play();
+      musicPlaying = true;
+    }
+  }
+  else{
+    music.pause();
+    musicPlaying = false;
+  }
+  music.setPlaybackRate(musicSpeed);
+}
+
 // Animate
 const tick = () => {
     var elapsedTime = clock.getElapsedTime();
@@ -926,6 +957,7 @@ const tick = () => {
     controls.update();
 
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
+    updateMusic(guicontrols.speedMultiplier, audioPlay)
 
     effectComposer.render();
 
