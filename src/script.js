@@ -280,6 +280,58 @@ scene.add(road);
 scene.add(road2);
 scene.add(road3);
 
+const randomBuildings = new THREE.Group()
+
+for (let i = 0; i <= 4; i++) {
+
+  const leftBuildingTall = new THREE.Mesh(cylGeo1, buildingMaterial)
+  const leftBuildingMedium = new THREE.Mesh(cylGeo2, buildingMaterial)
+  const leftBuildingShort = new THREE.Mesh(cylGeo3, buildingMaterial)
+  const rightBuildingTall = new THREE.Mesh(cylGeo1, buildingMaterial)
+  const rightBuildingMedium = new THREE.Mesh(cylGeo2, buildingMaterial)
+  const rightBuildingShort = new THREE.Mesh(cylGeo3, buildingMaterial)
+
+  leftBuildingTall.rotation.y = buildingY
+  leftBuildingMedium.rotation.y = buildingY
+  leftBuildingShort.rotation.y = buildingY
+
+  rightBuildingTall.rotation.y = buildingY
+  rightBuildingMedium.rotation.y = buildingY
+  rightBuildingShort.rotation.y = buildingY
+
+  leftBuildingTall.position.y = -10
+  leftBuildingMedium.position.y = -10
+  leftBuildingShort.position.y = -10
+
+  rightBuildingTall.position.y = -10
+  rightBuildingMedium.position.y = -10
+  rightBuildingShort.position.y = -10
+
+  leftBuildingTall.position.x = -buildingX - Math.random()*buildingX
+  leftBuildingMedium.position.x = -buildingX - Math.random()*buildingX
+  leftBuildingShort.position.x = -buildingX - Math.random()*buildingX
+
+  rightBuildingTall.position.x = buildingX + Math.random()*buildingX
+  rightBuildingMedium.position.x = buildingX + Math.random()*buildingX
+  rightBuildingShort.position.x = buildingX + Math.random()*buildingX
+
+  leftBuildingTall.rotation.x = Math.PI*Math.random()
+  leftBuildingMedium.rotation.x = Math.PI*Math.random()
+  leftBuildingShort.rotation.x = Math.PI*Math.random()
+
+  rightBuildingTall.rotation.x = Math.PI*Math.random()
+  rightBuildingMedium.rotation.x = Math.PI*Math.random()
+  rightBuildingShort.rotation.x = Math.PI*Math.random()
+
+  randomBuildings.add(leftBuildingShort)
+  randomBuildings.add(leftBuildingMedium)
+  randomBuildings.add(leftBuildingTall)
+
+  randomBuildings.add(rightBuildingShort)
+  randomBuildings.add(rightBuildingMedium)
+  randomBuildings.add(rightBuildingTall)
+
+}
 
 var buildingsAllCyl = new THREE.Group();
 // var roads = new THREE.Group();
