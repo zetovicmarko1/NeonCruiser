@@ -18,6 +18,8 @@ import nipplejs from 'nipplejs';
 const textureLoader = new THREE.TextureLoader();
 const gridTexture = textureLoader.load('textures/grid.png');
 const buildingTexture = textureLoader.load('textures/building.png');
+const speckleNoise = textureLoader.load('textures/noise.jpg');
+const alphaNoise = textureLoader.load('textures/alpha.jpg');
 const metalnessTexture = textureLoader.load('textures/metalness.png');
 const gui = new GUI()
 const canvas = document.querySelector("canvas.webgl");
@@ -25,7 +27,6 @@ const loader = new OBJLoader()
 const mtlLoader = new MTLLoader()
 const scene = new THREE.Scene();
 const clock = new THREE.Clock();
-const manager = new THREE.LoadingManager()
 const webStick = new nipplejs.create({mode: 'dynamic', dataOnly: true, 
 zone: document.getElementById('zone_joystick')
 })
@@ -41,8 +42,6 @@ if (!/Android|iPhone/i.test(navigator.userAgent)) {
 if (/Android|iPhone/i.test(navigator.userAgent)) {
   webStick.destroy()
 } 
-
-
 
 //this is to interact with the spaceship outside of the loader function
 var rocket = new THREE.Group()
@@ -77,41 +76,52 @@ const cylGeo3 = new THREE.CylinderGeometry(6, 6, buildingHeightShort, 4)
 const torus = new THREE.TorusGeometry(10, 5);
 const material = new THREE.MeshStandardMaterial({
     map: gridTexture,
-    /**
-     * Add a metalnessMap to our material that will tell the renderer
-     * where the "rough" parts of our terrains are
-     */ 
-    metalnessMap: metalnessTexture,
-    /**
-     * Make the terrain very very metallic so it will reflect the light
-     * and not diffuse it: it will stay black
-     */ 
     metalness: 0.96,
-    /**
-     * Make the terrain a bit rough so the rough parts will diffuse the light
-     * well
-     */ 
-    roughness: 0.5,
+    roughness: 0.5
 });
 
 const buildingMaterial = new THREE.MeshStandardMaterial({
   map: buildingTexture,
-  /**
-   * Add a metalnessMap to our material that will tell the renderer
-   * where the "rough" parts of our terrains are
-   */ 
   metalnessMap: metalnessTexture,
-  /**
-   * Make the terrain very very metallic so it will reflect the light
-   * and not diffuse it: it will stay black
-   */ 
   metalness: 0.96,
-  /**
-   * Make the terrain a bit rough so the rough parts will diffuse the light
-   * well
-   */ 
-  roughness: 0.5,
+  roughness: 0.5
 });
+
+var shaderMat = new THREE.ShaderMaterial({
+  map: buildingTexture,
+  metalnessMap: metalnessTexture,
+  metalness: 0.96,
+  roughness: 0.5
+});
+
+
+
+const burner =new THREE.Mesh(new THREE.SphereGeometry(0.3), new THREE.MeshStandardMaterial({
+  color: 'white', 
+  alphaMap: speckleNoise,
+  transparent: true}));
+// scene.add(burner)
+
+
+const burnerAlpha =new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,0.3,32,32,true), new THREE.MeshStandardMaterial({
+  color: 'white', 
+  alphaMap: alphaNoise,
+  transparent: true}));
+// scene.add(burnerAlpha)
+// burnerAlpha.rotation.z = Math.PI
+burnerAlpha.rotation.x=Math.PI/2
+
+
+gui.add(burnerAlpha.position, 'x').step(0.1)
+gui.add(burnerAlpha.position, 'y').step(0.1)
+gui.add(burnerAlpha.position, 'z').step(0.1)
+gui.add(burnerAlpha.rotation, 'x').step(0.1)
+gui.add(burnerAlpha.rotation, 'y').step(0.1)
+gui.add(burnerAlpha.rotation, 'z').step(0.1)
+
+  
+
+
 
 // const helper = new THREE.AxesHelper(300)
 // scene.add(helper)
@@ -475,6 +485,12 @@ const speedFunction = (time, multiplier) => {
       model.rotation.z = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
       model.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
     }
+
+    burner.rotation.x  = (Math.PI * time)/(multiplier/16)
+    // burner.position.x  = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+    burnerAlpha.position.x  = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+
+
 
     rotatingFunc(rocket)
     rotatingFunc(arrow)
@@ -1158,7 +1174,7 @@ var onKeyUp = (e) => {
 }
 
 //wasd control function
-const webMovement = (model) => {
+const webMovement = (model, time, multiplier) => {
   
   webStick.on('move', function (event, data) {
     if(model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
@@ -1202,6 +1218,19 @@ const webMovement = (model) => {
     model.position.z +=0.1
   } 
 
+  burner.position.y = model.position.y -2
+  burner.position.x = model.position.x
+  burner.position.z = model.position.z +16.5
+
+  burnerAlpha.position.y = burner.position.y
+  burnerAlpha.position.x = burner.position.x
+  burnerAlpha.position.z = burner.position.z-0.1
+
+  // burner.position.x  = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+  // burner.position.y = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
+
+
+
 }
 
 
@@ -1224,6 +1253,14 @@ joystick.on('move', function (event, data) {
       } if (model.position.x >= rightBound) {
         model.position.x -=0.01
       } 
+      burner.position.y = model.position.y -2
+      burner.position.x = model.position.x
+      burner.position.z = model.position.z +16.5
+
+      burnerAlpha.position.y = burner.position.y
+      burnerAlpha.position.x = burner.position.x
+      burnerAlpha.position.z = burner.position.z-0.1
+
   })
 }
 
@@ -1234,11 +1271,13 @@ joystick.on('move', function (event, data) {
 const tick = () => {
     var elapsedTime = clock.getElapsedTime();
 
+    
+
     //all movements for all ships, starting with rocket
-    webMovement(rocket)
-    webMovement(arrow)
-    webMovement(tomahawk)
-    webMovement(wideGuy)
+    webMovement(rocket, elapsedTime, guicontrols.speedMultiplier)
+    webMovement(arrow,elapsedTime, guicontrols.speedMultiplier)
+    webMovement(tomahawk,elapsedTime, guicontrols.speedMultiplier)
+    webMovement(wideGuy,elapsedTime, guicontrols.speedMultiplier)
 
     mobileMovement(rocket)
     mobileMovement(arrow)
