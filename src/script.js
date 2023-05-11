@@ -54,7 +54,6 @@ const arrowBox = new THREE.Box3()
 const tomaBox = new THREE.Box3()
 const wideBox = new THREE.Box3()
 
-
 // // Fog
 const fog = new THREE.Fog(0x000000, 0.1, 25);
 scene.fog = fog;
@@ -94,33 +93,39 @@ var shaderMat = new THREE.ShaderMaterial({
   roughness: 0.5
 });
 
-
-
-const burner =new THREE.Mesh(new THREE.SphereGeometry(0.3), new THREE.MeshStandardMaterial({
+const burnerAlpha =new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.3,0.3,32,32), new THREE.MeshStandardMaterial({
   color: 'white', 
-  alphaMap: speckleNoise,
-  transparent: true}));
-// scene.add(burner)
+  alphaMap:speckleNoise,
+  transparent: false}));
+scene.add(burnerAlpha)
+burnerAlpha.scale.x =0.5
+burnerAlpha.scale.y =0.5
+burnerAlpha.scale.z =0.5
 
-
-const burnerAlpha =new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,0.3,32,32,true), new THREE.MeshStandardMaterial({
+const burnerAlpha2 = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.3,0.3,32,32), new THREE.MeshStandardMaterial({
   color: 'white', 
-  alphaMap: alphaNoise,
-  transparent: true}));
-// scene.add(burnerAlpha)
+  alphaMap:speckleNoise,
+  transparent: false}));
+scene.add(burnerAlpha2)
+burnerAlpha2.visible = false
+burnerAlpha2.scale.x =0.5
+burnerAlpha2.scale.y =0.5
+burnerAlpha2.scale.z =0.5
+
+gui.add(burnerAlpha2.position, 'x').step(0.01)
+gui.add(burnerAlpha2.position, 'y').step(0.01)
+gui.add(burnerAlpha2.position, 'z').step(0.01)
+
+
+
+
 // burnerAlpha.rotation.z = Math.PI
 burnerAlpha.rotation.x=Math.PI/2
-
-
-gui.add(burnerAlpha.position, 'x').step(0.1)
-gui.add(burnerAlpha.position, 'y').step(0.1)
-gui.add(burnerAlpha.position, 'z').step(0.1)
-gui.add(burnerAlpha.rotation, 'x').step(0.1)
-gui.add(burnerAlpha.rotation, 'y').step(0.1)
-gui.add(burnerAlpha.rotation, 'z').step(0.1)
-
+burnerAlpha2.rotation.x=Math.PI/2
   
-
+// burnerAlpha.position.x  = (rocketBox.min.x+rocketBox.max.x)/2
+//   burnerAlpha.position.y =  (rocketBox.min.y+rocketBox.max.y)/2
+//   burnerAlpha.position.z =  rocketBox.max.x
 
 
 // const helper = new THREE.AxesHelper(300)
@@ -486,11 +491,12 @@ const speedFunction = (time, multiplier) => {
       model.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
     }
 
-    burner.rotation.x  = (Math.PI * time)/(multiplier/16)
+    burnerAlpha.scale.y  = Math.abs(Math.sin(time*(multiplier-30)))
+    burnerAlpha2.scale.y  = Math.abs(Math.sin(time*(multiplier-30)))
+
+    // burnerAlpha.scale.x  = Math.sin(time*(multiplier-10))
+
     // burner.position.x  = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
-    burnerAlpha.position.x  = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
-
-
 
     rotatingFunc(rocket)
     rotatingFunc(arrow)
@@ -511,10 +517,11 @@ var downBound = -1
 var frontBound = -5
 var backBound = 1
 
+// var currModel = 'rocket'
 
 //parameters for the gui
 var guicontrols = {
-    speedMultiplier: 3,
+    speedMultiplier: 4,
     color: 0x00FFFB,
     view: 21,
     bloomStrength: 3.0,
@@ -544,10 +551,17 @@ var guicontrols = {
       gsap.to(music.stop())
     },
     arrowShip:() => {
+      burnerAlpha2.visible = true
+      // currModel = 'arrow'
       scene.remove(rocket)
       scene.remove(tomahawk)
       scene.remove(wideGuy)
       scene.add(arrow)
+      rocket.visible = false
+      arrow.visible = true
+      tomahawk.visible = false
+      wideGuy.visible = false
+
       mtlLoader.load('models/arrow.mtl', 
       (materials) => {
         materials.preload()
@@ -571,10 +585,16 @@ var guicontrols = {
       )   
     }, 
     rocketShip:() => {
+      burnerAlpha2.visible = false
+      // currModel = 'rocket'
       scene.remove(arrow)
       scene.remove(tomahawk)
       scene.remove(wideGuy)
       scene.add(rocket)
+      rocket.visible = true
+      arrow.visible = false
+      tomahawk.visible = false
+      wideGuy.visible = false
       mtlLoader.load('models/rocket.mtl', 
       (materials) => {
         materials.preload()
@@ -592,16 +612,24 @@ var guicontrols = {
             rightBound = (buildingX-5.8)*roadWidth.width
             leftBound = -(buildingX-5.8)*roadWidth.width
             rocketBox.setFromObject(rocket)
+
             }
           )
         }
       )   
     },
     tomaShip:() => {
+      burnerAlpha2.visible = false
+      // currModel = 'tomahawk'
       scene.remove(arrow)
       scene.remove(rocket)
       scene.remove(wideGuy)
       scene.add(tomahawk)
+      rocket.visible = false
+      arrow.visible = false
+      tomahawk.visible = true
+      wideGuy.visible = false
+
       mtlLoader.load('models/tomahawk.mtl', 
       (materials) => {
         materials.preload()
@@ -619,16 +647,23 @@ var guicontrols = {
             rightBound = (buildingX-8)*roadWidth.width
             leftBound = -(buildingX-8)*roadWidth.width
             tomaBox.setFromObject(tomahawk)
+            
             }
           )
         }
       )   
     },
     wideShip:() => {
+      burnerAlpha2.visible = false
+      // currModel = 'wideGuy'
       scene.remove(arrow)
       scene.remove(rocket)
       scene.remove(tomahawk)
       scene.add(wideGuy)
+      rocket.visible = false
+      arrow.visible = false
+      tomahawk.visible = false
+      wideGuy.visible = true
       mtlLoader.load('models/wide.mtl', 
       (materials) => {
         materials.preload()
@@ -820,6 +855,7 @@ var guicontrols = {
 
 effectComposer.addPass(bloomPass);
 
+
 const ambientLight = new THREE.AmbientLight(0x00FFFB, 100);
  //this is the main colour, it uses an ambient light for it
 
@@ -850,6 +886,7 @@ var changeColor = (val) =>  {
 } 
 
 //rainbow mode functions
+
 
 const dimmerRed= () => {
   currColor='red'
@@ -1017,6 +1054,11 @@ const genNewMed= () => {
 }
  //default vehicle
   scene.add(rocket)
+  rocket.visible = true
+  arrow.visible = false
+  tomahawk.visible = false
+  wideGuy.visible = false
+
   mtlLoader.load('models/rocket.mtl', 
   (materials) => {
     materials.preload()
@@ -1038,7 +1080,7 @@ const genNewMed= () => {
 )
 
 gui.add(guicontrols, 'instructions').name('Instructions')
-ctrlFolder.add(guicontrols, 'speedMultiplier').min(0.4).max(15).step(0.01).name('Cruising Speed')
+ctrlFolder.add(guicontrols, 'speedMultiplier').min(2).max(6).step(0.1).name('Cruising Speed')
 fxFolder.addColor(guicontrols, 'color').onChange(changeColor).name('Neon Colour')
 fxFolder.add(guicontrols, 'rainbowMode').name('Rainbow Mode')
 fxFolder.add(guicontrols, 'normalMode').name('Normal Mode')
@@ -1059,7 +1101,7 @@ cameraFolder.add(guicontrols, 'firstPerson').name('First Person View')
 cameraFolder.add(guicontrols, 'thirdPerson').name('Third Person View')
 cameraFolder.add(guicontrols, 'birdsEye').name("Bird's Eye View")
 
-vehicleFolder.add(guicontrols,'arrowShip').name('Arrow')
+// vehicleFolder.add(guicontrols,'arrowShip').name('Arrow')
 vehicleFolder.add(guicontrols,'rocketShip').name('Rocket')
 vehicleFolder.add(guicontrols,'tomaShip').name('Tomahawk')
 vehicleFolder.add(guicontrols,'wideShip').name('Wide Guy')
@@ -1173,12 +1215,12 @@ var onKeyUp = (e) => {
   
 }
 
+
 //wasd control function
-const webMovement = (model, time, multiplier) => {
-  
+const webMovement = (model) => {
+
   webStick.on('move', function (event, data) {
     if(model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
-    
       model.position.y=data.vector.y*6
       model.position.z=-data.vector.y*4
       model.position.x=data.vector.x*4
@@ -1218,18 +1260,30 @@ const webMovement = (model, time, multiplier) => {
     model.position.z +=0.1
   } 
 
-  burner.position.y = model.position.y -2
-  burner.position.x = model.position.x
-  burner.position.z = model.position.z +16.5
+  if (rocket.visible == true){
+    burnerAlpha.position.x  = ((rocketBox.min.x+rocketBox.max.x)/2)
+    burnerAlpha.position.y =  (-0.7+(rocketBox.min.y+rocketBox.max.y)/2)
+    burnerAlpha.position.z =  rocketBox.max.z 
+  } else if (wideGuy.visible == true){
+    burnerAlpha.position.x  = ((wideBox.min.x+wideBox.max.x)/2)
+    burnerAlpha.position.y =  (-1.1+(wideBox.min.y+wideBox.max.y)/2)
+    burnerAlpha.position.z =  wideBox.max.z-0.2
+  } 
+  // else if (arrow.visible == true){
+  //   burnerAlpha2.visible = false
+  //   burnerAlpha.position.x  = ((arrowBox.min.y+arrowBox.max.y)/2)
+  //   burnerAlpha2.position.x  = burnerAlpha.position.x +4
+  //   burnerAlpha.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
+  //   burnerAlpha2.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
+  //   burnerAlpha.position.z =  arrowBox.max.z-1.5
+  //   burnerAlpha2.position.z =  arrowBox.max.z-1.5
 
-  burnerAlpha.position.y = burner.position.y
-  burnerAlpha.position.x = burner.position.x
-  burnerAlpha.position.z = burner.position.z-0.1
-
-  // burner.position.x  = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
-  // burner.position.y = (Math.cos(time*(multiplier-5))/(multiplier*2))*(0.4/15)*8 
-
-
+  // } 
+  else if (tomahawk.visible == true){
+    burnerAlpha.position.x  = ((tomaBox.min.x+tomaBox.max.x)/2)
+    burnerAlpha.position.y =  (-0.8+(tomaBox.min.y+tomaBox.max.y)/2)
+    burnerAlpha.position.z =  tomaBox.max.z-0.4
+  }
 
 }
 
@@ -1253,13 +1307,30 @@ joystick.on('move', function (event, data) {
       } if (model.position.x >= rightBound) {
         model.position.x -=0.01
       } 
-      burner.position.y = model.position.y -2
-      burner.position.x = model.position.x
-      burner.position.z = model.position.z +16.5
-
-      burnerAlpha.position.y = burner.position.y
-      burnerAlpha.position.x = burner.position.x
-      burnerAlpha.position.z = burner.position.z-0.1
+      if (rocket.visible == true){
+        burnerAlpha.position.x  = ((rocketBox.min.x+rocketBox.max.x)/2)
+        burnerAlpha.position.y =  (-0.7+(rocketBox.min.y+rocketBox.max.y)/2)
+        burnerAlpha.position.z =  rocketBox.max.z 
+      } else if (wideGuy.visible == true){
+        burnerAlpha.position.x  = ((wideBox.min.x+wideBox.max.x)/2)
+        burnerAlpha.position.y =  (-1.1+(wideBox.min.y+wideBox.max.y)/2)
+        burnerAlpha.position.z =  wideBox.max.z-0.2
+      } 
+      // else if (arrow.visible == true){
+      //   burnerAlpha2.visible = false
+      //   burnerAlpha.position.x  = ((arrowBox.min.y+arrowBox.max.y)/2)
+      //   burnerAlpha2.position.x  = burnerAlpha.position.x +4
+      //   burnerAlpha.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
+      //   burnerAlpha2.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
+      //   burnerAlpha.position.z =  arrowBox.max.z-1.5
+      //   burnerAlpha2.position.z =  arrowBox.max.z-1.5
+    
+      // } 
+      else if (tomahawk.visible == true){
+        burnerAlpha.position.x  = ((tomaBox.min.x+tomaBox.max.x)/2)
+        burnerAlpha.position.y =  (-0.8+(tomaBox.min.y+tomaBox.max.y)/2)
+        burnerAlpha.position.z =  tomaBox.max.z-0.4
+      }
 
   })
 }
@@ -1284,8 +1355,15 @@ const tick = () => {
     mobileMovement(tomahawk)
     mobileMovement(wideGuy)
 
+    
+
     // Update controls
     controls.update();
+    rocketBox.setFromObject(rocket);
+    wideBox.setFromObject(wideGuy);
+    tomaBox.setFromObject(tomahawk);
+    arrowBox.setFromObject(arrow);
+
 
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
 
@@ -1299,11 +1377,15 @@ const tick = () => {
     dimmerBlu()
     dimmerPrp()
 
+    // console.log(currModel) 
+
+
     // Call tick again on the next frame
     window.requestAnimationFrame(tick);
 };
 
 tick();
+
 
 document.addEventListener('keydown', onKeyDown, false)
 document.addEventListener('keyup', onKeyUp, false)
