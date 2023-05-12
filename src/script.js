@@ -1259,10 +1259,10 @@ const webMovement = (model) => {
 
   } else if (model.position.y >= upBound) {
     model.position.y-=0.01
-    model.position.z+=0.01
+    // model.position.z+=0.01
   } else if (model.position.y <= downBound) {
     model.position.y+=0.1
-    model.position.z-=0.1
+    // model.position.z-=0.1
   } else if (model.position.x <= leftBound) {
     model.position.x +=0.1
   } else if (model.position.x >= rightBound) {
