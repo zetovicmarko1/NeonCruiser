@@ -18,6 +18,8 @@ import nipplejs from 'nipplejs';
 const textureLoader = new THREE.TextureLoader();
 const gridTexture = textureLoader.load('textures/grid.png');
 const buildingTexture = textureLoader.load('textures/building.png');
+const speckleNoise = textureLoader.load('textures/noise.jpg');
+const alphaNoise = textureLoader.load('textures/alpha.jpg');
 const metalnessTexture = textureLoader.load('textures/metalness.png');
 const gui = new GUI()
 const canvas = document.querySelector("canvas.webgl");
@@ -25,7 +27,6 @@ const loader = new OBJLoader()
 const mtlLoader = new MTLLoader()
 const scene = new THREE.Scene();
 const clock = new THREE.Clock();
-const manager = new THREE.LoadingManager()
 const webStick = new nipplejs.create({mode: 'dynamic', dataOnly: true, 
 zone: document.getElementById('zone_joystick')
 })
@@ -38,11 +39,9 @@ if (!/Android|iPhone/i.test(navigator.userAgent)) {
   joystick.destroy()
 }
 
-if (/Android|iPhone/i.test(navigator.userAgent)) {
+if (!/Android|iPhone/i.test(navigator.userAgent)) {
   webStick.destroy()
 } 
-
-
 
 //this is to interact with the spaceship outside of the loader function
 var rocket = new THREE.Group()
@@ -54,7 +53,6 @@ const rocketBox = new THREE.Box3()
 const arrowBox = new THREE.Box3()
 const tomaBox = new THREE.Box3()
 const wideBox = new THREE.Box3()
-
 
 // // Fog
 const fog = new THREE.Fog(0x000000, 0.1, 25);
@@ -77,41 +75,58 @@ const cylGeo3 = new THREE.CylinderGeometry(6, 6, buildingHeightShort, 4)
 const torus = new THREE.TorusGeometry(10, 5);
 const material = new THREE.MeshStandardMaterial({
     map: gridTexture,
-    /**
-     * Add a metalnessMap to our material that will tell the renderer
-     * where the "rough" parts of our terrains are
-     */ 
-    metalnessMap: metalnessTexture,
-    /**
-     * Make the terrain very very metallic so it will reflect the light
-     * and not diffuse it: it will stay black
-     */ 
     metalness: 0.96,
-    /**
-     * Make the terrain a bit rough so the rough parts will diffuse the light
-     * well
-     */ 
-    roughness: 0.5,
+    roughness: 0.5
 });
 
 const buildingMaterial = new THREE.MeshStandardMaterial({
   map: buildingTexture,
-  /**
-   * Add a metalnessMap to our material that will tell the renderer
-   * where the "rough" parts of our terrains are
-   */ 
   metalnessMap: metalnessTexture,
-  /**
-   * Make the terrain very very metallic so it will reflect the light
-   * and not diffuse it: it will stay black
-   */ 
   metalness: 0.96,
-  /**
-   * Make the terrain a bit rough so the rough parts will diffuse the light
-   * well
-   */ 
-  roughness: 0.5,
+  roughness: 0.5
 });
+
+var shaderMat = new THREE.ShaderMaterial({
+  map: buildingTexture,
+  metalnessMap: metalnessTexture,
+  metalness: 0.96,
+  roughness: 0.5
+});
+
+const burnerAlpha =new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.3,0.3,32,32), new THREE.MeshStandardMaterial({
+  color: 'white', 
+  alphaMap:speckleNoise,
+  transparent: false}));
+scene.add(burnerAlpha)
+burnerAlpha.scale.x =0.5
+burnerAlpha.scale.y =0.5
+burnerAlpha.scale.z =0.5
+
+const burnerAlpha2 = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.3,0.3,32,32), new THREE.MeshStandardMaterial({
+  color: 'white', 
+  alphaMap:speckleNoise,
+  transparent: false}));
+scene.add(burnerAlpha2)
+burnerAlpha2.visible = false
+burnerAlpha2.scale.x =0.5
+burnerAlpha2.scale.y =0.5
+burnerAlpha2.scale.z =0.5
+
+gui.add(burnerAlpha2.position, 'x').step(0.01)
+gui.add(burnerAlpha2.position, 'y').step(0.01)
+gui.add(burnerAlpha2.position, 'z').step(0.01)
+
+
+
+
+// burnerAlpha.rotation.z = Math.PI
+burnerAlpha.rotation.x=Math.PI/2
+burnerAlpha2.rotation.x=Math.PI/2
+  
+// burnerAlpha.position.x  = (rocketBox.min.x+rocketBox.max.x)/2
+//   burnerAlpha.position.y =  (rocketBox.min.y+rocketBox.max.y)/2
+//   burnerAlpha.position.z =  rocketBox.max.x
+
 
 // const helper = new THREE.AxesHelper(300)
 // scene.add(helper)
@@ -476,6 +491,13 @@ const speedFunction = (time, multiplier) => {
       model.rotation.x = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
     }
 
+    burnerAlpha.scale.y  = Math.abs(Math.sin(time*(multiplier-30)))
+    burnerAlpha2.scale.y  = Math.abs(Math.sin(time*(multiplier-30)))
+
+    // burnerAlpha.scale.x  = Math.sin(time*(multiplier-10))
+
+    // burner.position.x  = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
+
     rotatingFunc(rocket)
     rotatingFunc(arrow)
     rotatingFunc(tomahawk)
@@ -495,10 +517,11 @@ var downBound = -1
 var frontBound = -5
 var backBound = 1
 
+// var currModel = 'rocket'
 
 //parameters for the gui
 var guicontrols = {
-    speedMultiplier: 3,
+    speedMultiplier: 4,
     color: 0x00FFFB,
     view: 21,
     bloomStrength: 3.0,
@@ -518,7 +541,7 @@ var guicontrols = {
       gsap.to(camera.position, {duration: 1, y: 1})
     },
     instructions: () => {
-      alert('Use WASD to control the vehicle on Web\nClick and drag to move up and down\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
+      alert('Use WASD to control the vehicle on Web\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
     },
     //songOn: false
     playMusic:() =>{
@@ -528,10 +551,17 @@ var guicontrols = {
       gsap.to(music.stop())
     },
     arrowShip:() => {
+      burnerAlpha2.visible = true
+      // currModel = 'arrow'
       scene.remove(rocket)
       scene.remove(tomahawk)
       scene.remove(wideGuy)
       scene.add(arrow)
+      rocket.visible = false
+      arrow.visible = true
+      tomahawk.visible = false
+      wideGuy.visible = false
+
       mtlLoader.load('models/arrow.mtl', 
       (materials) => {
         materials.preload()
@@ -555,10 +585,16 @@ var guicontrols = {
       )   
     }, 
     rocketShip:() => {
+      burnerAlpha2.visible = false
+      // currModel = 'rocket'
       scene.remove(arrow)
       scene.remove(tomahawk)
       scene.remove(wideGuy)
       scene.add(rocket)
+      rocket.visible = true
+      arrow.visible = false
+      tomahawk.visible = false
+      wideGuy.visible = false
       mtlLoader.load('models/rocket.mtl', 
       (materials) => {
         materials.preload()
@@ -576,16 +612,24 @@ var guicontrols = {
             rightBound = (buildingX-5.8)*roadWidth.width
             leftBound = -(buildingX-5.8)*roadWidth.width
             rocketBox.setFromObject(rocket)
+
             }
           )
         }
       )   
     },
     tomaShip:() => {
+      burnerAlpha2.visible = false
+      // currModel = 'tomahawk'
       scene.remove(arrow)
       scene.remove(rocket)
       scene.remove(wideGuy)
       scene.add(tomahawk)
+      rocket.visible = false
+      arrow.visible = false
+      tomahawk.visible = true
+      wideGuy.visible = false
+
       mtlLoader.load('models/tomahawk.mtl', 
       (materials) => {
         materials.preload()
@@ -603,16 +647,23 @@ var guicontrols = {
             rightBound = (buildingX-8)*roadWidth.width
             leftBound = -(buildingX-8)*roadWidth.width
             tomaBox.setFromObject(tomahawk)
+            
             }
           )
         }
       )   
     },
     wideShip:() => {
+      burnerAlpha2.visible = false
+      // currModel = 'wideGuy'
       scene.remove(arrow)
       scene.remove(rocket)
       scene.remove(tomahawk)
       scene.add(wideGuy)
+      rocket.visible = false
+      arrow.visible = false
+      tomahawk.visible = false
+      wideGuy.visible = true
       mtlLoader.load('models/wide.mtl', 
       (materials) => {
         materials.preload()
@@ -804,6 +855,7 @@ var guicontrols = {
 
 effectComposer.addPass(bloomPass);
 
+
 const ambientLight = new THREE.AmbientLight(0x00FFFB, 100);
  //this is the main colour, it uses an ambient light for it
 
@@ -834,6 +886,7 @@ var changeColor = (val) =>  {
 } 
 
 //rainbow mode functions
+
 
 const dimmerRed= () => {
   currColor='red'
@@ -1001,6 +1054,11 @@ const genNewMed= () => {
 }
  //default vehicle
   scene.add(rocket)
+  rocket.visible = true
+  arrow.visible = false
+  tomahawk.visible = false
+  wideGuy.visible = false
+
   mtlLoader.load('models/rocket.mtl', 
   (materials) => {
     materials.preload()
@@ -1022,7 +1080,7 @@ const genNewMed= () => {
 )
 
 gui.add(guicontrols, 'instructions').name('Instructions')
-ctrlFolder.add(guicontrols, 'speedMultiplier').min(0.4).max(15).step(0.01).name('Cruising Speed')
+ctrlFolder.add(guicontrols, 'speedMultiplier').min(2).max(6).step(0.1).name('Cruising Speed')
 fxFolder.addColor(guicontrols, 'color').onChange(changeColor).name('Neon Colour')
 fxFolder.add(guicontrols, 'rainbowMode').name('Rainbow Mode')
 fxFolder.add(guicontrols, 'normalMode').name('Normal Mode')
@@ -1043,7 +1101,7 @@ cameraFolder.add(guicontrols, 'firstPerson').name('First Person View')
 cameraFolder.add(guicontrols, 'thirdPerson').name('Third Person View')
 cameraFolder.add(guicontrols, 'birdsEye').name("Bird's Eye View")
 
-vehicleFolder.add(guicontrols,'arrowShip').name('Arrow')
+// vehicleFolder.add(guicontrols,'arrowShip').name('Arrow')
 vehicleFolder.add(guicontrols,'rocketShip').name('Rocket')
 vehicleFolder.add(guicontrols,'tomaShip').name('Tomahawk')
 vehicleFolder.add(guicontrols,'wideShip').name('Wide Guy')
@@ -1157,12 +1215,24 @@ var onKeyUp = (e) => {
   
 }
 
+let direction = new THREE.Vector3(0,-1,0)
+direction.normalize()
+var raycaster =  new THREE.Raycaster(new THREE.Vector3(rocket.position.x, rocket.position.y-0.3, rocket.position.z), direction)
+console.log(raycaster)
+
+// scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000) );
+
+
+// var helper = new THREE.Box3Helper(rocketBox)
+// scene.add(helper)
+
+
+
 //wasd control function
 const webMovement = (model) => {
-  
+
   webStick.on('move', function (event, data) {
     if(model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
-    
       model.position.y=data.vector.y*6
       model.position.z=-data.vector.y*4
       model.position.x=data.vector.x*4
@@ -1170,7 +1240,8 @@ const webMovement = (model) => {
   })
 
   if (model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
-
+    raycaster.set(new THREE.Vector3(model.position.x, model.position.y-0.3, model.position.z), direction)
+    
     if (isFor == true ) {
       model.position.y+=0.07
       model.position.z-=0.07
@@ -1202,6 +1273,31 @@ const webMovement = (model) => {
     model.position.z +=0.1
   } 
 
+  if (rocket.visible == true){
+    burnerAlpha.position.x  = ((rocketBox.min.x+rocketBox.max.x)/2)
+    burnerAlpha.position.y =  (-0.7+(rocketBox.min.y+rocketBox.max.y)/2)
+    burnerAlpha.position.z =  rocketBox.max.z 
+  } else if (wideGuy.visible == true){
+    burnerAlpha.position.x  = ((wideBox.min.x+wideBox.max.x)/2)
+    burnerAlpha.position.y =  (-1.1+(wideBox.min.y+wideBox.max.y)/2)
+    burnerAlpha.position.z =  wideBox.max.z-0.2
+  } 
+  // else if (arrow.visible == true){
+  //   burnerAlpha2.visible = false
+  //   burnerAlpha.position.x  = ((arrowBox.min.y+arrowBox.max.y)/2)
+  //   burnerAlpha2.position.x  = burnerAlpha.position.x +4
+  //   burnerAlpha.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
+  //   burnerAlpha2.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
+  //   burnerAlpha.position.z =  arrowBox.max.z-1.5
+  //   burnerAlpha2.position.z =  arrowBox.max.z-1.5
+
+  // } 
+  else if (tomahawk.visible == true){
+    burnerAlpha.position.x  = ((tomaBox.min.x+tomaBox.max.x)/2)
+    burnerAlpha.position.y =  (-0.8+(tomaBox.min.y+tomaBox.max.y)/2)
+    burnerAlpha.position.z =  tomaBox.max.z-0.4
+  }
+
 }
 
 
@@ -1224,15 +1320,41 @@ joystick.on('move', function (event, data) {
       } if (model.position.x >= rightBound) {
         model.position.x -=0.01
       } 
+      if (rocket.visible == true){
+        burnerAlpha.position.x  = ((rocketBox.min.x+rocketBox.max.x)/2)
+        burnerAlpha.position.y =  (-0.7+(rocketBox.min.y+rocketBox.max.y)/2)
+        burnerAlpha.position.z =  rocketBox.max.z 
+      } else if (wideGuy.visible == true){
+        burnerAlpha.position.x  = ((wideBox.min.x+wideBox.max.x)/2)
+        burnerAlpha.position.y =  (-1.1+(wideBox.min.y+wideBox.max.y)/2)
+        burnerAlpha.position.z =  wideBox.max.z-0.2
+      } 
+      // else if (arrow.visible == true){
+      //   burnerAlpha2.visible = false
+      //   burnerAlpha.position.x  = ((arrowBox.min.y+arrowBox.max.y)/2)
+      //   burnerAlpha2.position.x  = burnerAlpha.position.x +4
+      //   burnerAlpha.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
+      //   burnerAlpha2.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
+      //   burnerAlpha.position.z =  arrowBox.max.z-1.5
+      //   burnerAlpha2.position.z =  arrowBox.max.z-1.5
+    
+      // } 
+      else if (tomahawk.visible == true){
+        burnerAlpha.position.x  = ((tomaBox.min.x+tomaBox.max.x)/2)
+        burnerAlpha.position.y =  (-0.8+(tomaBox.min.y+tomaBox.max.y)/2)
+        burnerAlpha.position.z =  tomaBox.max.z-0.4
+      }
+
   })
 }
 
 // console.log(roadBody.position)
 
-
 // Animate
 const tick = () => {
     var elapsedTime = clock.getElapsedTime();
+
+    
 
     //all movements for all ships, starting with rocket
     webMovement(rocket)
@@ -1243,10 +1365,15 @@ const tick = () => {
     mobileMovement(rocket)
     mobileMovement(arrow)
     mobileMovement(tomahawk)
-    mobileMovement(wideGuy)
+    mobileMovement(wideGuy)    
 
     // Update controls
     controls.update();
+    rocketBox.setFromObject(rocket);
+    wideBox.setFromObject(wideGuy);
+    tomaBox.setFromObject(tomahawk);
+    arrowBox.setFromObject(arrow);
+
 
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
 
@@ -1260,11 +1387,15 @@ const tick = () => {
     dimmerBlu()
     dimmerPrp()
 
+    // console.log(currModel) 
+
+
     // Call tick again on the next frame
     window.requestAnimationFrame(tick);
 };
 
 tick();
+
 
 document.addEventListener('keydown', onKeyDown, false)
 document.addEventListener('keyup', onKeyUp, false)
