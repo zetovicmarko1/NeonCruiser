@@ -39,7 +39,7 @@ if (!/Android|iPhone/i.test(navigator.userAgent)) {
   joystick.destroy()
 }
 
-if (/Android|iPhone/i.test(navigator.userAgent)) {
+if (!/Android|iPhone/i.test(navigator.userAgent)) {
   webStick.destroy()
 } 
 
@@ -1215,6 +1215,18 @@ var onKeyUp = (e) => {
   
 }
 
+let direction = new THREE.Vector3(0,-1,0)
+direction.normalize()
+var raycaster =  new THREE.Raycaster(new THREE.Vector3(rocket.position.x, rocket.position.y-0.3, rocket.position.z), direction)
+console.log(raycaster)
+
+// scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000) );
+
+
+// var helper = new THREE.Box3Helper(rocketBox)
+// scene.add(helper)
+
+
 
 //wasd control function
 const webMovement = (model) => {
@@ -1228,7 +1240,8 @@ const webMovement = (model) => {
   })
 
   if (model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
-
+    raycaster.set(new THREE.Vector3(model.position.x, model.position.y-0.3, model.position.z), direction)
+    
     if (isFor == true ) {
       model.position.y+=0.07
       model.position.z-=0.07
@@ -1337,7 +1350,6 @@ joystick.on('move', function (event, data) {
 
 // console.log(roadBody.position)
 
-
 // Animate
 const tick = () => {
     var elapsedTime = clock.getElapsedTime();
@@ -1345,17 +1357,15 @@ const tick = () => {
     
 
     //all movements for all ships, starting with rocket
-    webMovement(rocket, elapsedTime, guicontrols.speedMultiplier)
-    webMovement(arrow,elapsedTime, guicontrols.speedMultiplier)
-    webMovement(tomahawk,elapsedTime, guicontrols.speedMultiplier)
-    webMovement(wideGuy,elapsedTime, guicontrols.speedMultiplier)
+    webMovement(rocket)
+    webMovement(arrow)
+    webMovement(tomahawk)
+    webMovement(wideGuy)
 
     mobileMovement(rocket)
     mobileMovement(arrow)
     mobileMovement(tomahawk)
-    mobileMovement(wideGuy)
-
-    
+    mobileMovement(wideGuy)    
 
     // Update controls
     controls.update();
