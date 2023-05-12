@@ -541,7 +541,7 @@ var guicontrols = {
       gsap.to(camera.position, {duration: 1, y: 1})
     },
     instructions: () => {
-      alert('Use WASD to control the vehicle on Web\nClick and drag to move up and down\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
+      alert('Use WASD to control the vehicle on Web\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
     },
     //songOn: false
     playMusic:() =>{
