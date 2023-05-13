@@ -550,11 +550,15 @@ var guicontrols = {
       cameraMode = 'thirdperson'
       gsap.to(camera.position, {duration: 1, z: 21})
       gsap.to(camera.position, {duration: 1, y: 1})
+      gsap.to(camera.position, {duration: 1, x: 0})
+
     },
     birdsEye: () => {
       cameraMode = 'birdseye'
       gsap.to(camera.position, {duration: 1, z: 25})
       gsap.to(camera.position, {duration: 1, y: 1})
+      gsap.to(camera.position, {duration: 1, x: 0})
+
     },
     instructions: () => {
       alert('Use WASD to control the vehicle on Web\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
