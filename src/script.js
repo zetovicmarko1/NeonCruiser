@@ -34,6 +34,8 @@ const joystick = new nipplejs.create({mode: 'static', position: {top:'85%', left
 zone: document.getElementById('zone_joystick')
 }})
 
+var cameraMode = 'thirdperson'
+
 // This checks if mobile, used for the joystick controller
 if (!/Android|iPhone/i.test(navigator.userAgent)) {
   joystick.destroy()
@@ -112,9 +114,9 @@ burnerAlpha2.scale.x =0.5
 burnerAlpha2.scale.y =0.5
 burnerAlpha2.scale.z =0.5
 
-gui.add(burnerAlpha2.position, 'x').step(0.01)
-gui.add(burnerAlpha2.position, 'y').step(0.01)
-gui.add(burnerAlpha2.position, 'z').step(0.01)
+// gui.add(burnerAlpha2.position, 'x').step(0.01)
+// gui.add(burnerAlpha2.position, 'y').step(0.01)
+// gui.add(burnerAlpha2.position, 'z').step(0.01)
 
 
 
@@ -528,15 +530,29 @@ var guicontrols = {
     bloomThreshold: 0.1,
     bloomRadius: 0.5,
     firstPerson: () => {
-      gsap.to(camera.position, {duration: 1, z: 15.5})
-      gsap.to(camera.position, {duration: 1, y: 0})
+      cameraMode = 'firstperson'
+      // if (rocket.visible = true) {
+        // gsap.to(camera.position, {duration: 1, z: rocket.position.z + 15.5})
+        // gsap.to(camera.position, {duration: 1, y: rocket.position.y})
+      // }
+      // else if (tomahawk.visible = true) {
+      //   gsap.to(camera.position, {duration: 1, z: tomahawk.position.z + 16.5})
+      //   gsap.to(camera.position, {duration: 1, y: tomahawk.position.y})
+      // }
+      // else if (wideGuy.visible = true) {
+      //   gsap.to(camera.position, {duration: 1, z: wideGuy.position.z + 16.5})
+      //   gsap.to(camera.position, {duration: 1, y: wideGuy.position.y})
+      // }
+      
 
     },
     thirdPerson: () => {
+      cameraMode = 'thirdperson'
       gsap.to(camera.position, {duration: 1, z: 21})
       gsap.to(camera.position, {duration: 1, y: 1})
     },
     birdsEye: () => {
+      cameraMode = 'birdseye'
       gsap.to(camera.position, {duration: 1, z: 25})
       gsap.to(camera.position, {duration: 1, y: 1})
     },
@@ -1277,10 +1293,23 @@ const webMovement = (model) => {
     burnerAlpha.position.x  = ((rocketBox.min.x+rocketBox.max.x)/2)
     burnerAlpha.position.y =  (-0.7+(rocketBox.min.y+rocketBox.max.y)/2)
     burnerAlpha.position.z =  rocketBox.max.z 
+    if (cameraMode == 'firstperson') {
+      // if (rocket.visible = true) {
+      camera.position.z = rocket.position.z + 15.5
+      camera.position.y = rocket.position.y
+      camera.position.x = rocket.position.x
+    }
+    
   } else if (wideGuy.visible == true){
     burnerAlpha.position.x  = ((wideBox.min.x+wideBox.max.x)/2)
     burnerAlpha.position.y =  (-1.1+(wideBox.min.y+wideBox.max.y)/2)
     burnerAlpha.position.z =  wideBox.max.z-0.2
+    if (cameraMode == 'firstperson') {
+      // if (rocket.visible = true) {
+      camera.position.z = wideGuy.position.z + 16.5
+      camera.position.y = wideGuy.position.y
+      camera.position.x = wideGuy.position.x
+    }
   } 
   // else if (arrow.visible == true){
   //   burnerAlpha2.visible = false
@@ -1296,6 +1325,12 @@ const webMovement = (model) => {
     burnerAlpha.position.x  = ((tomaBox.min.x+tomaBox.max.x)/2)
     burnerAlpha.position.y =  (-0.8+(tomaBox.min.y+tomaBox.max.y)/2)
     burnerAlpha.position.z =  tomaBox.max.z-0.4
+    if (cameraMode == 'firstperson') {
+      // if (rocket.visible = true) {
+      camera.position.z = tomahawk.position.z + 16.5
+      camera.position.y = tomahawk.position.y
+      camera.position.x = tomahawk.position.x
+    }
   }
 
 }
@@ -1374,7 +1409,6 @@ const tick = () => {
     tomaBox.setFromObject(tomahawk);
     arrowBox.setFromObject(arrow);
 
-
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
 
     effectComposer.render();
@@ -1396,6 +1430,7 @@ const tick = () => {
 
 tick();
 
+gui.add(camera.position, 'z')
 
 document.addEventListener('keydown', onKeyDown, false)
 document.addEventListener('keyup', onKeyUp, false)
