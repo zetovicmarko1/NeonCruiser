@@ -1021,12 +1021,6 @@ var detune = 0;
 const manualMusicDetune = () => {
   detune = controls.musicDetune * -100
   detuneUpdated = false
-  if(controls.musicDetune > 0){
-    manualDetune = true
-  }
-  else{
-    manualDetune = false
-  }
 }
 
 const musicDetune = () => {
