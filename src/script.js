@@ -1213,9 +1213,9 @@ const rainControls = {
 
 controls.musicStop = true;
 controls.musicPause = false;
-controls.musicDetune = 0;
 audioFolder.add(controls, 'musicStop').onChange(stopMusic).name("Play Music")
 audioFolder.add(controls, 'musicPause').onChange(pauseMusic).name("Pause Music")
+controls.musicDetune = 0;
 audioFolder.add(controls, 'musicDetune').min(0).max(5).step(0.1).onChange(manualMusicDetune).name('Music Detune')
 
 fxFolder.add(guicontrols, 'rainOn').name('Rain On');
