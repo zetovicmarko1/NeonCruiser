@@ -1020,12 +1020,33 @@ const updateMusicSpeed = (multiplier) => {
   music.setPlaybackRate(multiplier / 26);
 }
 
-const musicWiden = () => {
-  if(roadWidth.width > 1.2){
-     music.setDetune(roadWidth.width * -250)  
+var manualDetune = false;
+var detuned = false;
+var detuneUpdated = true;
+var detune = 0;
+
+const manualMusicDetune = () => {
+  detune = controls.musicDetune * -100
+  detuneUpdated = false
+  if(controls.musicDetune > 0){
+    manualDetune = true
   }
-  else if (roadWidth > 1){
-    music.setDetune(0)
+  else{
+    manualDetune = false
+  }
+}
+
+const musicDetune = () => {
+  if(roadWidth.width > 1){
+    detune = -100 * roadWidth.width - controls.musicDetune * 100
+    detuned = true;
+    detuneUpdated = false;
+  }
+
+  if(!detuneUpdated)
+  {
+    music.setDetune(detune) 
+    detuneUpdated = true;
   }
 }
 
@@ -1211,8 +1232,10 @@ console.log(joystick.ids)
 //debug
 controls.musicStop = true;
 controls.musicPause = false;
+controls.musicDetune = 0;
 audioFolder.add(controls, 'musicStop').onChange(stopMusic).name("Play Music")
 audioFolder.add(controls, 'musicPause').onChange(pauseMusic).name("Pause Music")
+audioFolder.add(controls, 'musicDetune').min(0).max(5).step(0.1).onChange(manualMusicDetune).name('Music Detune')
 
 controls.enableZoom = false;
 controls.enableRotate = false;
@@ -1502,7 +1525,7 @@ const tick = () => {
 
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
     updateMusicSpeed(guicontrols.speedMultiplier)
-    musicWiden();
+    musicDetune();
 
     effectComposer.render();
 
