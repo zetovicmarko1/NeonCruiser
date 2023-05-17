@@ -1015,9 +1015,10 @@ const pauseMusic = () => {
   }
 }
 
-const musicSpeed = (multiplier) => {
-  var test = Math.PI/multiplier
-  music.setPlaybackRate(test)
+var musicSpeed = 1;
+const updateMusicSpeed = (multiplier) => {
+  musicSpeed = 3 / (Math.round(multiplier*100.0)/100.0)
+  music.setPlaybackRate(musicSpeed)
 }
 
 //building parameters
@@ -1492,7 +1493,7 @@ const tick = () => {
     arrowBox.setFromObject(arrow);
 
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
-    musicSpeed(controls.speedMultiplier)
+    updateMusicSpeed(controls.speedMultiplier)
 
     effectComposer.render();
 
