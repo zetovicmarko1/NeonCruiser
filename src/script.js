@@ -863,6 +863,12 @@ var guicontrols = {
     
     
       scene.add(randomBuildings)
+    }, 
+    rainOn: () => {
+      scene.add(rain)
+    },
+    rainOff: () => {
+      scene.remove(rain)
     }
   };
 
@@ -982,6 +988,8 @@ const fxFolder = gui.addFolder('Atmosphere and Lighting')
 const ctrlFolder = gui.addFolder('Cruise Controls')
 const audioFolder = gui.addFolder('Audio Controls')
 const vehicleFolder = gui.addFolder('Change Vehicle')
+const weatherFolder = gui.addFolder('Weather Controls');
+
 
 // function for "disposing" of a geometry
 const updateGroupGeometry = (mesh, geometry) => {
@@ -1142,6 +1150,20 @@ bradiusFolder.add(tallBuildingData, 'radiusBottom').min(1).max(8).step(0.001).on
 bradiusFolder.add(medBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building Bottom Radius")
 bradiusFolder.add(shortBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building Bottom Radius")
 
+//weather folder
+
+const rainControls = {
+  speed:5,
+  intensity: 0.5,
+  size: 0.1
+};
+
+fxFolder.add(guicontrols, 'rainOn').name('Rain On');
+fxFolder.add(guicontrols, 'rainOff').name('Rain Off');
+fxFolder.add(rainControls, 'speed').min(2).max(5).step(0.1).name('Rain Speed');
+// weatherFolder.add(rainControls, 'intensity').min(0).max(1).step(0.1).name('Rain Intensity');
+fxFolder.add(rainControls, 'size').min(0.1).max(0.5).step(0.1).name('Rain Size');
+
 gui.close() //this will close the gui on launch (good for mobiles)s
 
 console.log(joystick.ids)
@@ -1242,7 +1264,40 @@ var onKeyUp = (e) => {
 // var helper = new THREE.Box3Helper(rocketBox)
 // scene.add(helper)
 
+const dropsGeometry = new THREE.BufferGeometry();
+const dropsMaterial = new THREE.PointsMaterial({ color: 0xffffff});
 
+let dropCount = 5000;
+const dropPositions = new Float32Array(dropCount * 3);
+
+for (let i = 0; i < dropCount; i++) {
+  dropPositions[i * 3 + 0] = Math.random() * 200 - 100;
+  dropPositions[i * 3 + 1] = Math.random() * 200 - 100;
+  dropPositions[i * 3 + 2] = Math.random() * 200 - 100;
+}
+
+dropsGeometry.setAttribute('position', new THREE.BufferAttribute(dropPositions, 3));
+
+const rain = new THREE.Points(dropsGeometry, dropsMaterial);
+// scene.add(rain);
+const dropCountController = fxFolder.add({ dropCount: dropCount }, 'dropCount').min(2000).max(5000).step(100).name('Rain DropCount');
+dropCountController.onChange(updateDropCount);
+
+function updateDropCount() {
+  dropCount =  dropCountController.getValue();
+  const newDropPositions = new Float32Array(dropCount * 3);
+
+  for (let i = 0; i < dropCount; i++) {
+    newDropPositions[i * 3 + 0] = Math.random() * 200 - 100;
+    newDropPositions[i * 3 + 1] = Math.random() * 200 - 100;
+    newDropPositions[i * 3 + 2] = Math.random() * 200 - 100;
+  }
+
+  dropsGeometry.setAttribute('position', new THREE.BufferAttribute(newDropPositions, 3));
+  dropsGeometry.computeBoundingSphere();
+}
+
+// scene.remove(rain);
 
 //wasd control function
 const webMovement = (model) => {
@@ -1419,6 +1474,25 @@ const tick = () => {
     dimmerGrn()
     dimmerBlu()
     dimmerPrp()
+
+    const positions = dropsGeometry.attributes.position.array;
+
+  if (positions) {
+    for (let i = 0; i < dropCount; i++) {
+      const index = i * 3;
+      if (positions[index + 1] < -100) {
+        positions[index + 0] = Math.random() * 200 - 100;
+        positions[index + 1] = 200;
+        positions[index + 2] = Math.random() * 200 - 100;
+      } else {
+        positions[index + 1] -= Math.random() * rainControls.speed;
+      }
+    }
+
+    dropsGeometry.attributes.position.needsUpdate = true;
+    dropsMaterial.color.setHSL(0.6, 1, rainControls.intensity);
+    dropsMaterial.size = rainControls.size;
+  }
 
     // console.log(currModel) 
 
