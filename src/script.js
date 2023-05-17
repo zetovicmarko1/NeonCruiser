@@ -997,6 +997,16 @@ const updateGroupGeometry = (mesh, geometry) => {
   mesh.geometry = geometry;
 }
 
+const updateMusic = (musicSwitch) => {
+  console.log(controls.musicSwitch)
+  if(music.isPlaying && controls.musicSwitch == false ){
+    music.stop();
+  }
+  if(music.isPlaying == false && controls.musicSwitch == true){
+    music.play();
+  }
+}
+
 //building parameters
 const tallBuildingData = {
   radiusTop: 6,
@@ -1177,6 +1187,9 @@ console.log(joystick.ids)
 // }
 
 //debug
+controls.musicSwitch = true;
+audioFolder.add(controls, 'musicSwitch').onChange(updateMusic).name("Play Music")
+
 controls.enableZoom = false;
 controls.enableRotate = false;
 controls.enablePan = false;
