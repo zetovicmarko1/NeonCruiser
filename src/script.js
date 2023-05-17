@@ -438,9 +438,9 @@ effectComposer.addPass(rgbShiftPass);
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
 effectComposer.addPass(gammaCorrectionPass);
 
-const updateMusic = (speedMultiplier, audioPlay) => {
+/*const updateMusic = (speedMultiplier, audioPlay) => {
   
-};
+};*/
 
 //this function rotates the buildings at the given speed
 const speedFunction = (time, multiplier) => {
