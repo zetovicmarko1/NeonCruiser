@@ -1109,9 +1109,16 @@ const genNewMed= () => {
 
 gui.add(guicontrols, 'instructions').name('Instructions')
 ctrlFolder.add(guicontrols, 'speedMultiplier').min(2).max(6).step(0.1).name('Cruising Speed')
-fxFolder.addColor(guicontrols, 'color').onChange(changeColor).name('Neon Colour')
+fx.addColor(guicontrols, 'color').onChange(changeColor).name('Neon Colour')
 fxFolder.add(guicontrols, 'rainbowMode').name('Rainbow Mode')
 fxFolder.add(guicontrols, 'normalMode').name('Normal Mode')
+
+controls.musicStop = true;
+controls.musicPause = false;
+controls.musicDetune = 0;
+audioFolder.add(controls, 'musicStop').onChange(stopMusic).name("Play Music")
+audioFolder.add(controls, 'musicPause').onChange(pauseMusic).name("Pause Music")
+audioFolder.add(controls, 'musicDetune').min(0).max(5).step(0.1).onChange(manualMusicDetune).name('Music Detune')
 
 // console.log(guicontrols.rainbowMode)
 // fxFolder.add(guicontrols, 'rainbowSpeed').name('Rainbow Speed').min(1).max(10)
