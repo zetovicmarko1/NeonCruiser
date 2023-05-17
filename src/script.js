@@ -1235,10 +1235,6 @@ var onKeyUp = (e) => {
   
 }
 
-let direction = new THREE.Vector3(0,-1,0)
-direction.normalize()
-var raycaster =  new THREE.Raycaster(new THREE.Vector3(rocket.position.x, rocket.position.y-0.3, rocket.position.z), direction)
-console.log(raycaster)
 
 // scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000) );
 
@@ -1260,7 +1256,6 @@ const webMovement = (model) => {
   })
 
   if (model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
-    raycaster.set(new THREE.Vector3(model.position.x, model.position.y-0.3, model.position.z), direction)
     
     if (isFor == true ) {
       model.position.y+=0.07
