@@ -435,6 +435,10 @@ effectComposer.addPass(rgbShiftPass);
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
 effectComposer.addPass(gammaCorrectionPass);
 
+const updateMusic = (speedMultiplier, audioPlay) => {
+  
+};
+
 //this function rotates the buildings at the given speed
 const speedFunction = (time, multiplier) => {
     road.rotation.z = (Math.PI * time)/multiplier
@@ -1439,38 +1443,7 @@ joystick.on('move', function (event, data) {
   })
 }
 
-<<<<<<< HEAD
-var musicSpeed = 1;
-var musicMultiplier = 0;
-var musicPlaying = false;
-var maxMusicSpeed = 1.25;
-var minMusicSpeed = 0.75;
-var updateMusic = (multiplier, playMusic) => {
-  musicSpeed = 3 / (Math.round(multiplier*100.0)/100.0);
-  if(musicSpeed > maxMusicSpeed){
-    musicSpeed = maxMusicSpeed;
-  }
-  else if(musicSpeed < minMusicSpeed){
-    musicSpeed = minMusicSpeed;
-  }
-
-  if(playMusic){
-    if(!musicPlaying)
-    {
-      music.setPlaybackRate(musicSpeed);
-      music.play();
-      musicPlaying = true;
-    }
-  }
-  else{
-    music.pause();
-    musicPlaying = false;
-  }
-  music.setPlaybackRate(musicSpeed);
-}
-=======
 // console.log(roadBody.position)
->>>>>>> main
 
 // Animate
 const tick = () => {
