@@ -1013,8 +1013,6 @@ const updateMusicSpeed = (multiplier) => {
   music.setPlaybackRate(multiplier / 26);
 }
 
-var manualDetune = false;
-var detuned = false;
 var detuneUpdated = true;
 var detune = 0;
 
@@ -1026,7 +1024,6 @@ const manualMusicDetune = () => {
 const musicDetune = () => {
   if(roadWidth.width > 1){
     detune = -100 * roadWidth.width - controls.musicDetune * 100
-    detuned = true;
     detuneUpdated = false;
   }
 
