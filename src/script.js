@@ -990,6 +990,59 @@ const audioFolder = gui.addFolder('Audio Controls')
 const vehicleFolder = gui.addFolder('Change Vehicle')
 const weatherFolder = gui.addFolder('Weather Controls');
 
+const stopMusic = () =>{
+  if(music.isPlaying && controls.musicStop == false ){
+    music.stop();
+  }
+  if(music.isPlaying == false && controls.musicStop == true && controls.musicPause == false){
+    music.play();
+  }
+};
+
+const pauseMusic = () => {
+  if(music.isPlaying == false && controls.musicPause == false && controls.musicStop == true){
+    music.play();
+  }
+  if(music.isPlaying == true && controls.musicPause == true && controls.musicStop == true){
+    music.pause();
+  }
+}
+
+const updateMusicSpeed = (multiplier) => { 
+  multiplier = 30 - multiplier 
+  music.setPlaybackRate(multiplier / 26);
+}
+
+var manualDetune = false;
+var detuned = false;
+var detuneUpdated = true;
+var detune = 0;
+
+const manualMusicDetune = () => {
+  detune = controls.musicDetune * -100
+  detuneUpdated = false
+  if(controls.musicDetune > 0){
+    manualDetune = true
+  }
+  else{
+    manualDetune = false
+  }
+}
+
+const musicDetune = () => {
+  if(roadWidth.width > 1){
+    detune = -100 * roadWidth.width - controls.musicDetune * 100
+    detuned = true;
+    detuneUpdated = false;
+  }
+
+  if(!detuneUpdated)
+  {
+    music.setDetune(detune) 
+    detuneUpdated = true;
+  }
+}
+
 
 // function for "disposing" of a geometry
 const updateGroupGeometry = (mesh, geometry) => {
