@@ -1016,8 +1016,17 @@ const pauseMusic = () => {
 }
 
 const updateMusicSpeed = (multiplier) => { 
-  multiplier = 25 - multiplier 
-  music.setPlaybackRate(multiplier / 21);
+  multiplier = 30 - multiplier 
+  music.setPlaybackRate(multiplier / 26);
+}
+
+const musicWiden = () => {
+  if(roadWidth.width > 1.2){
+     music.setDetune(roadWidth.width * -250)  
+  }
+  else if (roadWidth > 1){
+    music.setDetune(0)
+  }
 }
 
 //building parameters
@@ -1493,6 +1502,7 @@ const tick = () => {
 
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
     updateMusicSpeed(guicontrols.speedMultiplier)
+    musicWiden();
 
     effectComposer.render();
 
