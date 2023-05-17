@@ -988,7 +988,7 @@ const fxFolder = gui.addFolder('Atmosphere and Lighting')
 const ctrlFolder = gui.addFolder('Cruise Controls')
 const audioFolder = gui.addFolder('Audio Controls')
 const vehicleFolder = gui.addFolder('Change Vehicle')
-const weatherFolder = gui.addFolder('Weather Controls');
+// const weatherFolder = gui.addFolder('Weather Controls');
 
 const stopMusic = () =>{
   if(music.isPlaying && controls.musicStop == false ){
@@ -1224,12 +1224,12 @@ console.log(joystick.ids)
 // }
 
 //debug
-controls.enableZoom = false;
-controls.enableRotate = false;
-controls.enablePan = false;
-gui.add(controls,'enableZoom')
-gui.add(controls,'enableRotate')
-gui.add(controls,'enablePan')
+// controls.enableZoom = false;
+// controls.enableRotate = false;
+// controls.enablePan = false;
+// gui.add(controls,'enableZoom')
+// gui.add(controls,'enableRotate')
+// gui.add(controls,'enablePan')
 
 //moving
 var isFor = false
@@ -1553,7 +1553,7 @@ const tick = () => {
 
 tick();
 
-gui.add(camera.position, 'z')
+// gui.add(camera.position, 'z')
 
 document.addEventListener('keydown', onKeyDown, false)
 document.addEventListener('keyup', onKeyUp, false)
