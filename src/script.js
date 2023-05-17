@@ -1015,16 +1015,12 @@ const updateMusicSpeed = (multiplier) => {
 
 var detuneUpdated = true;
 var detune = 0;
-
-const manualMusicDetune = () => {
-  detune = controls.musicDetune * -100
-  detuneUpdated = false
-}
+var previousDetune = 0;
 
 const musicDetune = () => {
-  if(roadWidth.width > 1){
-    detune = -100 * roadWidth.width - controls.musicDetune * 100
-    detuneUpdated = false;
+  detune = (-200 * (roadWidth.width - 1)) + (controls.musicDetune * -100)
+  if(detune != previousDetune){
+    detuneUpdated = false
   }
 
   if(!detuneUpdated)
@@ -1207,7 +1203,7 @@ controls.musicPause = false;
 audioFolder.add(controls, 'musicStop').onChange(stopMusic).name("Play Music")
 audioFolder.add(controls, 'musicPause').onChange(pauseMusic).name("Pause Music")
 controls.musicDetune = 0;
-audioFolder.add(controls, 'musicDetune').min(0).max(5).step(0.1).onChange(manualMusicDetune).name('Music Detune')
+audioFolder.add(controls, 'musicDetune').min(0).max(5).step(0.1).name('Music Detune')
 
 fxFolder.add(guicontrols, 'rainOn').name('Rain On');
 fxFolder.add(guicontrols, 'rainOff').name('Rain Off');
