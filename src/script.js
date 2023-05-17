@@ -564,12 +564,12 @@ var guicontrols = {
       alert('Use WASD to control the vehicle on Web\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
     },
     //songOn: false
-    playMusic:() =>{
+    /*playMusic:() =>{
       gsap.to(music.play())
     },
     stopMusic:() =>{
       gsap.to(music.stop())
-    },
+    },*/
     arrowShip:() => {
       burnerAlpha2.visible = true
       // currModel = 'arrow'
@@ -997,13 +997,21 @@ const updateGroupGeometry = (mesh, geometry) => {
   mesh.geometry = geometry;
 }
 
-const updateMusic = (musicSwitch) => {
-  console.log(controls.musicSwitch)
-  if(music.isPlaying && controls.musicSwitch == false ){
+const stopMusic = () =>{
+  if(music.isPlaying && controls.musicStop == false ){
     music.stop();
   }
-  if(music.isPlaying == false && controls.musicSwitch == true){
+  if(music.isPlaying == false && controls.musicStop == true && controls.musicPause == false){
     music.play();
+  }
+};
+
+const pauseMusic = () => {
+  if(music.isPlaying == false && controls.musicPause == false && controls.musicStop == true){
+    music.play();
+  }
+  if(music.isPlaying == true && controls.musicPause == true && controls.musicStop == true){
+    music.pause();
   }
 }
 
@@ -1187,8 +1195,10 @@ console.log(joystick.ids)
 // }
 
 //debug
-controls.musicSwitch = true;
-audioFolder.add(controls, 'musicSwitch').onChange(updateMusic).name("Play Music")
+controls.musicStop = true;
+controls.musicPause = false;
+audioFolder.add(controls, 'musicStop').onChange(stopMusic).name("Play Music")
+audioFolder.add(controls, 'musicPause').onChange(pauseMusic).name("Pause Music")
 
 controls.enableZoom = false;
 controls.enableRotate = false;
