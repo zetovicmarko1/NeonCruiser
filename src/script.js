@@ -1525,6 +1525,9 @@ const tick = () => {
 
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
 
+    updateMusicSpeed(guicontrols.speedMultiplier)
+    musicDetune();
+
     effectComposer.render();
 
     //rainbow mode loop
