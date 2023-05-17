@@ -1015,6 +1015,11 @@ const pauseMusic = () => {
   }
 }
 
+const musicSpeed = (multiplier) => {
+  var test = Math.PI/multiplier
+  music.setPlaybackRate(test)
+}
+
 //building parameters
 const tallBuildingData = {
   radiusTop: 6,
@@ -1487,6 +1492,7 @@ const tick = () => {
     arrowBox.setFromObject(arrow);
 
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
+    musicSpeed(controls.speedMultiplier)
 
     effectComposer.render();
 
