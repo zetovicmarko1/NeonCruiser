@@ -428,7 +428,6 @@ const renderPass = new RenderPass(scene, camera);
 effectComposer.addPass(renderPass);
 
 const rgbShiftPass = new ShaderPass(RGBShiftShader);
-rgbShiftPass.uniforms["amount"].value = 0.001;
 
 effectComposer.addPass(rgbShiftPass);
 
@@ -1011,6 +1010,20 @@ const pauseMusic = () => {
 const updateMusicSpeed = (multiplier) => { 
   multiplier = 30 - multiplier 
   music.setPlaybackRate(multiplier / 26);
+
+  
+}
+
+const analyser = new THREE.AudioAnalyser(music, 64);
+
+const musicVisualiser = () => {
+  if(controls.musicVisualiserToggle == true){
+    const dataArray = new Uint8Array(analyser.getFrequencyData());
+    rgbShiftPass.uniforms["amount"].value = dataArray[14] / (1500 * (11 - controls.musicVisualiserSlider));
+  }
+  else{
+    rgbShiftPass.uniforms["amount"].value = 0.0001;
+  }
 }
 
 var detuneUpdated = true;
@@ -1202,6 +1215,10 @@ controls.musicStop = true;
 controls.musicPause = false;
 audioFolder.add(controls, 'musicStop').onChange(stopMusic).name("Play Music")
 audioFolder.add(controls, 'musicPause').onChange(pauseMusic).name("Pause Music")
+controls.musicVisualiserToggle = false;
+controls.musicVisualiserSlider = 5;
+audioFolder.add(controls, 'musicVisualiserToggle').name('Music Visualiser')
+audioFolder.add(controls, 'musicVisualiserSlider').min(1).max(10).step(0.1).name('Music Visualiser Strength')
 controls.musicDetune = 0;
 audioFolder.add(controls, 'musicDetune').min(0).max(5).step(0.1).name('Music Detune')
 
@@ -1513,6 +1530,7 @@ const tick = () => {
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
 
     updateMusicSpeed(guicontrols.speedMultiplier)
+    musicVisualiser();
     musicDetune();
 
     effectComposer.render();
