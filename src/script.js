@@ -11,7 +11,9 @@ import gsap from 'gsap'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import nipplejs from 'nipplejs';
-
+import testVertexShader from './shaders/test/vertex.glsl'
+import testFragmentShader from './shaders/test/fragment.glsl'
+// import CustomShaderMaterial from 'three-custom-shader-material'
 
 
 // Textures
@@ -81,6 +83,40 @@ const material = new THREE.MeshStandardMaterial({
     roughness: 0.5
 });
 
+const count = torus.attributes.position.count
+const randoms =  new Float32Array(count)
+
+for (let i = 0; i < count; i++) {
+    randoms[i] = Math.random()
+}
+
+torus.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1))
+console.log(torus)
+
+// var uniforms = THREE.UniformsUtils.merge( [
+
+// 	THREE.UniformsLib[ "lights" ],
+// 	// ...
+
+// ] );
+
+const shaderMat = new THREE.RawShaderMaterial({
+  vertexShader: testVertexShader,
+  fragmentShader: testFragmentShader,
+  // lights:true,
+  uniforms:
+  {
+      uFrequency: {value: new THREE.Vector2(0,0)},
+      uTime: {value:0},
+      uTexture: {value: gridTexture},
+  }
+})
+
+gui.add(shaderMat.uniforms.uFrequency.value, 'y').min(0).max(1.2).step(0.1)
+
+
+
+
 const buildingMaterial = new THREE.MeshStandardMaterial({
   map: buildingTexture,
   metalnessMap: metalnessTexture,
@@ -88,12 +124,7 @@ const buildingMaterial = new THREE.MeshStandardMaterial({
   roughness: 0.5
 });
 
-var shaderMat = new THREE.ShaderMaterial({
-  map: buildingTexture,
-  metalnessMap: metalnessTexture,
-  metalness: 0.96,
-  roughness: 0.5
-});
+
 
 const burnerAlpha =new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.3,0.3,32,32), new THREE.MeshStandardMaterial({
   color: 'white', 
@@ -133,9 +164,10 @@ burnerAlpha2.rotation.x=Math.PI/2
 // const helper = new THREE.AxesHelper(300)
 // scene.add(helper)
 
-const road = new THREE.Mesh(torus, material);
+const road = new THREE.Mesh(torus, shaderMat);
 const road2 = new THREE.Mesh(torus, material);
 const road3 = new THREE.Mesh(torus, material);
+
 
 road.rotation.y = Math.PI * 0.5;
 road2.rotation.y = Math.PI * 0.5;
@@ -880,6 +912,8 @@ var guicontrols = {
   );
 
 effectComposer.addPass(bloomPass);
+
+// material.onBeforeCompile(shaderMat,renderer)
 
 
 const ambientLight = new THREE.AmbientLight(0x00FFFB, 100);
