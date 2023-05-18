@@ -1019,7 +1019,7 @@ const musicVisualiser = () => {
     rgbShiftPass.uniforms["amount"].value = dataArray[15] / (1500 * (11 - controls.musicVisualiserSlider));
   }
   else{
-    rgbShiftPass.uniforms["amount"].value = 0.0001;
+    rgbShiftPass.uniforms["amount"].value = 0.001;
   }
 }
 
