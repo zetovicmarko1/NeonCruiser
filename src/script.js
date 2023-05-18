@@ -1224,9 +1224,9 @@ console.log(joystick.ids)
 // }
 
 //debug
-// controls.enableZoom = false;
-// controls.enableRotate = false;
-// controls.enablePan = false;
+controls.enableZoom = false;
+controls.enableRotate = false;
+controls.enablePan = false;
 // gui.add(controls,'enableZoom')
 // gui.add(controls,'enableRotate')
 // gui.add(controls,'enablePan')
