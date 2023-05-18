@@ -1018,7 +1018,7 @@ const analyser = new THREE.AudioAnalyser(music, 64);
 const musicVisualiser = () => {
   if(controls.musicVisualiserToggle == true){
     const dataArray = new Uint8Array(analyser.getFrequencyData());
-    rgbShiftPass.uniforms["amount"].value = dataArray[14] / (1500 * (11 - controls.musicVisualiserSlider));
+    rgbShiftPass.uniforms["amount"].value = dataArray[15] / (1500 * (11 - controls.musicVisualiserSlider));
   }
   else{
     rgbShiftPass.uniforms["amount"].value = 0.0001;
