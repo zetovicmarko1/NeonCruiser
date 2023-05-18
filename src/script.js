@@ -100,16 +100,17 @@ console.log(torus)
 
 // ] );
 
-const shaderMat = new THREE.RawShaderMaterial({
+var uniforms = THREE.UniformsUtils.merge(THREE.UniformsLib["lights"]);
+uniforms['uTime'] = {value:0};
+uniforms['uFrequency'] = {value: new THREE.Vector2(0,0)},
+uniforms['uTexture'] = {value: gridTexture};
+
+
+const shaderMat = new THREE.ShaderMaterial({
   vertexShader: testVertexShader,
   fragmentShader: testFragmentShader,
   // lights:true,
-  uniforms:
-  {
-      uFrequency: {value: new THREE.Vector2(0,0)},
-      uTime: {value:0},
-      uTexture: {value: gridTexture},
-  }
+  uniforms: uniforms
 })
 
 gui.add(shaderMat.uniforms.uFrequency.value, 'y').min(0).max(1.2).step(0.1)
