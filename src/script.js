@@ -1010,8 +1010,6 @@ const pauseMusic = () => {
 const updateMusicSpeed = (multiplier) => { 
   multiplier = 30 - multiplier 
   music.setPlaybackRate(multiplier / 26);
-
-  
 }
 
 const analyser = new THREE.AudioAnalyser(music, 64);
