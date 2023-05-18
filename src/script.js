@@ -13,7 +13,7 @@ import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import nipplejs from 'nipplejs';
 import testVertexShader from './shaders/test/vertex.glsl'
 import testFragmentShader from './shaders/test/fragment.glsl'
-// import CustomShaderMaterial from 'three-custom-shader-material'
+
 
 
 // Textures
@@ -76,26 +76,52 @@ const cylGeo2 = new THREE.CylinderGeometry(6, 6, buildingHeightMed, 4)
 const cylGeo3 = new THREE.CylinderGeometry(6, 6, buildingHeightShort, 4)
 
 // Objects
+const torus = new THREE.TorusGeometry(10, 5);
+const material = new THREE.MeshStandardMaterial({
+    map: gridTexture,
+    metalness: 0.96,
+    roughness: 0.5
+});
+
+const count = torus.attributes.position.count
+const randoms =  new Float32Array(count)
+
+for (let i = 0; i < count; i++) {
+    randoms[i] = Math.random()
+}
+
+torus.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1))
+console.log(torus)
+
+// var uniforms = THREE.UniformsUtils.merge( [
+
+// 	THREE.UniformsLib[ "lights" ],
+// 	// ...
+
+// ] );
+
+var uniforms = THREE.UniformsUtils.clone(THREE.UniformsLib["lights"]);
+uniforms['uTime'] = {value:0};
+uniforms['uFrequency'] = {value: new THREE.Vector2(0,0)},
+uniforms['uTexture'] = {value: gridTexture};
 
 
-// material.onBeforeCompile = (shader) => {
-//   shader.vertexShader = shader.vertexShader.replace(
-//     '#include <begin_vertex>', require('vertex.glsl')
-//   )
-// }
+const shaderMat = new THREE.ShaderMaterial({
+  vertexShader: testVertexShader,
+  fragmentShader: testFragmentShader,
+  lights:true,
+  uniforms: uniforms
+})
 
-gui.add(shaderMat.uniforms.uFrequency.value, 'y').min(0).max(1.2).step(0.1)
+// gui.add(road.material)
 
 
-
-
-const buildingMaterial = new THREE.MeshStandardMaterial({
+const buildingMaterial = new THREE.MeshStandardMaterial( {
   map: buildingTexture,
   metalnessMap: metalnessTexture,
   metalness: 0.96,
   roughness: 0.5
 });
-
 
 
 const burnerAlpha =new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.3,0.3,32,32), new THREE.MeshStandardMaterial({
@@ -139,7 +165,6 @@ burnerAlpha2.rotation.x=Math.PI/2
 const road = new THREE.Mesh(torus, material);
 const road2 = new THREE.Mesh(torus, material);
 const road3 = new THREE.Mesh(torus, material);
-
 
 road.rotation.y = Math.PI * 0.5;
 road2.rotation.y = Math.PI * 0.5;
@@ -873,7 +898,14 @@ var guicontrols = {
     },
     rainOff: () => {
       scene.remove(rain)
+    },
+    bumpyRoad: () => {
+      road.material = shaderMat
+    },
+    normalRoad: () => {
+      road.material = material
     }
+    
   };
 
   var bloomPass = new UnrealBloomPass(
@@ -884,8 +916,6 @@ var guicontrols = {
   );
 
 effectComposer.addPass(bloomPass);
-
-// material.onBeforeCompile(shaderMat,renderer)
 
 
 const ambientLight = new THREE.AmbientLight(0x00FFFB, 100);
@@ -1181,6 +1211,11 @@ vehicleFolder.add(guicontrols,'tomaShip').name('Tomahawk')
 vehicleFolder.add(guicontrols,'wideShip').name('Wide Guy')
 
 roadFolder.add(roadWidth, 'width').min(1).max(2).step(0.0001).onChange(scaleRoad).name("Road Width")
+roadFolder.add(guicontrols, 'bumpyRoad').name("Road Shader")
+roadFolder.add(guicontrols, 'normalRoad').name("Normal Road")
+roadFolder.add(uniforms.uFrequency.value, 'y').name("Road Bumps").min(0).max(1.2).step(0.1).name("Bumps")
+
+
 brandomFolder.add(guicontrols, 'setBuildings').name("Uniform Buildings")
 brandomFolder.add(guicontrols, 'setRandomBuildings').name("Randomise Buildings")
 buildingsFolder.add(tallBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewTall).name("Tall Building Segments")
@@ -1230,9 +1265,9 @@ console.log(joystick.ids)
 // }
 
 //debug
-// controls.enableZoom = false;
-// controls.enableRotate = false;
-// controls.enablePan = false;
+controls.enableZoom = false;
+controls.enableRotate = false;
+controls.enablePan = false;
 // gui.add(controls,'enableZoom')
 // gui.add(controls,'enableRotate')
 // gui.add(controls,'enablePan')
