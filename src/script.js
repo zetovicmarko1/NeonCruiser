@@ -1015,7 +1015,6 @@ const updateMusicSpeed = (multiplier) => {
 }
 
 const analyser = new THREE.AudioAnalyser(music, 64);
-
 const musicVisualiser = () => {
   if(controls.musicVisualiserToggle == true){
     const dataArray = new Uint8Array(analyser.getFrequencyData());
