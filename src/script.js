@@ -76,46 +76,13 @@ const cylGeo2 = new THREE.CylinderGeometry(6, 6, buildingHeightMed, 4)
 const cylGeo3 = new THREE.CylinderGeometry(6, 6, buildingHeightShort, 4)
 
 // Objects
-const torus = new THREE.TorusGeometry(10, 5);
-const material = new THREE.MeshStandardMaterial({
-    map: gridTexture,
-    metalness: 0.96,
-    roughness: 0.5
-});
-
-const count = torus.attributes.position.count
-const randoms =  new Float32Array(count)
-
-for (let i = 0; i < count; i++) {
-    randoms[i] = Math.random()
-}
-
-torus.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1))
-console.log(torus)
-
-// var uniforms = THREE.UniformsUtils.merge( [
-
-// 	THREE.UniformsLib[ "lights" ],
-// 	// ...
-
-// ] );
-
-var uniforms = THREE.UniformsUtils.merge(THREE.UniformsLib["lights"]);
-uniforms['uTime'] = {value:0};
-uniforms['uFrequency'] = {value: new THREE.Vector2(0,0)},
-uniforms['uTexture'] = {value: gridTexture};
 
 
-const shaderMat = new THREE.ShaderMaterial({
-  vertexShader: testVertexShader,
-  // fragmentShader: testFragmentShader,
-  // lights:true,
-  uniforms: uniforms
-})
-
-material.onBeforeCompile = (shader) => {
-  
-}
+// material.onBeforeCompile = (shader) => {
+//   shader.vertexShader = shader.vertexShader.replace(
+//     '#include <begin_vertex>', require('vertex.glsl')
+//   )
+// }
 
 gui.add(shaderMat.uniforms.uFrequency.value, 'y').min(0).max(1.2).step(0.1)
 
