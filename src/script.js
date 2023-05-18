@@ -564,12 +564,12 @@ var guicontrols = {
       alert('Use WASD to control the vehicle on Web\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
     },
     //songOn: false
-    /*playMusic:() =>{
+    playMusic:() =>{
       gsap.to(music.play())
     },
     stopMusic:() =>{
       gsap.to(music.stop())
-    },*/
+    },
     arrowShip:() => {
       burnerAlpha2.visible = true
       // currModel = 'arrow'
@@ -988,14 +988,7 @@ const fxFolder = gui.addFolder('Atmosphere and Lighting')
 const ctrlFolder = gui.addFolder('Cruise Controls')
 const audioFolder = gui.addFolder('Audio Controls')
 const vehicleFolder = gui.addFolder('Change Vehicle')
-const weatherFolder = gui.addFolder('Weather Controls');
-
-
-// function for "disposing" of a geometry
-const updateGroupGeometry = (mesh, geometry) => {
-  mesh.geometry.dispose()
-  mesh.geometry = geometry;
-}
+// const weatherFolder = gui.addFolder('Weather Controls');
 
 const stopMusic = () =>{
   if(music.isPlaying && controls.musicStop == false ){
@@ -1020,27 +1013,14 @@ const updateMusicSpeed = (multiplier) => {
   music.setPlaybackRate(multiplier / 26);
 }
 
-var manualDetune = false;
-var detuned = false;
 var detuneUpdated = true;
 var detune = 0;
-
-const manualMusicDetune = () => {
-  detune = controls.musicDetune * -100
-  detuneUpdated = false
-  if(controls.musicDetune > 0){
-    manualDetune = true
-  }
-  else{
-    manualDetune = false
-  }
-}
+var previousDetune = 0;
 
 const musicDetune = () => {
-  if(roadWidth.width > 1){
-    detune = -100 * roadWidth.width - controls.musicDetune * 100
-    detuned = true;
-    detuneUpdated = false;
+  detune = (-200 * (roadWidth.width - 1)) + (controls.musicDetune * -100)
+  if(detune != previousDetune){
+    detuneUpdated = false
   }
 
   if(!detuneUpdated)
@@ -1048,6 +1028,13 @@ const musicDetune = () => {
     music.setDetune(detune) 
     detuneUpdated = true;
   }
+}
+
+
+// function for "disposing" of a geometry
+const updateGroupGeometry = (mesh, geometry) => {
+  mesh.geometry.dispose()
+  mesh.geometry = geometry;
 }
 
 //building parameters
@@ -1211,6 +1198,13 @@ const rainControls = {
   size: 0.1
 };
 
+controls.musicStop = true;
+controls.musicPause = false;
+audioFolder.add(controls, 'musicStop').onChange(stopMusic).name("Play Music")
+audioFolder.add(controls, 'musicPause').onChange(pauseMusic).name("Pause Music")
+controls.musicDetune = 0;
+audioFolder.add(controls, 'musicDetune').min(0).max(5).step(0.1).name('Music Detune')
+
 fxFolder.add(guicontrols, 'rainOn').name('Rain On');
 fxFolder.add(guicontrols, 'rainOff').name('Rain Off');
 fxFolder.add(rainControls, 'speed').min(2).max(5).step(0.1).name('Rain Speed');
@@ -1230,19 +1224,12 @@ console.log(joystick.ids)
 // }
 
 //debug
-controls.musicStop = true;
-controls.musicPause = false;
-controls.musicDetune = 0;
-audioFolder.add(controls, 'musicStop').onChange(stopMusic).name("Play Music")
-audioFolder.add(controls, 'musicPause').onChange(pauseMusic).name("Pause Music")
-audioFolder.add(controls, 'musicDetune').min(0).max(5).step(0.1).onChange(manualMusicDetune).name('Music Detune')
-
-controls.enableZoom = false;
-controls.enableRotate = false;
-controls.enablePan = false;
-gui.add(controls,'enableZoom')
-gui.add(controls,'enableRotate')
-gui.add(controls,'enablePan')
+// controls.enableZoom = false;
+// controls.enableRotate = false;
+// controls.enablePan = false;
+// gui.add(controls,'enableZoom')
+// gui.add(controls,'enableRotate')
+// gui.add(controls,'enablePan')
 
 //moving
 var isFor = false
@@ -1524,6 +1511,7 @@ const tick = () => {
     arrowBox.setFromObject(arrow);
 
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
+
     updateMusicSpeed(guicontrols.speedMultiplier)
     musicDetune();
 
@@ -1565,8 +1553,7 @@ const tick = () => {
 
 tick();
 
-gui.add(camera.position, 'z')
+// gui.add(camera.position, 'z')
 
 document.addEventListener('keydown', onKeyDown, false)
 document.addEventListener('keyup', onKeyUp, false)
-
