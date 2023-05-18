@@ -81,6 +81,16 @@ const material = new THREE.MeshStandardMaterial({
     roughness: 0.5
 });
 
+// material.onBeforeCompile = (shader) => {
+//   shader.vertexShader = shader.vertexShader.replace(
+//       '#include <begin_vertex>',
+//       `
+//          #include <begin_vertex>
+         
+//       `
+//   )
+// }
+
 const buildingMaterial = new THREE.MeshStandardMaterial({
   map: buildingTexture,
   metalnessMap: metalnessTexture,
