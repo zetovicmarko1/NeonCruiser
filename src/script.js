@@ -108,10 +108,14 @@ uniforms['uTexture'] = {value: gridTexture};
 
 const shaderMat = new THREE.ShaderMaterial({
   vertexShader: testVertexShader,
-  fragmentShader: testFragmentShader,
+  // fragmentShader: testFragmentShader,
   // lights:true,
   uniforms: uniforms
 })
+
+material.onBeforeCompile = (shader) => {
+  
+}
 
 gui.add(shaderMat.uniforms.uFrequency.value, 'y').min(0).max(1.2).step(0.1)
 
@@ -165,7 +169,7 @@ burnerAlpha2.rotation.x=Math.PI/2
 // const helper = new THREE.AxesHelper(300)
 // scene.add(helper)
 
-const road = new THREE.Mesh(torus, shaderMat);
+const road = new THREE.Mesh(torus, material);
 const road2 = new THREE.Mesh(torus, material);
 const road3 = new THREE.Mesh(torus, material);
 
