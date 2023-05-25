@@ -12,8 +12,6 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import nipplejs from 'nipplejs';
 
-
-
 // Textures
 const textureLoader = new THREE.TextureLoader();
 const gridTexture = textureLoader.load('textures/grid.png');
@@ -60,10 +58,6 @@ const wideBox = new THREE.Box3()
 const fog = new THREE.Fog(0x000000, 0.1, 25);
 scene.fog = fog;
 
-// const building = new THREE.CylinderGeometry(5, 5, 50,4,4)
-// const building_2 = new THREE.CylinderGeometry(5, 5, 45,4,4)
-// const building_3 = new THREE.CylinderGeometry(5, 5, 40,4,4)
-
 var buildingHeightTall = 50
 var buildingHeightMed = 45
 var buildingHeightShort = 40
@@ -73,6 +67,8 @@ const cylGeo1 = new THREE.CylinderGeometry(6, 6, buildingHeightTall, 4)
 const cylGeo2 = new THREE.CylinderGeometry(6, 6, buildingHeightMed, 4)
 const cylGeo3 = new THREE.CylinderGeometry(6, 6, buildingHeightShort, 4)
 
+var uBump = new THREE.Vector2({value:0},0)
+
 // Objects
 const torus = new THREE.TorusGeometry(10, 5);
 const material = new THREE.MeshStandardMaterial({
@@ -81,19 +77,54 @@ const material = new THREE.MeshStandardMaterial({
     roughness: 0.5
 });
 
-const buildingMaterial = new THREE.MeshStandardMaterial({
+const shaderExtend = new THREE.MeshStandardMaterial({
+  map: gridTexture,
+  metalness: 0.96,
+  roughness: 0.5
+});
+
+const count = torus.attributes.position.count
+const randoms =  new Float32Array(count)
+
+for (let i = 0; i < count; i++) {
+    randoms[i] = Math.random()
+}
+
+torus.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1))
+console.log(torus)
+
+shaderExtend.onBeforeCompile = (shader) => {
+  
+  console.log(shader)
+
+  shader.uniforms.uBump = uBump.x
+  console.log(shader.uniforms)
+  
+  shader.vertexShader = shader.vertexShader.replace(
+    '#include <common>',
+    `
+        #include <common>
+        attribute float aRandom;
+        uniform float uBump;
+    `
+  )
+  shader.vertexShader = shader.vertexShader.replace(
+    '#include <begin_vertex>',
+    `
+        #include <begin_vertex>
+        transformed.x += aRandom * uBump;
+    `
+  )
+
+}
+
+const buildingMaterial = new THREE.MeshStandardMaterial( {
   map: buildingTexture,
   metalnessMap: metalnessTexture,
   metalness: 0.96,
   roughness: 0.5
 });
 
-var shaderMat = new THREE.ShaderMaterial({
-  map: buildingTexture,
-  metalnessMap: metalnessTexture,
-  metalness: 0.96,
-  roughness: 0.5
-});
 
 const burnerAlpha =new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.3,0.3,32,32), new THREE.MeshStandardMaterial({
   color: 'white', 
@@ -103,37 +134,9 @@ scene.add(burnerAlpha)
 burnerAlpha.scale.x =0.5
 burnerAlpha.scale.y =0.5
 burnerAlpha.scale.z =0.5
-
-const burnerAlpha2 = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.3,0.3,32,32), new THREE.MeshStandardMaterial({
-  color: 'white', 
-  alphaMap:speckleNoise,
-  transparent: false}));
-scene.add(burnerAlpha2)
-burnerAlpha2.visible = false
-burnerAlpha2.scale.x =0.5
-burnerAlpha2.scale.y =0.5
-burnerAlpha2.scale.z =0.5
-
-// gui.add(burnerAlpha2.position, 'x').step(0.01)
-// gui.add(burnerAlpha2.position, 'y').step(0.01)
-// gui.add(burnerAlpha2.position, 'z').step(0.01)
-
-
-
-
-// burnerAlpha.rotation.z = Math.PI
 burnerAlpha.rotation.x=Math.PI/2
-burnerAlpha2.rotation.x=Math.PI/2
-  
-// burnerAlpha.position.x  = (rocketBox.min.x+rocketBox.max.x)/2
-//   burnerAlpha.position.y =  (rocketBox.min.y+rocketBox.max.y)/2
-//   burnerAlpha.position.z =  rocketBox.max.x
 
-
-// const helper = new THREE.AxesHelper(300)
-// scene.add(helper)
-
-const road = new THREE.Mesh(torus, material);
+const road = new THREE.Mesh(torus, shaderExtend);
 const road2 = new THREE.Mesh(torus, material);
 const road3 = new THREE.Mesh(torus, material);
 
@@ -493,11 +496,6 @@ const speedFunction = (time, multiplier) => {
     }
 
     burnerAlpha.scale.y  = Math.abs(Math.sin(time*(multiplier-30)))
-    burnerAlpha2.scale.y  = Math.abs(Math.sin(time*(multiplier-30)))
-
-    // burnerAlpha.scale.x  = Math.sin(time*(multiplier-10))
-
-    // burner.position.x  = (Math.sin(time*(multiplier-5))/(multiplier*2))*(0.4/15)
 
     rotatingFunc(rocket)
     rotatingFunc(arrow)
@@ -570,7 +568,6 @@ var guicontrols = {
       gsap.to(music.stop())
     },
     arrowShip:() => {
-      burnerAlpha2.visible = true
       // currModel = 'arrow'
       scene.remove(rocket)
       scene.remove(tomahawk)
@@ -604,7 +601,6 @@ var guicontrols = {
       )   
     }, 
     rocketShip:() => {
-      burnerAlpha2.visible = false
       // currModel = 'rocket'
       scene.remove(arrow)
       scene.remove(tomahawk)
@@ -638,7 +634,6 @@ var guicontrols = {
       )   
     },
     tomaShip:() => {
-      burnerAlpha2.visible = false
       // currModel = 'tomahawk'
       scene.remove(arrow)
       scene.remove(rocket)
@@ -673,7 +668,6 @@ var guicontrols = {
       )   
     },
     wideShip:() => {
-      burnerAlpha2.visible = false
       // currModel = 'wideGuy'
       scene.remove(arrow)
       scene.remove(rocket)
@@ -1185,6 +1179,8 @@ vehicleFolder.add(guicontrols,'tomaShip').name('Tomahawk')
 vehicleFolder.add(guicontrols,'wideShip').name('Wide Guy')
 
 roadFolder.add(roadWidth, 'width').min(1).max(2).step(0.0001).onChange(scaleRoad).name("Road Width")
+roadFolder.add(uBump.x, 'value').name("Road Bumps").min(0).max(1.2).step(0.1).name("Bumps")
+
 brandomFolder.add(guicontrols, 'setBuildings').name("Uniform Buildings")
 brandomFolder.add(guicontrols, 'setRandomBuildings').name("Randomise Buildings")
 buildingsFolder.add(tallBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewTall).name("Tall Building Segments")
@@ -1426,16 +1422,6 @@ const webMovement = (model) => {
       camera.position.x = wideGuy.position.x
     }
   } 
-  // else if (arrow.visible == true){
-  //   burnerAlpha2.visible = false
-  //   burnerAlpha.position.x  = ((arrowBox.min.y+arrowBox.max.y)/2)
-  //   burnerAlpha2.position.x  = burnerAlpha.position.x +4
-  //   burnerAlpha.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
-  //   burnerAlpha2.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
-  //   burnerAlpha.position.z =  arrowBox.max.z-1.5
-  //   burnerAlpha2.position.z =  arrowBox.max.z-1.5
-
-  // } 
   else if (tomahawk.visible == true){
     burnerAlpha.position.x  = ((tomaBox.min.x+tomaBox.max.x)/2)
     burnerAlpha.position.y =  (-0.8+(tomaBox.min.y+tomaBox.max.y)/2)
@@ -1479,16 +1465,6 @@ joystick.on('move', function (event, data) {
         burnerAlpha.position.y =  (-1.1+(wideBox.min.y+wideBox.max.y)/2)
         burnerAlpha.position.z =  wideBox.max.z-0.2
       } 
-      // else if (arrow.visible == true){
-      //   burnerAlpha2.visible = false
-      //   burnerAlpha.position.x  = ((arrowBox.min.y+arrowBox.max.y)/2)
-      //   burnerAlpha2.position.x  = burnerAlpha.position.x +4
-      //   burnerAlpha.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
-      //   burnerAlpha2.position.y =  (-0.7+(arrowBox.min.y+arrowBox.max.y)/2)
-      //   burnerAlpha.position.z =  arrowBox.max.z-1.5
-      //   burnerAlpha2.position.z =  arrowBox.max.z-1.5
-    
-      // } 
       else if (tomahawk.visible == true){
         burnerAlpha.position.x  = ((tomaBox.min.x+tomaBox.max.x)/2)
         burnerAlpha.position.y =  (-0.8+(tomaBox.min.y+tomaBox.max.y)/2)
