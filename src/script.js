@@ -1636,6 +1636,8 @@ const tick = () => {
       }
     }
 
+    
+
     dropsGeometry.attributes.position.needsUpdate = true;
     dropsMaterial.color.setHSL(0.6, 1, rainControls.intensity);
     dropsMaterial.size = rainControls.size;
