@@ -1223,7 +1223,7 @@ const rainControls = {
 };
 const lightParticleSettings = {
   speed:0.05,
-  count:500,
+  count:200,
   check:0
 }
 
@@ -1640,17 +1640,12 @@ const tick = () => {
     dropsMaterial.color.setHSL(0.6, 1, rainControls.intensity);
     dropsMaterial.size = rainControls.size;
   }
-
-    // console.log(currModel) 
-
-
+  
     // Call tick again on the next frame
     window.requestAnimationFrame(tick);
 };
 
 tick();
-
-// gui.add(camera.position, 'z')
 
 document.addEventListener('keydown', onKeyDown, false)
 document.addEventListener('keyup', onKeyUp, false)
