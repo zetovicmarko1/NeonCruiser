@@ -94,10 +94,10 @@ torus.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1))
 
 shaderExtend.onBeforeCompile = (shader) => {
   
-  console.log(shader)
+  //console.log(shader)
 
   shader.uniforms.uBump = uBump.x
-  console.log(shader.uniforms)
+  //console.log(shader.uniforms)
   
   shader.vertexShader = shader.vertexShader.replace(
     '#include <common>',
@@ -501,6 +501,8 @@ const speedFunction = (time, multiplier) => {
     rotatingFunc(tomahawk)
     rotatingFunc(wideGuy)
 
+    lightParticleGroup.rotation.x = ((Math.PI * time)/multiplier)/2
+
 }
 
 //road parameters
@@ -861,6 +863,22 @@ var guicontrols = {
     },
     rainOff: () => {
       scene.remove(rain)
+    },
+    LightParticleOn: () => {
+      lightParticleSettings.check = 0;
+      if (lightParticleSettings.count == 0){
+        lightParticleSettings.count = 500
+      }
+      else{
+        lightParticleSettings.count = lightParticleSettings.count
+        // lightParticleSettings.size = lightParticleSettings.size
+      }
+      updateLightParticleCount()
+    },
+    LightParticleOff: () => {
+      lightParticleSettings.count = 0
+      lightParticleSettings.check = 1
+      updateLightParticleCount()
     }
   };
 
@@ -1124,31 +1142,32 @@ const genNewMed= () => {
     //2,4,10,12
 }
  //default vehicle
-  scene.add(rocket)
-  rocket.visible = true
-  arrow.visible = false
-  tomahawk.visible = false
-  wideGuy.visible = false
+scene.add(rocket)
+rocket.visible = true
+arrow.visible = false
+tomahawk.visible = false
+wideGuy.visible = false
 
-  mtlLoader.load('models/rocket.mtl', 
-  (materials) => {
-    materials.preload()
-    loader.setMaterials(materials)
-    loader.load('models/rocket.obj',
-      (object) => {
-        object.position.y = -2
-        object.position.z = 15
-        object.scale.y = 0.5
-        object.scale.x = 0.5
-        object.scale.z = 0.35
-        object.rotation.y = Math.PI
-        object.rotation.x = Math.PI/8
-        rocket.add(object)
-        rocketBox.setFromObject(rocket)
-      }
-    )
-  }
+mtlLoader.load('models/rocket.mtl', 
+(materials) => {
+  materials.preload()
+  loader.setMaterials(materials)
+  loader.load('models/rocket.obj',
+    (object) => {
+      object.position.y = -2
+      object.position.z = 15
+      object.scale.y = 0.5
+      object.scale.x = 0.5
+      object.scale.z = 0.35
+      object.rotation.y = Math.PI
+      object.rotation.x = Math.PI/8
+      rocket.add(object)
+      rocketBox.setFromObject(rocket)
+    }
+  )
+}
 )
+
 
 gui.add(guicontrols, 'instructions').name('Instructions')
 ctrlFolder.add(guicontrols, 'speedMultiplier').min(2).max(6).step(0.1).name('Cruising Speed')
@@ -1202,6 +1221,11 @@ const rainControls = {
   intensity: 0.5,
   size: 0.1
 };
+const lightParticleSettings = {
+  speed:0.05,
+  count:500,
+  check:0
+}
 
 controls.musicStop = true;
 controls.musicPause = false;
@@ -1267,7 +1291,7 @@ window.addEventListener("resize", () => {
 });
 
 var high = 'false'
-console.log(high)
+//console.log(high)
 // wasd movement switch cases
 var onKeyDown = (e) => {
   switch (e.keyCode) {
@@ -1322,12 +1346,6 @@ var onKeyUp = (e) => {
   
 }
 
-var onKeyPress = (e) => {
-  switch (e.keyCode) {
-    
-  }
-}
-
 
 // scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000) );
 
@@ -1368,7 +1386,64 @@ function updateDropCount() {
   dropsGeometry.computeBoundingSphere();
 }
 
-// scene.remove(rain);
+//Light particle
+const lightParticlesArray = [];
+const lightParticleGroup = new THREE.Group()
+
+function createLightParticles() {
+  const lightParticleGeometry = new THREE.SphereGeometry(0.15);
+  const lightParticleMaterial = new THREE.MeshStandardMaterial({color:0xffffff})
+  const lightParticle = new THREE.Mesh(lightParticleGeometry,lightParticleMaterial);
+
+  lightParticle.scale.x = 0.1
+  lightParticle.scale.y = 0.1
+  lightParticle.scale.z = 0.1
+
+  const [x,y,z]=Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(40));
+  lightParticle.position.set(x,y,z);
+  lightParticleGroup.add(lightParticle);
+  lightParticlesArray.push(lightParticle);
+  scene.add(lightParticleGroup)
+}
+
+function animateLightParticles(){
+  lightParticlesArray.forEach((lightParticle) => {
+    const lightSpeed = lightParticleSettings.speed;
+    lightParticle.position.x += (Math.random() - 0.2) * lightSpeed;
+    lightParticle.position.y += (Math.random() - 0.2) * lightSpeed;
+    lightParticle.position.z += (Math.random() - 0.2) * lightSpeed;
+
+    lightParticle.position.x -= (Math.random() - 0.2) * lightSpeed;
+    lightParticle.position.y -= (Math.random() - 0.2) * lightSpeed;
+    lightParticle.position.z -= (Math.random() - 0.2) * lightSpeed;
+  })
+}
+  fxFolder.add(guicontrols, 'LightParticleOn').name('Light Particle On');
+  fxFolder.add(guicontrols, 'LightParticleOff').name('Light Particle Off');
+  fxFolder.add(lightParticleSettings,'speed',0.01,0.1,0.01).name('Light Particle Speed');
+  fxFolder.add(lightParticleSettings,'count', 100, 1000, 100).name('Light Particle Count').onChange(updateLightParticleCount);
+  
+  function updateLightParticleCount() {
+    const newCount = lightParticleSettings.count;
+    const currentCount = lightParticlesArray.length;
+    
+      if (newCount > currentCount) {
+        const addCount = newCount - currentCount;
+        for (let i = 0; i < addCount; i++) {
+          if (lightParticleSettings.check === 0){
+          createLightParticles();}
+        }
+      } else if (newCount < currentCount) {
+        const removeCount = currentCount - newCount;
+        const removedParticles = lightParticlesArray.splice(newCount, removeCount);
+    
+        removedParticles.forEach((particle) => {
+          scene.remove(particle)
+          lightParticleGroup.remove(particle);
+        });
+      }
+    
+}
 
 //wasd control function
 const webMovement = (model) => {
@@ -1499,11 +1574,14 @@ joystick.on('move', function (event, data) {
   })
 }
 
+guicontrols.LightParticleOn()
+
 // console.log(roadBody.position)
 
 // Animate
 const tick = () => {
     var elapsedTime = clock.getElapsedTime();
+    
 
     
 
@@ -1541,6 +1619,9 @@ const tick = () => {
     dimmerBlu()
     dimmerPrp()
 
+    //light animate
+    animateLightParticles();
+
     const positions = dropsGeometry.attributes.position.array;
 
   if (positions) {
@@ -1573,5 +1654,4 @@ tick();
 
 document.addEventListener('keydown', onKeyDown, false)
 document.addEventListener('keyup', onKeyUp, false)
-document.addEventListener('keypress', onKeyPress, false)
 
