@@ -501,6 +501,8 @@ const speedFunction = (time, multiplier) => {
     rotatingFunc(tomahawk)
     rotatingFunc(wideGuy)
 
+    lightParticleGroup.rotation.x = ((Math.PI * time)/multiplier)/2
+
 }
 
 //road parameters
@@ -869,7 +871,7 @@ var guicontrols = {
       }
       else{
         lightParticleSettings.count = lightParticleSettings.count
-        lightParticleSettings.size = lightParticleSettings.size
+        // lightParticleSettings.size = lightParticleSettings.size
       }
       updateLightParticleCount()
     },
@@ -1394,16 +1396,22 @@ function updateDropCount() {
 
 //Light particle
 const lightParticlesArray = [];
+const lightParticleGroup = new THREE.Group()
 
 function createLightParticles() {
-  const lightParticleGeometry = new THREE.SphereGeometry(lightParticleSettings.size,24,24);
-  const lightParticleMaterial = new THREE.MeshStandardMaterial({color:changeColor })
+  const lightParticleGeometry = new THREE.SphereGeometry(0.15);
+  const lightParticleMaterial = new THREE.MeshStandardMaterial({color:0xffffff})
   const lightParticle = new THREE.Mesh(lightParticleGeometry,lightParticleMaterial);
-  
+
+  lightParticle.scale.x = 0.1
+  lightParticle.scale.y = 0.1
+  lightParticle.scale.z = 0.1
+
   const [x,y,z]=Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(40));
   lightParticle.position.set(x,y,z);
-  scene.add(lightParticle);
+  lightParticleGroup.add(lightParticle);
   lightParticlesArray.push(lightParticle);
+  scene.add(lightParticleGroup)
 }
 
 function animateLightParticles(){
@@ -1417,12 +1425,11 @@ function animateLightParticles(){
     lightParticle.position.y -= (Math.random() - 0.2) * lightSpeed;
     lightParticle.position.z -= (Math.random() - 0.2) * lightSpeed;
   })
-  }
+}
   fxFolder.add(guicontrols, 'LightParticleOn').name('Light Particle On');
   fxFolder.add(guicontrols, 'LightParticleOff').name('Light Particle Off');
   fxFolder.add(lightParticleSettings,'speed',0.01,0.1,0.01).name('Light Particle Speed');
   fxFolder.add(lightParticleSettings,'count', 100, 1000, 100).name('Light Particle Count').onChange(updateLightParticleCount);
-  fxFolder.add(lightParticleSettings, 'size', 0.1, 1, 0.05).name('Light Particle Size').onChange(updateLightParticleSize);
   
   function updateLightParticleCount() {
     const newCount = lightParticleSettings.count;
@@ -1439,24 +1446,12 @@ function animateLightParticles(){
         const removedParticles = lightParticlesArray.splice(newCount, removeCount);
     
         removedParticles.forEach((particle) => {
-          scene.remove(particle);
+          scene.remove(particle)
+          lightParticleGroup.remove(particle);
         });
       }
     
-  }
-  
-  
-  function updateLightParticleSize() {
-    const newSize = lightParticleSettings.size;
-  
-    lightParticlesArray.forEach((particle) => {
-      const scale = new THREE.Vector3(newSize, newSize, newSize);
-      particle.scale.copy(scale);
-    });
-  }
-  updateLightParticleCount();
-  updateLightParticleSize();
-
+}
 
 //wasd control function
 const webMovement = (model) => {
