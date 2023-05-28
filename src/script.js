@@ -1142,31 +1142,32 @@ const genNewMed= () => {
     //2,4,10,12
 }
  //default vehicle
-  scene.add(rocket)
-  rocket.visible = true
-  arrow.visible = false
-  tomahawk.visible = false
-  wideGuy.visible = false
+scene.add(rocket)
+rocket.visible = true
+arrow.visible = false
+tomahawk.visible = false
+wideGuy.visible = false
 
-  mtlLoader.load('models/rocket.mtl', 
-  (materials) => {
-    materials.preload()
-    loader.setMaterials(materials)
-    loader.load('models/rocket.obj',
-      (object) => {
-        object.position.y = -2
-        object.position.z = 15
-        object.scale.y = 0.5
-        object.scale.x = 0.5
-        object.scale.z = 0.35
-        object.rotation.y = Math.PI
-        object.rotation.x = Math.PI/8
-        rocket.add(object)
-        rocketBox.setFromObject(rocket)
-      }
-    )
-  }
+mtlLoader.load('models/rocket.mtl', 
+(materials) => {
+  materials.preload()
+  loader.setMaterials(materials)
+  loader.load('models/rocket.obj',
+    (object) => {
+      object.position.y = -2
+      object.position.z = 15
+      object.scale.y = 0.5
+      object.scale.x = 0.5
+      object.scale.z = 0.35
+      object.rotation.y = Math.PI
+      object.rotation.x = Math.PI/8
+      rocket.add(object)
+      rocketBox.setFromObject(rocket)
+    }
+  )
+}
 )
+
 
 gui.add(guicontrols, 'instructions').name('Instructions')
 ctrlFolder.add(guicontrols, 'speedMultiplier').min(2).max(6).step(0.1).name('Cruising Speed')
@@ -1223,8 +1224,7 @@ const rainControls = {
 const lightParticleSettings = {
   speed:0.05,
   count:500,
-  size:0.2,
-  check:1
+  check:0
 }
 
 controls.musicStop = true;
@@ -1346,12 +1346,6 @@ var onKeyUp = (e) => {
   
 }
 
-var onKeyPress = (e) => {
-  switch (e.keyCode) {
-    
-  }
-}
-
 
 // scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300, 0xff0000) );
 
@@ -1391,8 +1385,6 @@ function updateDropCount() {
   dropsGeometry.setAttribute('position', new THREE.BufferAttribute(newDropPositions, 3));
   dropsGeometry.computeBoundingSphere();
 }
-
-// scene.remove(rain);
 
 //Light particle
 const lightParticlesArray = [];
@@ -1582,11 +1574,14 @@ joystick.on('move', function (event, data) {
   })
 }
 
+guicontrols.LightParticleOn()
+
 // console.log(roadBody.position)
 
 // Animate
 const tick = () => {
     var elapsedTime = clock.getElapsedTime();
+    
 
     
 
@@ -1659,5 +1654,4 @@ tick();
 
 document.addEventListener('keydown', onKeyDown, false)
 document.addEventListener('keyup', onKeyUp, false)
-document.addEventListener('keypress', onKeyPress, false)
 
