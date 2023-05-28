@@ -1354,6 +1354,12 @@ function updateDropCount() {
   dropsGeometry.computeBoundingSphere();
 }
 
+var particleGeometry = new THREE.SphereGeometry(0.2)
+const particleMaterial = new THREE.MeshStandardMaterial({color: white})
+
+
+
+
 // scene.remove(rain);
 
 //wasd control function
