@@ -1257,6 +1257,10 @@ const ctrlFolder = gui.addFolder('Cruise Controls')
 const audioFolder = gui.addFolder('Audio Controls')
 const vehicleFolder = gui.addFolder('Change Vehicle')
 
+const updateMusicVolume = () =>{
+  music.setVolume(controls.musicVolume);
+};
+
 const stopMusic = () =>{
   if(music.isPlaying && controls.musicStop == false ){
     music.stop();
@@ -1527,6 +1531,8 @@ const lightParticleSettings = {
   check:0
 }
 
+controls.musicVolume = 1;
+audioFolder.add(controls, 'musicVolume').min(0.1).max(2).step(0.1).onChange(updateMusicVolume).name("Music Volume")
 controls.musicStop = true;
 controls.musicPause = false;
 audioFolder.add(controls, 'musicStop').onChange(stopMusic).name("Play Music")
