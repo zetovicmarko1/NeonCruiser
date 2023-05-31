@@ -1532,7 +1532,7 @@ const lightParticleSettings = {
 }
 
 controls.musicVolume = 1;
-audioFolder.add(controls, 'musicVolume').min(0.1).max(2).step(0.1).onChange(updateMusicVolume).name("Music Volume")
+audioFolder.add(controls, 'musicVolume').min(0).max(2).step(0.1).onChange(updateMusicVolume).name("Music Volume")
 controls.musicStop = true;
 controls.musicPause = false;
 audioFolder.add(controls, 'musicStop').onChange(stopMusic).name("Play Music")
