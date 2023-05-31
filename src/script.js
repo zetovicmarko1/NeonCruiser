@@ -16,7 +16,7 @@ import nipplejs from 'nipplejs';
 const textureLoader = new THREE.TextureLoader();
 const gridTexture = textureLoader.load('textures/grid.png');
 const buildingTexture = textureLoader.load('textures/building.png');
-
+const speckleNoise = textureLoader.load('textures/noise.jpg');
 const metalnessTexture = textureLoader.load('textures/metalness.png'); //this will make random "window" squares illuminate
 const gui = new GUI()
 const canvas = document.querySelector("canvas.webgl");
@@ -75,7 +75,6 @@ const material = new THREE.MeshStandardMaterial({
     metalness: 0.96,
     roughness: 0.5
 });
-
 
 //material for vertex shader modification/extension
 const shaderExtend = new THREE.MeshStandardMaterial({
@@ -1635,7 +1634,6 @@ var onKeyUp = (e) => {
   
 }
 
-
 //rain drop code
 const dropsGeometry = new THREE.BufferGeometry();
 const dropsMaterial = new THREE.PointsMaterial({ color: 0xffffff});
@@ -1914,12 +1912,11 @@ const tick = () => {
         }
       }
 
-
       dropsGeometry.attributes.position.needsUpdate = true;
       dropsMaterial.color.setHSL(0.6, 1, rainControls.intensity);
       dropsMaterial.size = rainControls.size;
     }
-  
+
     // Call tick again on the next frame
     window.requestAnimationFrame(tick);
 };
