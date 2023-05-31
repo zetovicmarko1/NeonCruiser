@@ -16,8 +16,8 @@ import nipplejs from 'nipplejs';
 const textureLoader = new THREE.TextureLoader();
 const gridTexture = textureLoader.load('textures/grid.png');
 const buildingTexture = textureLoader.load('textures/building.png');
-const speckleNoise = textureLoader.load('textures/noise.jpg');
-const metalnessTexture = textureLoader.load('textures/metalness.png');
+
+const metalnessTexture = textureLoader.load('textures/metalness.png'); //this will make random "window" squares illuminate
 const gui = new GUI()
 const canvas = document.querySelector("canvas.webgl");
 const loader = new OBJLoader()
@@ -76,6 +76,8 @@ const material = new THREE.MeshStandardMaterial({
     roughness: 0.5
 });
 
+
+//material for vertex shader modification/extension
 const shaderExtend = new THREE.MeshStandardMaterial({
   map: gridTexture,
   metalness: 0.96,
@@ -85,6 +87,7 @@ const shaderExtend = new THREE.MeshStandardMaterial({
 const count = torus.attributes.position.count
 const randoms =  new Float32Array(count)
 
+//random bump map
 for (let i = 0; i < count; i++) {
     randoms[i] = Math.random()
 }
@@ -457,8 +460,6 @@ scene.add(buildingsAllCyl)
 
 buildingsInverted.position.y = 50
 
-//things that need to be added to invert function
-
 // Sizes
 const sizes = {
   width: window.innerWidth,
@@ -648,6 +649,7 @@ var downBound = -1
 var frontBound = -5
 var backBound = 1
 
+//road inversion flag
 var inverted = 'false'
 
 //parameters for the gui
@@ -676,9 +678,8 @@ var guicontrols = {
 
     },
     instructions: () => {
-      alert('Use WASD to control the vehicle on Web\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
+      alert('Use WASD and up and down keys to control the vehicle on Web\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
     },
-    //songOn: false
     playMusic:() =>{
       gsap.to(music.play())
     },
@@ -686,7 +687,7 @@ var guicontrols = {
       gsap.to(music.stop())
     },
     arrowShip:() => {
-      // currModel = 'arrow'
+      // this is an unused model
       scene.remove(rocket)
       scene.remove(tomahawk)
       scene.remove(wideGuy)
@@ -719,7 +720,6 @@ var guicontrols = {
       )   
     }, 
     rocketShip:() => {
-      // currModel = 'rocket'
       scene.remove(arrow)
       scene.remove(tomahawk)
       scene.remove(wideGuy)
@@ -752,7 +752,6 @@ var guicontrols = {
       )   
     },
     tomaShip:() => {
-      // currModel = 'tomahawk'
       scene.remove(arrow)
       scene.remove(rocket)
       scene.remove(wideGuy)
@@ -786,7 +785,6 @@ var guicontrols = {
       )   
     },
     wideShip:() => {
-      // currModel = 'wideGuy'
       scene.remove(arrow)
       scene.remove(rocket)
       scene.remove(tomahawk)
@@ -1162,15 +1160,12 @@ var guicontrols = {
 
 effectComposer.addPass(bloomPass);
 
-
 const ambientLight = new THREE.AmbientLight(0x00FFFB, 100);
 //this is the main colour, it uses an ambient light for it
-//function to change the lighting colour
 
 scene.add(ambientLight)
 
 var intensityRed = 100
-// var intensityOrng = 0
 var intensityYel = 0
 var intensityGrn = 0
 var intensityBlu = 0
@@ -1179,19 +1174,17 @@ var intensityPrp = 0
 var currColor = 'red'
 
 const ambientLightRed = new THREE.AmbientLight(0xff0000, intensityRed);
-// const ambientLightOrng = new THREE.AmbientLight(0xff8c00, intensityOrng);
 const ambientLightYel = new THREE.AmbientLight(0xffff00, intensityYel);
 const ambientLightGrn = new THREE.AmbientLight(0x00ff00, intensityGrn);
 const ambientLightBlu = new THREE.AmbientLight(0x0000ff, intensityBlu);
 const ambientLightPrp = new THREE.AmbientLight(0xff00ff, intensityPrp);
 
+//function to change the lighting colour
 var changeColor = (val) =>  {
   ambientLight.color.set(guicontrols.color)
 } 
 
 //rainbow mode functions
-
-
 const dimmerRed= () => {
   currColor='red'
   if (intensityPrp <= 0 && intensityRed >0 && intensityYel <= 100 && currColor=='red') {
@@ -1257,6 +1250,7 @@ const ctrlFolder = gui.addFolder('Cruise Controls')
 const audioFolder = gui.addFolder('Audio Controls')
 const vehicleFolder = gui.addFolder('Change Vehicle')
 
+//music functions
 const updateMusicVolume = () =>{
   music.setVolume(controls.musicVolume);
 };
@@ -1340,6 +1334,7 @@ const shortBuildingData = {
   radialSegments: 4
 }
 
+//road scaling
 var scaleRoad = (val) =>  {
   buildingsAllCyl.scale.x = roadWidth.width
   buildingsInverted.scale.x = roadWidth.width
@@ -1476,6 +1471,7 @@ mtlLoader.load('models/rocket.mtl',
 }
 )
 
+//more gui stuff
 gui.add(guicontrols, 'instructions').name('Instructions')
 ctrlFolder.add(guicontrols, 'speedMultiplier').min(2).max(6).step(0.1).name('Cruising Speed')
 fxFolder.addColor(guicontrols, 'color').onChange(changeColor).name('Neon Colour')
@@ -1549,7 +1545,7 @@ fxFolder.add(guicontrols, 'rainOff').name('Rain Off');
 fxFolder.add(rainControls, 'speed').min(2).max(5).step(0.1).name('Rain Speed');
 fxFolder.add(rainControls, 'size').min(0.1).max(0.5).step(0.1).name('Rain Size');
 
-gui.close() //this will close the gui on launch (good for mobiles)s
+gui.close() //this will close the gui on launch (good for mobiles)
 
 //debug
 controls.enableZoom = false;
@@ -1584,7 +1580,7 @@ window.addEventListener("resize", () => {
 });
 
 var high = 'false'
-//console.log(high)
+
 // wasd movement switch cases
 var onKeyDown = (e) => {
   switch (e.keyCode) {
@@ -1639,6 +1635,8 @@ var onKeyUp = (e) => {
   
 }
 
+
+//rain drop code
 const dropsGeometry = new THREE.BufferGeometry();
 const dropsMaterial = new THREE.PointsMaterial({ color: 0xffffff});
 
@@ -1771,10 +1769,8 @@ const webMovement = (model) => {
 
   } else if (model.position.y >= upBound) {
     model.position.y-=0.01
-    // model.position.z+=0.01
   } else if (model.position.y <= downBound) {
     model.position.y+=0.1
-    // model.position.z-=0.1
   } else if (model.position.x <= leftBound) {
     model.position.x +=0.1
   } else if (model.position.x >= rightBound) {
@@ -1790,7 +1786,6 @@ const webMovement = (model) => {
     burnerAlpha.position.y =  (-0.7+(rocketBox.min.y+rocketBox.max.y)/2)
     burnerAlpha.position.z =  rocketBox.max.z 
     if (cameraMode == 'firstperson') {
-      // if (rocket.visible = true) {
       camera.position.z = rocket.position.z + 15.5
       camera.position.y = rocket.position.y
       camera.position.x = rocket.position.x
@@ -1801,7 +1796,6 @@ const webMovement = (model) => {
     burnerAlpha.position.y =  (-1.1+(wideBox.min.y+wideBox.max.y)/2)
     burnerAlpha.position.z =  wideBox.max.z-0.2
     if (cameraMode == 'firstperson') {
-      // if (rocket.visible = true) {
       camera.position.z = wideGuy.position.z + 16.5
       camera.position.y = wideGuy.position.y
       camera.position.x = wideGuy.position.x
@@ -1812,7 +1806,6 @@ const webMovement = (model) => {
     burnerAlpha.position.y =  (-0.8+(tomaBox.min.y+tomaBox.max.y)/2)
     burnerAlpha.position.z =  tomaBox.max.z-0.4
     if (cameraMode == 'firstperson') {
-      // if (rocket.visible = true) {
       camera.position.z = tomahawk.position.z + 16.5
       camera.position.y = tomahawk.position.y
       camera.position.x = tomahawk.position.x
@@ -1862,6 +1855,7 @@ guicontrols.LightParticleOn()
 
 // Animate
 const tick = () => {
+    //program clock
     var elapsedTime = clock.getElapsedTime();
 
     //all movements for all ships, starting with rocket
@@ -1877,22 +1871,26 @@ const tick = () => {
 
     // Update controls
     controls.update();
+
+    //update model bounding boxes
     rocketBox.setFromObject(rocket);
     wideBox.setFromObject(wideGuy);
     tomaBox.setFromObject(tomahawk);
     arrowBox.setFromObject(arrow);
 
+    //speed multiplier
     speedFunction(elapsedTime, guicontrols.speedMultiplier)
-
     updateMusicSpeed(guicontrols.speedMultiplier)
+
+    //music visual animation
     musicVisualiser();
     musicDetune();
 
+    //render the postprocessing
     effectComposer.render();
 
     //rainbow mode loop
     dimmerRed()
-    // dimmerOrng()
     dimmerYel()
     dimmerGrn()
     dimmerBlu()
@@ -1901,25 +1899,27 @@ const tick = () => {
     //light animate
     animateLightParticles();
 
+    // raindrop animation
     const positions = dropsGeometry.attributes.position.array;
 
-  if (positions) {
-    for (let i = 0; i < dropCount; i++) {
-      const index = i * 3;
-      if (positions[index + 1] < -100) {
-        positions[index + 0] = Math.random() * 200 - 100;
-        positions[index + 1] = 200;
-        positions[index + 2] = Math.random() * 200 - 100;
-      } else {
-        positions[index + 1] -= Math.random() * rainControls.speed;
+    if (positions) {
+      for (let i = 0; i < dropCount; i++) {
+        const index = i * 3;
+        if (positions[index + 1] < -100) {
+          positions[index + 0] = Math.random() * 200 - 100;
+          positions[index + 1] = 200;
+          positions[index + 2] = Math.random() * 200 - 100;
+        } else {
+          positions[index + 1] -= Math.random() * rainControls.speed;
+        }
       }
+
+
+      dropsGeometry.attributes.position.needsUpdate = true;
+      dropsMaterial.color.setHSL(0.6, 1, rainControls.intensity);
+      dropsMaterial.size = rainControls.size;
     }
-
-    dropsGeometry.attributes.position.needsUpdate = true;
-    dropsMaterial.color.setHSL(0.6, 1, rainControls.intensity);
-    dropsMaterial.size = rainControls.size;
-  }
-
+  
     // Call tick again on the next frame
     window.requestAnimationFrame(tick);
 };
