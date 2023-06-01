@@ -1,17 +1,14 @@
-# Three.js Journey
+# Neon Cruiser
 
-## Setup
-Download [Node.js](https://nodejs.org/en/download/).
-Run this followed commands:
+Setup Instructions:
 
-``` bash
-# Install dependencies (only the first time)
-npm install
+Download [Node.js](https://nodejs.org/en/download/). (Node Package Manager)
 
-# Run the local server at localhost:8080
-npm run dev
+Run the following commands in Visual Studio terminal:
 
-# Build for production in the dist/ directory
-npm run build
-```
-# NeonCruiser
+npm install 
+
+npm run dev 
+
+Note: npm install is only required once for dependency installation, npm run dev runs the application on a local server
+
