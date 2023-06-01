@@ -1556,8 +1556,6 @@ var isFor = false
 var isBack = false
 var isLeft = false
 var isRight = false
-var isUp = false
-var isDown = false
 
 // Event listener to handle screen resize
 window.addEventListener("resize", () => {
@@ -1578,8 +1576,6 @@ window.addEventListener("resize", () => {
     effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-var high = 'false'
-
 // wasd movement switch cases
 var onKeyDown = (e) => {
   switch (e.keyCode) {
@@ -1594,12 +1590,6 @@ var onKeyDown = (e) => {
       break;
     case 68:
       isRight = true;
-      break;
-    case 38:
-      isUp = true;
-      break;
-    case 40:
-      isDown = true;
       break;
   }
 }
@@ -1618,18 +1608,6 @@ var onKeyUp = (e) => {
     case 68:
       isRight = false;
       break;
-    case 38:
-      isUp = false;
-      break;
-    case 40:
-      isDown = false;
-      break;
-    case 38:
-        isUp = false;
-        break;
-    case 40:
-        isDown = false;
-        break;
   }
   
 }
@@ -1752,17 +1730,6 @@ const webMovement = (model) => {
     }
     if (isRight == true) {
       model.position.x +=0.07
-    }
-
-    if (isUp == true && high == 'false') {
-      high = 'true'
-      gsap.to(model.position, {duration: 1, y: model.position.y + 1})
-    }
-
-    if (isDown == true && high == 'true') {
-      high = 'false'
-      console.log(high)
-      gsap.to(model.position, {duration: 1, y: model.position.y - 1})
     }
 
   } else if (model.position.y >= upBound) {
