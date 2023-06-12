@@ -34,6 +34,7 @@ var cameraMode = 'thirdperson'
 if (!/Android|iPhone/i.test(navigator.userAgent)) {
   joystick.destroy()
 }
+
 //this is to interact with the spaceship outside of the loader function
 var rocket = new THREE.Group()
 var arrow = new THREE.Group()
@@ -1698,14 +1699,6 @@ function animateLightParticles(){
 
 //wasd control function
 const webMovement = (model) => {
-
-  webStick.on('move', function (event, data) {
-    if(model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
-      model.position.y=data.vector.y*6
-      model.position.z=-data.vector.y*4
-      model.position.x=data.vector.x*4
-    }
-  })
 
   if (model.position.x > leftBound && model.position.x < rightBound && model.position.y > downBound && model.position.y < upBound && model.position.z > frontBound && model.position.z < backBound) {
     
