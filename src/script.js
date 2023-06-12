@@ -33,7 +33,7 @@ var cameraMode = 'thirdperson'
 // This checks if mobile, used for the joystick controller
 if (!/Android|iPhone/i.test(navigator.userAgent)) {
   joystick.destroy()
-
+}
 //this is to interact with the spaceship outside of the loader function
 var rocket = new THREE.Group()
 var arrow = new THREE.Group()
