@@ -24,9 +24,6 @@ const loader = new OBJLoader()
 const mtlLoader = new MTLLoader()
 const scene = new THREE.Scene();
 const clock = new THREE.Clock();
-const webStick = new nipplejs.create({mode: 'dynamic', dataOnly: true, 
-zone: document.getElementById('zone_joystick')
-})
 const joystick = new nipplejs.create({mode: 'static', position: {top:'85%', left: '20%', 
 zone: document.getElementById('zone_joystick')
 }})
@@ -36,11 +33,6 @@ var cameraMode = 'thirdperson'
 // This checks if mobile, used for the joystick controller
 if (!/Android|iPhone/i.test(navigator.userAgent)) {
   joystick.destroy()
-}
-
-if (!/Android|iPhone/i.test(navigator.userAgent)) {
-  webStick.destroy()
-} 
 
 //this is to interact with the spaceship outside of the loader function
 var rocket = new THREE.Group()
