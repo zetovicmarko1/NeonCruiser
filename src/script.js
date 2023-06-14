@@ -648,6 +648,7 @@ var inverted = 'false'
 var guicontrols = {
     speedMultiplier: 4,
     color: 0x00FFFB,
+    colorMobile: 'Tron',
     view: 21,
     bloomStrength: 3.0,
     bloomThreshold: 0.1,
@@ -671,6 +672,11 @@ var guicontrols = {
     },
     instructions: () => {
       alert('Use WASD to control the vehicle on Web\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
+    },
+    mobileInstructions: () => {
+      music.stop()
+      alert('Use WASD and up and down keys to control the vehicle on Web\nUse the joystick on mobile devices\nSong: Implant by Makeup and Vanity Set\nModels: Ebal Studios via Sketchfab\nGrid Texture: Maxime Heckel\nProject By Matty, Joe, Boya and Marko')
+      music.play()
     },
     playMusic:() =>{
       gsap.to(music.play())
@@ -1140,7 +1146,88 @@ var guicontrols = {
       scene.remove(buildingsInverted)
       scene.remove(randomBuildingsInverted)
       randomBuildings.position.y = 0
-    }
+    },
+    changeTron: () => {
+      scene.remove(ambientLightRed)
+      scene.remove(ambientLightYel)
+      scene.remove(ambientLightGrn)
+      scene.remove(ambientLightBlu)
+      scene.remove(ambientLightPrp)
+      scene.add(ambientLight)
+      ambientLight.color.set(0x00FFFB)
+    },
+    changeRed: () => {
+      scene.remove(ambientLightRed)
+      scene.remove(ambientLightYel)
+      scene.remove(ambientLightGrn)
+      scene.remove(ambientLightBlu)
+      scene.remove(ambientLightPrp)
+      scene.add(ambientLight)
+      ambientLight.color.set(0xff0000)
+    },
+    changeGreen: () => {
+      scene.remove(ambientLightRed)
+      scene.remove(ambientLightYel)
+      scene.remove(ambientLightGrn)
+      scene.remove(ambientLightBlu)
+      scene.remove(ambientLightPrp)
+      scene.add(ambientLight)
+      ambientLight.color.set(0x00ff00)
+    },
+    changeBlue: () => {
+      scene.remove(ambientLightRed)
+      scene.remove(ambientLightYel)
+      scene.remove(ambientLightGrn)
+      scene.remove(ambientLightBlu)
+      scene.remove(ambientLightPrp)
+      scene.add(ambientLight)
+      ambientLight.color.set(0x0033ff)
+    },
+    changePurple: () => {
+      scene.remove(ambientLightRed)
+      scene.remove(ambientLightYel)
+      scene.remove(ambientLightGrn)
+      scene.remove(ambientLightBlu)
+      scene.remove(ambientLightPrp)
+      scene.add(ambientLight)
+      ambientLight.color.set(0x0400ff)
+    },
+    changePink: () => {
+      scene.remove(ambientLightRed)
+      scene.remove(ambientLightYel)
+      scene.remove(ambientLightGrn)
+      scene.remove(ambientLightBlu)
+      scene.remove(ambientLightPrp)
+      scene.add(ambientLight)
+      ambientLight.color.set(0xff00ff)
+    },
+    changeOrange: () => {
+      scene.remove(ambientLightRed)
+      scene.remove(ambientLightYel)
+      scene.remove(ambientLightGrn)
+      scene.remove(ambientLightBlu)
+      scene.remove(ambientLightPrp)
+      scene.add(ambientLight)
+      ambientLight.color.set(0xff3300)
+    },
+    changeYellow: () => {
+      scene.remove(ambientLightRed)
+      scene.remove(ambientLightYel)
+      scene.remove(ambientLightGrn)
+      scene.remove(ambientLightBlu)
+      scene.remove(ambientLightPrp)
+      scene.add(ambientLight)
+      ambientLight.color.set(0xffDD00)
+    },
+    changeWhite: () => {
+      scene.remove(ambientLightRed)
+      scene.remove(ambientLightYel)
+      scene.remove(ambientLightGrn)
+      scene.remove(ambientLightBlu)
+      scene.remove(ambientLightPrp)
+      scene.add(ambientLight)
+      ambientLight.color.set(0xffffff)
+    }  
   };
 
   var bloomPass = new UnrealBloomPass(
@@ -1175,6 +1262,8 @@ const ambientLightPrp = new THREE.AmbientLight(0xff00ff, intensityPrp);
 var changeColor = (val) =>  {
   ambientLight.color.set(guicontrols.color)
 } 
+
+
 
 //rainbow mode functions
 const dimmerRed= () => {
@@ -1464,11 +1553,42 @@ mtlLoader.load('models/rocket.mtl',
 )
 
 //more gui stuff
-gui.add(guicontrols, 'instructions').name('Instructions')
+
+if (!/Android|iPhone/i.test(navigator.userAgent)) {
+  gui.add(guicontrols, 'instructions').name('Instructions')
+}
+
 ctrlFolder.add(guicontrols, 'speedMultiplier').min(2).max(6).step(0.1).name('Cruising Speed')
-fxFolder.addColor(guicontrols, 'color').onChange(changeColor).name('Neon Colour')
-fxFolder.add(guicontrols, 'rainbowMode').name('Rainbow Mode')
-fxFolder.add(guicontrols, 'normalMode').name('Normal Mode')
+
+if (!/Android|iPhone/i.test(navigator.userAgent)) {
+  fxFolder.addColor(guicontrols, 'color').onChange(changeColor).name('Neon Colour')
+}
+
+// var changeColorMobile = (val) =>  {
+  
+// } 
+
+// if (/Android|iPhone/i.test(navigator.userAgent)) {
+//   fxFolder.add(guicontrols, 'colorMobile', ['Tron', 'Red', 'Green', 'Blue', 'Purple', 'Pink', 'Orange', 'Yellow', 'White']).name('Neon Colour').onChange(changeColorMobile)
+// }
+
+if (!/Android|iPhone/i.test(navigator.userAgent)) {
+  fxFolder.add(guicontrols, 'normalMode').name('Normal Mode')
+  fxFolder.add(guicontrols, 'rainbowMode').name('Rainbow Mode')
+}
+
+if (/Android|iPhone/i.test(navigator.userAgent)) {
+  fxFolder.add(guicontrols, 'changeTron').name('Default')
+  fxFolder.add(guicontrols, 'changeRed').name('Red')
+  fxFolder.add(guicontrols, 'changeGreen').name('Green')
+  fxFolder.add(guicontrols, 'changeBlue').name('Blue')
+  fxFolder.add(guicontrols, 'changePurple').name('Purple')
+  fxFolder.add(guicontrols, 'changePink').name('Pink')
+  fxFolder.add(guicontrols, 'changeOrange').name('Orange')
+  fxFolder.add(guicontrols, 'changeYellow').name('Yellow')
+  fxFolder.add(guicontrols, 'changeWhite').name('White')
+  fxFolder.add(guicontrols, 'rainbowMode').name('Rainbow')
+}
 
 fxFolder.add(fog, 'far').name('Fog Depth').min(10).max(25)
 fxFolder.add(guicontrols, 'bloomThreshold', 0.0, 1.0).onChange(function (value) {
@@ -1495,18 +1615,18 @@ brandomFolder.add(guicontrols, 'setBuildings').name("Uniform Buildings")
 brandomFolder.add(guicontrols, 'setRandomBuildings').name("Randomise Buildings")
 brandomFolder.add(guicontrols, 'invertScene').name("Invert Scene")
 brandomFolder.add(guicontrols, 'revertScene').name("Revert Scene")
-buildingsFolder.add(tallBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewTall).name("Tall Building Segments")
-buildingsFolder.add(medBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewMed).name("Medium Building Segments")
-buildingsFolder.add(shortBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewShort).name("Short Building Segments")
-buildinghFolder.add(tallBuildingData, 'height').min(45).max(55).step(0.01).onChange(genNewTall).name("Tall Building Height")
-buildinghFolder.add(medBuildingData, 'height').min(40).max(50).step(0.01).onChange(genNewMed).name("Medium Building Height")
-buildinghFolder.add(shortBuildingData, 'height').min(35).max(45).step(0.01).onChange(genNewShort).name("Short Building Height")
-tradiusFolder.add(tallBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewTall).name("Tall Building Top Radius")
-tradiusFolder.add(medBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building Top Radius")
-tradiusFolder.add(shortBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building Top Radius")
-bradiusFolder.add(tallBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewTall).name("Tall Building Bottom Radius")
-bradiusFolder.add(medBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building Bottom Radius")
-bradiusFolder.add(shortBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building Bottom Radius")
+buildingsFolder.add(tallBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewTall).name("Tall Building")
+buildingsFolder.add(medBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewMed).name("Medium Building")
+buildingsFolder.add(shortBuildingData, 'radialSegments').min(4).max(10).step(1).onChange(genNewShort).name("Short Building")
+buildinghFolder.add(tallBuildingData, 'height').min(45).max(55).step(0.01).onChange(genNewTall).name("Tall Building")
+buildinghFolder.add(medBuildingData, 'height').min(40).max(50).step(0.01).onChange(genNewMed).name("Medium Building")
+buildinghFolder.add(shortBuildingData, 'height').min(35).max(45).step(0.01).onChange(genNewShort).name("Short Building")
+tradiusFolder.add(tallBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewTall).name("Tall Building")
+tradiusFolder.add(medBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building")
+tradiusFolder.add(shortBuildingData, 'radiusTop').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building")
+bradiusFolder.add(tallBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewTall).name("Tall Building")
+bradiusFolder.add(medBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewMed).name("Medium Building")
+bradiusFolder.add(shortBuildingData, 'radiusBottom').min(1).max(8).step(0.001).onChange(genNewShort).name("Short Building")
 
 const rainControls = {
   speed:5,
@@ -1528,7 +1648,7 @@ audioFolder.add(controls, 'musicPause').onChange(pauseMusic).name("Pause Music")
 controls.musicVisualiserToggle = false;
 controls.musicVisualiserSlider = 5;
 audioFolder.add(controls, 'musicVisualiserToggle').name('Music Visualiser')
-audioFolder.add(controls, 'musicVisualiserSlider').min(1).max(10).step(0.1).name('Music Visualiser Strength')
+audioFolder.add(controls, 'musicVisualiserSlider').min(1).max(10).step(0.1).name('Visualiser Strength')
 controls.musicDetune = 0;
 audioFolder.add(controls, 'musicDetune').min(0).max(5).step(0.1).name('Music Detune')
 
@@ -1621,7 +1741,7 @@ for (let i = 0; i < dropCount; i++) {
 dropsGeometry.setAttribute('position', new THREE.BufferAttribute(dropPositions, 3));
 
 const rain = new THREE.Points(dropsGeometry, dropsMaterial);
-const dropCountController = fxFolder.add({ dropCount: dropCount }, 'dropCount').min(2000).max(5000).step(100).name('Rain DropCount');
+const dropCountController = fxFolder.add({ dropCount: dropCount }, 'dropCount').min(2000).max(5000).step(100).name('Drop Count');
 dropCountController.onChange(updateDropCount);
 
 function updateDropCount() {
@@ -1672,8 +1792,8 @@ function animateLightParticles(){
 }
   fxFolder.add(guicontrols, 'LightParticleOn').name('Light Particle On');
   fxFolder.add(guicontrols, 'LightParticleOff').name('Light Particle Off');
-  fxFolder.add(lightParticleSettings,'speed',0.01,0.1,0.01).name('Light Particle Speed');
-  fxFolder.add(lightParticleSettings,'count', 100, 1000, 100).name('Light Particle Count').onChange(updateLightParticleCount);
+  fxFolder.add(lightParticleSettings,'speed',0.01,0.1,0.01).name('Particle Speed');
+  fxFolder.add(lightParticleSettings,'count', 100, 1000, 100).name('Particle Count').onChange(updateLightParticleCount);
   
   function updateLightParticleCount() {
     const newCount = lightParticleSettings.count;
