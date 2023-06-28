@@ -13,20 +13,42 @@ import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import nipplejs from 'nipplejs';
 
 // Textures
-const textureLoader = new THREE.TextureLoader();
+const loadingManager = new THREE.LoadingManager()
+
+const textureLoader = new THREE.TextureLoader(loadingManager);
 const gridTexture = textureLoader.load('textures/grid.png');
 const buildingTexture = textureLoader.load('textures/building.png');
 const speckleNoise = textureLoader.load('textures/noise.jpg');
 const metalnessTexture = textureLoader.load('textures/metalness.png'); //this will make random "window" squares illuminate
 const gui = new GUI()
 const canvas = document.querySelector("canvas.webgl");
-const loader = new OBJLoader()
-const mtlLoader = new MTLLoader()
+const loader = new OBJLoader(loadingManager)
+const mtlLoader = new MTLLoader(loadingManager)
 const scene = new THREE.Scene();
 const clock = new THREE.Clock();
 const joystick = new nipplejs.create({mode: 'static', position: {top:'85%', left: '20%', 
 zone: document.getElementById('zone_joystick')
 }})
+
+// loadingManager.onStart = function(url, item, total) {
+//   console.log(`Started loading: ${url}`)
+// }
+
+// const progressBar = document.getElementById('progress-bar')
+
+// loadingManager.onProgress = function(url, loaded, total) {
+//   progressBar.value = (loaded/total) * 100
+// }
+
+const progressBarContainer = document.querySelector('.clock-loader')
+
+loadingManager.onLoad = function() {
+  progressBarContainer.style.display = 'none'
+}
+
+// loadingManager.onError = function(url) {
+//   console.log(`Error loading: ${url}`)
+// }
 
 var cameraMode = 'thirdperson'
 
