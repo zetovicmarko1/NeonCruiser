@@ -34,13 +34,13 @@ zone: document.getElementById('zone_joystick')
 //   console.log(`Started loading: ${url}`)
 // }
 
-// const progressBar = document.getElementById('progress-bar')
+const progressBar = document.getElementById('progress-bar')
 
-// loadingManager.onProgress = function(url, loaded, total) {
-//   progressBar.value = (loaded/total) * 100
-// }
+loadingManager.onProgress = function(url, loaded, total) {
+  progressBar.value = (loaded/total) * 100
+}
 
-const progressBarContainer = document.querySelector('.clock-loader')
+const progressBarContainer = document.querySelector('.progress-bar-container')
 
 loadingManager.onLoad = function() {
   progressBarContainer.style.display = 'none'
