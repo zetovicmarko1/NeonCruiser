@@ -8,7 +8,7 @@
     "build": "vite build"
   },
   "devDependencies": {
-    "vite": "^4.0.4"
+    "vite": "^4.5.5"
   },
   "dependencies": {
     "dat.gui": "^0.7.9",
